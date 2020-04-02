@@ -1,0 +1,15 @@
+note over browser:
+https://fullstack-exampleapp.herokuapp.com/spa
+page is loaded and the 'save' form button is pressed
+end note
+
+browser->browser: DOM is updated with the new item
+browser->server: HTTP POST https://fullstack-exampleapp.herokuapp.com/new_note_spa
+note over server:
+the server saves the data
+from the POST request body
+end note
+server-->browser: application/json {"message":"note created"}
+note over browser: 
+console log: {"message":"note created"}
+end note
