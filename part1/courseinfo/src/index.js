@@ -22,36 +22,36 @@ const App = () => {
   )
 }
 
-const Header = (props) => {
+const Header = props => {
   return (
     <h1>{props.course}</h1>
-  );
+  )
 } 
 
-const Content = (props) => {
+const Content = props => {
   return (
     <>
       <Part part={ props.content[0].part} exercises={props.content[0].exercises } />
       <Part part={ props.content[1].part} exercises={props.content[1].exercises } />
       <Part part={ props.content[2].part} exercises={props.content[2].exercises } />
     </>
-  );
+  )
 }
 
-const Part = (props) => {
+const Part = props => {
   return (
     <p>
       {props.part} {props.exercises}
     </p>
-  );
+  )
 }
 
-const Total = (props) => {
+const Total = props => {
   return (
     <p>
       Number of exercises {props.total}
     </p>
-  ); 
+  ) 
 } 
 
 ReactDOM.render(<App />, document.getElementById('root'))
