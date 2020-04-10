@@ -1,60 +1,46 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
+const Title = ({title}) => <h2>{title}</h2>
+const Button = ({onClickFunc, text}) => <button onClick={onClickFunc}>{text}</button>
+const Result = ({text, count}) => <p>{text} {count}</p>
+
 const App = () => {
-  const course = {
-    name: 'Half Stack application development',
-    parts: [
-      {
-        name: 'Fundamentals of React',
-        exercises: 10
-      },
-      {
-        name: 'Using props to pass data',
-        exercises: 7
-      },
-      {
-        name: 'State of a component',
-        exercises: 14
-      }
-    ]
+  // save clicks of each button to own state
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+
+  const goodText = 'good'
+  const neutralText = 'neutral'
+  const badText = 'bad'
+
+  const printFunction = (text) => () => console.log(text)
+
+  const handleButtonClick = (text) => {
+    switch (text) {
+      case goodText : return () => setGood(good + 1);
+      case neutralText : return () => setNeutral(neutral + 1);
+      case badText : return () => setBad(bad + 1);
+      default : return () => console.log('bad option', text);
+    }
   }
 
   return (
-    <div>
-      <Header course={ course.name } />
-      <Content parts={ course.parts }/>
-      <Total parts={ course.parts }/>
-    </div>
-  )
-}
-
-const Header = props => <h1>{ props.course }</h1>
-
-const Content = props => {
-  return (
     <>
-    {
-      props.parts.map(part => <Part part={ part } />)
-    }
+      <Title title='Give feedback' />
+      
+      <Button onClickFunc={handleButtonClick(goodText)} text={goodText} />
+      <Button onClickFunc={handleButtonClick(neutralText)} text={neutralText} />
+      <Button onClickFunc={handleButtonClick(badText)} text={badText} />
+
+      <Result text={goodText} count={good} />
+      <Result text={neutralText} count={neutral} />
+      <Result text={badText} count={bad} />
     </>
   )
 }
 
-const Part = props => {
-  return (
-    <p>
-      { props.part.name } { props.part.exercises }
-    </p>
-  )
-}
-
-const Total = props => {
-  return (
-    <p>
-      Number of exercises { props.parts.reduce((total, part) => part.exercises + total, 0) }
-    </p>
-  ) 
-} 
-
-ReactDOM.render(<App />, document.getElementById('root'))
+ReactDOM.render(<App />, 
+  document.getElementById('root')
+)
