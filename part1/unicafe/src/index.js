@@ -14,17 +14,24 @@ const App = () => {
   const goodText = 'good'
   const neutralText = 'neutral'
   const badText = 'bad'
+  const allText = 'all'
+  const averageText = 'average'
+  const positivePercText = 'positive'
 
   const printFunction = (text) => () => console.log(text)
 
   const handleButtonClick = (text) => {
     switch (text) {
-      case goodText : return () => setGood(good + 1);
-      case neutralText : return () => setNeutral(neutral + 1);
-      case badText : return () => setBad(bad + 1);
-      default : return () => console.log('bad option', text);
+      case goodText: return () => setGood(good + 1);
+      case neutralText: return () => setNeutral(neutral + 1);
+      case badText: return () => setBad(bad + 1);
+      default: return () => console.log('bad option', text);
     }
   }
+
+  const getAll = () => good+neutral+bad
+  const getAverage = () => (good + (bad*-1))/getAll()
+  const getPositivePercentage = () => (good/getAll()) * 100 
 
   return (
     <>
@@ -37,6 +44,9 @@ const App = () => {
       <Result text={goodText} count={good} />
       <Result text={neutralText} count={neutral} />
       <Result text={badText} count={bad} />
+      <Result text={allText} count={getAll()} />
+      <Result text={averageText} count={getAverage()} />
+      <Result text={positivePercText} count={getPositivePercentage()+' %'} />
     </>
   )
 }
