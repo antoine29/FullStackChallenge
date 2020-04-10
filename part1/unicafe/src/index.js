@@ -38,8 +38,6 @@ const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
-  // const printFunction = (text) => () => console.log(text)
-
   const handleButtonClick = (text) => {
     switch (text) {
       case goodText: return () => setGood(good + 1);
@@ -52,11 +50,9 @@ const App = () => {
   return (
     <>
       <Title title='Give feedback' />
-      
       <Button onClickFunc={handleButtonClick(goodText)} text={goodText} />
       <Button onClickFunc={handleButtonClick(neutralText)} text={neutralText} />
       <Button onClickFunc={handleButtonClick(badText)} text={badText} />
-
       <Statistics good={good} neutral={neutral} bad={bad}/>
     </>
   )
