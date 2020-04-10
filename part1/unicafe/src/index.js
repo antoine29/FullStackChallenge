@@ -7,6 +7,7 @@ const badText = 'bad'
 const allText = 'all'
 const averageText = 'average'
 const positivePercText = 'positive'
+const noFeedbackGiven = 'No feedback given'
 
 const Title = ({title}) => <h2>{title}</h2>
 const Button = ({onClickFunc, text}) => <button onClick={onClickFunc}>{text}</button>
@@ -17,6 +18,7 @@ const Statistics = ({good, neutral, bad}) => {
   const getPositivePercentage = () => (good/getAll()) * 100 
 
   return(
+    getAll() > 0 ? 
     <>
       <Result text={goodText} count={good} />
       <Result text={neutralText} count={neutral} />
@@ -24,7 +26,8 @@ const Statistics = ({good, neutral, bad}) => {
       <Result text={allText} count={getAll()} />
       <Result text={averageText} count={getAverage()} />
       <Result text={positivePercText} count={getPositivePercentage()+' %'} />
-    </>
+    </> :
+    <p>{noFeedbackGiven}</p>
   )
 }
 
@@ -34,7 +37,7 @@ const App = () => {
   const [neutral, setNeutral] = useState(0)
   const [bad, setBad] = useState(0)
 
-  const printFunction = (text) => () => console.log(text)
+  // const printFunction = (text) => () => console.log(text)
 
   const handleButtonClick = (text) => {
     switch (text) {
