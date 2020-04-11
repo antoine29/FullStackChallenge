@@ -16,13 +16,22 @@ const getRandomInteger = (min, max) => {
 
 const App = (props) => {
   const [selected, setSelected] = useState(0)
+  const [votes, incrementVotes] = useState(new Array(anecdotes.length).fill(0))
+  
   const setRandomAnecdote = () => setSelected(getRandomInteger(0, anecdotes.length))
+  const setVote = () => {
+    const incrementedVotes = [...votes]
+    incrementedVotes[selected] += 1;
+    incrementVotes(incrementedVotes)
+    console.log(incrementedVotes);
+  }
 
   return (
     <>
       <div>
         {props.anecdotes[selected]}
       </div>
+      <button onClick={setVote}> vote </button>
       <button onClick={setRandomAnecdote}> next anecdote </button>
     </>
   )
