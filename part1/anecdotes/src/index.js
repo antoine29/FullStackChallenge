@@ -18,8 +18,8 @@ const MostVoted = ({votes}) => {
   const mostVotedAnecdoteIndex = 
     votes.reduce((higherVote, vote, currentIndex) =>
       vote > votes[higherVote] ? currentIndex : higherVote, 0)
-  
-  return ( mostVotedAnecdoteIndex > 0 ? 
+
+  return ( votes[mostVotedAnecdoteIndex] > 0 ? 
     <>
       <h2>Anecdote with most votes</h2>
       <p>{anecdotes[mostVotedAnecdoteIndex]}</p>
@@ -39,7 +39,6 @@ const App = (props) => {
     const incrementedVotes = [...votes]
     incrementedVotes[selected] += 1;
     incrementVotes(incrementedVotes)
-    console.log(incrementedVotes);
   }
 
   return (
