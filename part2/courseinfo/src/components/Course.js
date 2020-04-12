@@ -20,20 +20,20 @@ const Part = ({part}) => {
   )
 }
 
-// const Total = props => {
-//   return (
-//     <p>
-//       Number of exercises { props.parts.reduce((total, part) => part.exercises + total, 0) }
-//     </p>
-//   ) 
-// }
+const Total = ({parts}) => {
+  return (
+    <p>
+      <b> total of { parts.reduce((total, part) => part.exercises + total, 0) } exercises </b>
+    </p>
+  ) 
+}
 
 const Course = ({course}) => {
     return (
         <div>
             <Header courseName={ course.name } />
             <Content parts={ course.parts }/>
-            {/* <Total parts={ course.parts }/> */}
+            <Total parts={ course.parts }/>
         </div>
     )
 }
