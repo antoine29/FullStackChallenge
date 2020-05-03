@@ -5,6 +5,7 @@ import CountriesList from './CountriesList'
 function App() {
   const [countryFilter, setCountryFilter] = useState('')
   const [countries, setCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState(undefined)
 
   const fetchCountries = () => {
     axios
@@ -13,12 +14,19 @@ function App() {
   }
   useEffect(fetchCountries, [])
 
-  const countryFilterChangeHandler = (event) => setCountryFilter(event.target.value);
+  const countryFilterChangeHandler = (event) => {
+    setCountryFilter(event.target.value)
+    setSelectedCountry(undefined)
+  }
 
   return (
     <>
       find countries <input value={countryFilter} onChange={countryFilterChangeHandler}/>
-      <CountriesList countries={countries} countryFilter={countryFilter}/>
+      <CountriesList
+        countries={countries}
+        countryFilter={countryFilter}
+        selectedCountry={selectedCountry}
+        setSelectedCountry={setSelectedCountry}/>
     </>
   );
 }
