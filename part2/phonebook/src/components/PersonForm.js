@@ -13,8 +13,17 @@ const PersonForm = ({
     event.preventDefault()
     if (newName === '' || newNumber === '') alert('empty values are not allowed')
     else {
-      if (persons.find(person => person.name === newName) !== undefined)
-        alert(`${newName} is already added to phonebook`)
+      let person = persons.find(person => person.name === newName)
+      if (person !== undefined) {
+        if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one??`)) {
+          console.log('updating ', person)          
+          PersonsService
+            .updatePerson({...person, number: newNumber})
+            .then(response => 
+              PersonsService.getPersons()
+              .then(updatedPersons => setPersons(updatedPersons)))
+        }
+      }
       else {
         console.log('adding ', newName)
         PersonsService
