@@ -16,6 +16,8 @@ const App = () => {
       .then(persons => {
         setPersons(persons)
       })
+      .catch(error => 
+        alert("Error fetching users, is jsonServer up?"))
   }
 
   useEffect(fetchPersons, [])

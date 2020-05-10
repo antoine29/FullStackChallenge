@@ -22,6 +22,8 @@ const PersonForm = ({
             .then(response => 
               PersonsService.getPersons()
               .then(updatedPersons => setPersons(updatedPersons)))
+            .catch(error =>
+              alert("Error updating user, is jsonServer up?"))
         }
       }
       else {
@@ -33,6 +35,8 @@ const PersonForm = ({
             setNewName('')
             setNewNumber('')
           })
+          .catch(error =>
+            alert("Error adding user, is jsonServer up?"))
       }
     }
   }

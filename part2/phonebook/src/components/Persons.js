@@ -9,6 +9,8 @@ const Persons = ({filter, persons, setPersons}) => {
         .deletePerson(person)
         .then(deletedPerson => 
           setPersons(persons.filter(p => p.id !== deletedPerson.id)))
+        .catch(error =>
+          alert("Error deleting user, is jsonServer up?"))
     }
   }
 
