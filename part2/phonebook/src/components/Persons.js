@@ -3,11 +3,13 @@ import PersonsService from '../PersonsService'
 
 const Persons = ({filter, persons, setPersons}) => {
   const buttonClickHandler = person => () => {
-    console.log("deleting:", person)
-    PersonsService
-      .deletePerson(person)
-      .then(deletedPerson => 
+    if(window.confirm(`Delete ${person.name} ?`)) {
+      console.log("deleting:", person)
+      PersonsService
+        .deletePerson(person)
+        .then(deletedPerson => 
           setPersons(persons.filter(p => p.id != deletedPerson.id)))
+    }
   }
 
   const filteredPersons = filter === '' ?
