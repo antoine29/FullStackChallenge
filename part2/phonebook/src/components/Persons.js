@@ -1,18 +1,28 @@
 import React from 'react'
 
 const Persons = ({filter, persons}) => {
-    return(
-        <div>
+  const filteredPersons = filter === '' ?
+  persons :
+  persons
+    .filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
+
+  return(
+    <div>
+      <table>
+        <thead></thead>
+        <tbody>
         {
-          filter === '' ? 
-            persons.map(person => <p key={person.name}>{`${person.name} ${person.number}`}</p>)
-            :
-            persons
-                .filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
-                .map(person => <p key={person.name}>{`${person.name} ${person.number}`}</p>)
+          filteredPersons.map(person =>
+            <tr key={person.name}>
+              <td>{ person.name }</td>
+              <td>{ person.number }</td>
+            </tr>
+          )
         }
-      </div>
-    )
+        </tbody>
+      </table>
+    </div>
+  )
 }
 
 export default Persons
