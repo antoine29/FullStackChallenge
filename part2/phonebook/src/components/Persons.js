@@ -8,7 +8,7 @@ const Persons = ({filter, persons, setPersons}) => {
       PersonsService
         .deletePerson(person)
         .then(deletedPerson => 
-          setPersons(persons.filter(p => p.id != deletedPerson.id)))
+          setPersons(persons.filter(p => p.id !== deletedPerson.id)))
     }
   }
 
