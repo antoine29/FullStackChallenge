@@ -1,10 +1,12 @@
 import React from 'react'
 import PersonsService from '../PersonsService'
+import Notification from './Notification'
 
 const PersonForm = ({
   persons, setPersons,
   newName, setNewName,
-  newNumber, setNewNumber}) => {
+  newNumber, setNewNumber,
+  notificationHandler}) => {
 
   const handleNameChange = (event) => setNewName(event.target.value)
   const handleNumberChange = (event) => setNewNumber(event.target.value)
@@ -16,18 +18,32 @@ const PersonForm = ({
       let person = persons.find(person => person.name === newName)
       if (person !== undefined) {
         if(window.confirm(`${newName} is already added to phonebook, replace the old number with a new one??`)) {
-          console.log('updating ', person)          
+          console.log('updating ', person)
+          Notification.ShowNotificationMessage(
+            `Updating user: ${person.name}`,
+            1500,
+            notificationHandler
+          )
           PersonsService
             .updatePerson({...person, number: newNumber})
             .then(response => 
               PersonsService.getPersons()
               .then(updatedPersons => setPersons(updatedPersons)))
             .catch(error =>
-              alert("Error updating user, is jsonServer up?"))
+              Notification.ShowNotificationMessage(
+                `Error updating user: ${person.name}, is json server up?`,
+                1500,
+                notificationHandler
+              ))
         }
       }
       else {
         console.log('adding ', newName)
+        Notification.ShowNotificationMessage(
+          `Adding user: ${newName}`,
+          1500,
+          notificationHandler
+        )
         PersonsService
           .createPerson({name: newName, number: newNumber})
           .then(createdPerson => {
@@ -36,7 +52,11 @@ const PersonForm = ({
             setNewNumber('')
           })
           .catch(error =>
-            alert("Error adding user, is jsonServer up?"))
+            Notification.ShowNotificationMessage(
+              `Error adding new user: ${newName}, is json server up?`,
+              1500,
+              notificationHandler
+            ))
       }
     }
   }

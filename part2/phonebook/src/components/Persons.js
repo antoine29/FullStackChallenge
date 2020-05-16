@@ -1,16 +1,29 @@
 import React from 'react'
 import PersonsService from '../PersonsService'
+import Notification from './Notification'
 
-const Persons = ({filter, persons, setPersons}) => {
+const Persons = ({
+  filter,
+  persons, setPersons,
+  notificationHandler}) => {
   const buttonClickHandler = person => () => {
     if(window.confirm(`Delete ${person.name} ?`)) {
-      console.log("deleting:", person)
+      Notification.ShowNotificationMessage(
+        `Deleting user: ${person.name}`,
+        1500,
+        notificationHandler
+      )
       PersonsService
         .deletePerson(person)
         .then(deletedPerson => 
           setPersons(persons.filter(p => p.id !== deletedPerson.id)))
         .catch(error =>
-          alert("Error deleting user, is jsonServer up?"))
+          Notification.ShowNotificationMessage(
+            "Error deleting user, is jsonServer up?",
+            2000,
+            notificationHandler
+          )
+        )
     }
   }
 
