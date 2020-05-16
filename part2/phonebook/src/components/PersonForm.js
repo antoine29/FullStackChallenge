@@ -28,13 +28,31 @@ const PersonForm = ({
             .updatePerson({...person, number: newNumber})
             .then(response => 
               PersonsService.getPersons()
-              .then(updatedPersons => setPersons(updatedPersons)))
-            .catch(error =>
-              Notification.ShowNotificationMessage(
-                `Error updating user: ${person.name}, is json server up?`,
-                1500,
-                notificationHandler
-              ))
+                .then(updatedPersons => setPersons(updatedPersons)))
+            .catch(error => {
+              if(error.response.status ===  404) {
+                Notification.ShowNotificationMessage(
+                  `Information of : ${person.name} has already ben removed from server. Updating data.`,
+                  1500,
+                  notificationHandler
+                )
+                PersonsService.getPersons()
+                  .then(persons => setPersons(persons))
+                  .catch(error =>
+                    Notification.ShowNotificationMessage(
+                      `Error getting users, is json server up?`,
+                      1500,
+                      notificationHandler
+                    ))
+              }
+              else {
+                Notification.ShowNotificationMessage(
+                  `Error updating user: ${person.name}, is json server up?`,
+                  1500,
+                  notificationHandler
+                )
+              }
+            })
         }
       }
       else {
