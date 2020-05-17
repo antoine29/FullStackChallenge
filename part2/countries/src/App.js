@@ -3,9 +3,10 @@ import axios from 'axios'
 import CountriesList from './CountriesList'
 
 function App() {
-  const [countryFilter, setCountryFilter] = useState('')
-  const [countries, setCountries] = useState([]);
-  const [selectedCountry, setSelectedCountry] = useState(undefined)
+  const [ countryFilter, setCountryFilter ] = useState('')
+  const [ countries, setCountries ] = useState([]);
+  const [ selectedCountry, setSelectedCountry ] = useState(undefined)
+  const [ selectedCountryWeather, setSelectedCountryWeather ] = useState(undefined)
 
   const fetchCountries = () => {
     axios
@@ -19,6 +20,10 @@ function App() {
     setSelectedCountry(undefined)
   }
 
+  if(process.env.REACT_APP_WEATHER_STACK_API_KEY === ''
+    || process.env.REACT_APP_WEATHER_STACK_API_KEY === undefined)
+    console.log("WeatherStack API key not setted")
+
   return (
     <>
       find countries <input value={countryFilter} onChange={countryFilterChangeHandler}/>
@@ -26,7 +31,9 @@ function App() {
         countries={countries}
         countryFilter={countryFilter}
         selectedCountry={selectedCountry}
-        setSelectedCountry={setSelectedCountry}/>
+        setSelectedCountry={setSelectedCountry}
+        selectedCountryWeather={selectedCountryWeather}
+        setSelectedCountryWeather={setSelectedCountryWeather}/>
     </>
   );
 }
