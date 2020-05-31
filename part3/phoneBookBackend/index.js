@@ -5,6 +5,7 @@ const app = express()
 
 morgan.token('body', req => req.method === "POST" ? JSON.stringify(req.body) : "")
 
+app.use(express.static('build'))
 app.use(express.json())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 app.use(cors())
@@ -29,6 +30,11 @@ let persons = [
 		name: "Mary Poppendieck", 
 		number: "39-23-6423122",
 		id: 4
+	},
+	{ 
+		name: "Toro", 
+		number: "39-23-6423122",
+		id: 5
 	}
 ]
 

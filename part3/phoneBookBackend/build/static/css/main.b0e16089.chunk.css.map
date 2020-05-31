@@ -1,0 +1,1 @@
+{"version":3,"sources":["index.css"],"names":[],"mappings":"AAAA,OACC,SAAU,CACV,kBAAqB,CACrB,cAAe,CACf,kBAAmB,CACnB,iBAAkB,CAClB,YAAa,CACb,kBACD","file":"main.b0e16089.chunk.css","sourcesContent":[".error {\n\tcolor: red;\n\tbackground: lightgrey;\n\tfont-size: 20px;\n\tborder-style: solid;\n\tborder-radius: 5px;\n\tpadding: 10px;\n\tmargin-bottom: 10px;\n}"]}
