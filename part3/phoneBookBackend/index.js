@@ -31,21 +31,23 @@ app.get('/api/persons', (req, res) => {
   	})
 })
 
-app.get('/api/persons/:id', (req, res) => {
+app.get('/api/persons/:id', (req, res, next) => {
 	const id = Number(req.params.id)
 	Person
 		.findOne({id: id})
 		.then(person => { person ? res.json(person) : res.status(404).end()})
+		.catch(error => next(error))
 })
 
-app.delete('/api/persons/:id', (req, res) => {
+app.delete('/api/persons/:id', (req, res, next) => {
 	const id = Number(req.params.id)
 	Person
 		.deleteOne({id: id})
 		.then(_ => res.status(204).end())
+		.catch(error => next(error))
 })
 
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
 	const body = req.body
 	if (!body.name || !body.number)
 		return res
@@ -78,6 +80,24 @@ app.post('/api/persons', (req, res) => {
 						error: "name must be unique"
 					})		
 		})
+		.catch(error => next(error))
+})
+
+app.put('/api/persons/:id', (req, res, next) => {
+	const id = Number(req.params.id)
+	const body = req.body
+	const person = {
+		name: body.name,
+		number:body.number
+	}
+	Person
+		.updateOne({ id: id }, person)
+		.then(_ => {
+			Person
+				.findOne({id: id})
+				.then(updatedPerson => res.json(updatedPerson))
+			})
+		.catch(error => next(error))
 })
 
 const unknownEndpoint = (request, response) => {
@@ -85,6 +105,17 @@ const unknownEndpoint = (request, response) => {
 }
 
 app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted input' })
+  } 
+
+  next(error)
+}
+
+app.use(errorHandler)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
