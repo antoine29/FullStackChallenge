@@ -49,36 +49,19 @@ app.delete('/api/persons/:id', (req, res, next) => {
 
 app.post('/api/persons', (req, res, next) => {
 	const body = req.body
-	if (!body.name || !body.number)
-		return res
-			.status(400)
-			.json({
-				error: "missing content"
+	getValidPersonId()
+		.then(validId => {
+			console.log("valid id: ", validId)
+			const newPerson = new Person({
+				name: body.name,
+				number: body.number,
+				id: validId
 			})
-	
-	personNameValidation(body.name)
-		.then(isValidName => {			
-			if (isValidName){
-				getValidPersonId()
-					.then(validId => {
-						console.log("valid id: ", validId)
-						const newPerson = new Person({
-							name: body.name,
-							number: body.number,
-							id: validId
-						})
-					
-						newPerson
-							.save()
-							.then(savedPerson => { res.json(savedPerson) })
-					})
-			}
-			else 
-				return res
-					.status(400)
-					.json({
-						error: "name must be unique"
-					})		
+			
+			newPerson
+				.save()
+				.then(savedPerson => { res.json(savedPerson) })
+				.catch(error => next(error))
 		})
 		.catch(error => next(error))
 })
@@ -91,7 +74,7 @@ app.put('/api/persons/:id', (req, res, next) => {
 		number:body.number
 	}
 	Person
-		.updateOne({ id: id }, person)
+		.updateOne({ id: id }, person, { runValidators: true, context: 'query'} )
 		.then(_ => {
 			Person
 				.findOne({id: id})
@@ -107,9 +90,10 @@ const unknownEndpoint = (request, response) => {
 app.use(unknownEndpoint)
 
 const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
-  if (error.name === 'CastError') {
-    return response.status(400).send({ error: 'malformatted input' })
+  switch (error.name) {
+		case 'CastError': return response.status(400).send({ error: 'malformatted input' })
+		case 'ValidationError': return response.status(400).json({ error: error.message })
+		default: console.error(error.message)
   } 
 
   next(error)
@@ -133,6 +117,3 @@ const getValidPersonId = () =>
 
 		return newId
 	})
-
-const personNameValidation = name =>
-	Person.find({}).then(persons => !persons.find(p => p.name === name))
