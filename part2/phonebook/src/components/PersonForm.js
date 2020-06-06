@@ -32,7 +32,7 @@ const PersonForm = ({
             .catch(error => {
               if(error.response.status ===  404) {
                 Notification.ShowNotificationMessage(
-                  `Information of : ${person.name} has already ben removed from server. Updating data.`,
+                  `Information of : ${person.name} has already ben removed from server..`,
                   1500,
                   notificationHandler
                 )
@@ -40,14 +40,20 @@ const PersonForm = ({
                   .then(persons => setPersons(persons))
                   .catch(error =>
                     Notification.ShowNotificationMessage(
-                      `Error getting users, is json server up?`,
+                      `Error getting users.`,
                       1500,
                       notificationHandler
                     ))
               }
+              if (error.response.data) {
+                Notification.ShowNotificationMessage(
+                  JSON.stringify(error.response.data),
+                  3000,
+                  notificationHandler)
+              }
               else {
                 Notification.ShowNotificationMessage(
-                  `Error updating user: ${person.name}, is json server up?`,
+                  `Error updating user: ${person.name}`,
                   1500,
                   notificationHandler
                 )
@@ -56,12 +62,6 @@ const PersonForm = ({
         }
       }
       else {
-        console.log('adding ', newName)
-        Notification.ShowNotificationMessage(
-          `Adding user: ${newName}`,
-          1500,
-          notificationHandler
-        )
         PersonsService
           .createPerson({name: newName, number: newNumber})
           .then(createdPerson => {
@@ -69,12 +69,19 @@ const PersonForm = ({
             setNewName('')
             setNewNumber('')
           })
-          .catch(error =>
-            Notification.ShowNotificationMessage(
-              `Error adding new user: ${newName}, is json server up?`,
-              1500,
-              notificationHandler
-            ))
+          .catch(error => {
+            if (error.response.data) {
+              Notification.ShowNotificationMessage(
+                JSON.stringify(error.response.data),
+                3000,
+                notificationHandler)
+            }
+            else
+              Notification.ShowNotificationMessage(
+                `Error adding new user: ${newName}`,
+                1500,
+                notificationHandler)
+          })
       }
     }
   }
