@@ -32,7 +32,7 @@ app.get('/api/persons', (req, res) => {
 app.get('/api/persons/:id', (req, res, next) => {
 	const id = Number(req.params.id)
 	Person
-		.findOne({id: id})
+		.findOne({ id: id })
 		.then(person => { person ? res.json(person) : res.status(404).end()})
 		.catch(error => next(error))
 })
@@ -40,7 +40,7 @@ app.get('/api/persons/:id', (req, res, next) => {
 app.delete('/api/persons/:id', (req, res, next) => {
 	const id = Number(req.params.id)
 	Person
-		.deleteOne({id: id})
+		.deleteOne({ id: id })
 		.then(() => res.status(204).end())
 		.catch(error => next(error))
 })
@@ -54,7 +54,7 @@ app.post('/api/persons', (req, res, next) => {
 				number: body.number,
 				id: validId
 			})
-			
+
 			newPerson
 				.save()
 				.then(savedPerson => { res.json(savedPerson) })
@@ -71,10 +71,10 @@ app.put('/api/persons/:id', (req, res, next) => {
 		number:body.number
 	}
 	Person
-		.updateOne({ id: id }, person, { runValidators: true, context: 'query'} )
+		.updateOne({ id: id }, person, { runValidators: true, context: 'query' } )
 		.then(() => {
 			Person
-				.findOne({id: id})
+				.findOne({ id: id })
 				.then(updatedPerson => res.json(updatedPerson))})
 		.catch(error => next(error))
 })
