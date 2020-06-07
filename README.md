@@ -55,14 +55,23 @@ FullStackChallenge/
 ```
 
 ## Frontend phonebook application
-Navigate to the `part2/phonebook/` folder
+Navigate to the `part2/phonebook/` folder and run:
 ```
 $ npm install
 $ npm start
 ```
+By default the react application runs on the 3000 port and looks for a backend server on 3001 port.
 
 ## Backend phonebook application
-Navigate to the `part3/phoneBookBackend/` folder
+Navigate to the `part3/phoneBookBackend/` folder and:
+
+This node application works with a mongodb as a persistency layer so you'll need set the next values (mongoUrlConnection and node application port) in a `.env` file.
+```
+MONGODB_URI='mongodb+srv://someUser:somePassword@someMongoUrlConnection'
+PORT=3001
+```
+
+And finally run the application with:
 ```
 $ npm install
 $ npm run dev
@@ -78,3 +87,7 @@ $ git subtree push --prefix part3/phoneBookBackend heroku
 $ heroku logs --tail
 ```
 In this way you are deploying only the content of the `part3/phoneBookBackend` folder to the dyno heroku instance.
+
+`Note: You'll have to set the .env values as config vars in your heroku dyno instance`
+
+`Note: For the mongo url connection string, you must set it without the quote characters ('...')`
