@@ -17,11 +17,10 @@ FullStackChallenge/
 └───part3/
 │   └───phoneBookBackend/
 │   README.md
-│   .gitignore
 ```
 
-## [part2. Countries application](./part2/countries/README.md)
+### [part2. Countries application](./part2/countries/README.md)
 
-## [part2. Phonebook frontend application](./part2/phonebook/README.md)
+### [part2. Phonebook frontend application](./part2/phonebook/README.md)
 
-## [part3. Phonebook backend application](./part3/phoneBookBackend/README.md)
+### [part3. Phonebook backend application](./part3/phoneBookBackend/README.md)

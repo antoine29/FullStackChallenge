@@ -67,4 +67,4 @@ In this way you are deploying only the content of the `part3/phoneBookBackend` f
 
 `Note: For the mongo url connection string, you must set it without the quote characters ('...')`
 
-Alternatively you can use the `$ npm run deploy:full` command to launch a full deployment (frontend/backend) to the heroku instance.
+After the first deployment you can use the `$ npm run deploy:full` command to launch a full deployment (frontend/backend) to the heroku instance.
