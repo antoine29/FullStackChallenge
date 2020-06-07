@@ -6,7 +6,7 @@ const Person = require('./models/Person')
 
 const app = express()
 
-morgan.token('body', req => req.method === "POST" ? JSON.stringify(req.body) : "")
+morgan.token('body', req => req.method === 'POST' ? JSON.stringify(req.body) : '')
 
 app.use(express.static('build'))
 app.use(express.json())
@@ -26,9 +26,7 @@ app.get('/info', (req, res) => {
 app.get('/api/persons', (req, res) => {
 	Person
 		.find({})
-		.then(persons => {
-    	res.json(persons)
-  	})
+		.then(persons => res.json(persons))
 })
 
 app.get('/api/persons/:id', (req, res, next) => {
@@ -43,7 +41,7 @@ app.delete('/api/persons/:id', (req, res, next) => {
 	const id = Number(req.params.id)
 	Person
 		.deleteOne({id: id})
-		.then(_ => res.status(204).end())
+		.then(() => res.status(204).end())
 		.catch(error => next(error))
 })
 
@@ -51,7 +49,6 @@ app.post('/api/persons', (req, res, next) => {
 	const body = req.body
 	getValidPersonId()
 		.then(validId => {
-			console.log("valid id: ", validId)
 			const newPerson = new Person({
 				name: body.name,
 				number: body.number,
@@ -75,45 +72,43 @@ app.put('/api/persons/:id', (req, res, next) => {
 	}
 	Person
 		.updateOne({ id: id }, person, { runValidators: true, context: 'query'} )
-		.then(_ => {
+		.then(() => {
 			Person
 				.findOne({id: id})
-				.then(updatedPerson => res.json(updatedPerson))
-			})
+				.then(updatedPerson => res.json(updatedPerson))})
 		.catch(error => next(error))
 })
 
 const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
+	response.status(404).send({ error: 'unknown endpoint' })
 }
 
 app.use(unknownEndpoint)
 
 const errorHandler = (error, request, response, next) => {
-  switch (error.name) {
-		case 'CastError': return response.status(400).send({ error: 'malformatted input' })
-		case 'ValidationError': return response.status(400).json({ error: error.message })
-		default: console.error(error.message)
-  } 
+	switch (error.name) {
+	case 'CastError': return response.status(400).send({ error: 'malformatted input' })
+	case 'ValidationError': return response.status(400).json({ error: error.message })
+	default: console.error(error.message)
+	}
 
-  next(error)
+	next(error)
 }
 
 app.use(errorHandler)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+	console.log(`Server running on port ${PORT}`)
 })
 
 const getValidPersonId = () =>
 	Person
-	.find({})
-	.then(persons => {
-		let newId = undefined
-		do {
-			newId = Math.floor(Math.random()*1000)
-		} while (persons.find(p => p.id === newId))
+		.find({})
+		.then(persons => {
+			let newId = undefined
+			do {
+				newId = Math.floor(Math.random()*1000)
+			} while (persons.find(p => p.id === newId))
 
-		return newId
-	})
+			return newId})
