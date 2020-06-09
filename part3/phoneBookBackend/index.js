@@ -3,6 +3,7 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 const Person = require('./models/Person')
+const logger = require('./utils/logger')
 
 const app = express()
 
@@ -89,7 +90,7 @@ const errorHandler = (error, request, response, next) => {
 	switch (error.name) {
 	case 'CastError': return response.status(400).send({ error: 'malformatted input' })
 	case 'ValidationError': return response.status(400).json({ error: error.message })
-	default: console.error(error.message)
+	default: logger.error(error.message)
 	}
 
 	next(error)
@@ -99,7 +100,7 @@ app.use(errorHandler)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
-	console.log(`Server running on port ${PORT}`)
+	logger.info(`Server running on port ${PORT}`)
 })
 
 const getValidPersonId = () =>
