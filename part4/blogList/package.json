@@ -6,12 +6,12 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "buildUI": "sh buildUI.sh",
     "deploy": "sh deploy.sh",
     "deploy:full": "sh fullDeploy.sh",
     "lint": "eslint .",
-    "lint:fix": "eslint --fix"
+    "lint:fix": "eslint --fix",
+    "test": "jest --verbose"
   },
   "author": "Anthony Flores",
   "license": "ISC",
@@ -25,6 +25,10 @@
   },
   "devDependencies": {
     "eslint": "^7.2.0",
+    "jest": "^26.0.1",
     "nodemon": "^2.0.4"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
