@@ -1,5 +1,6 @@
 const config = require('./utils/config')
 const express = require('express')
+require('express-async-errors')
 const app = express()
 const cors = require('cors')
 const blogsRouter = require('./controllers/blogs')
@@ -21,10 +22,9 @@ app.use(express.json())
 // app.use(middleware.requestLogger)
 app.use(middleware.morganRequestLogger)
 
-app.get('/info', (req, res) => {
-	Blog
-		.countDocuments({})
-		.then(count => res.send(`<p>Bloglist has info of ${count} blog entries</p><p>${new Date()}</p>`))
+app.get('/info', async (req, res) => {
+	const count = await Blog.countDocuments({})
+	return res.send(`<p>Bloglist has info of ${count} blog entries</p><p>${new Date()}</p>`)
 })
 app.use('/api/blogs', blogsRouter)
 
