@@ -24,14 +24,6 @@ beforeEach(async () => {
 	const blogObjects = initialBlogs.map(blog => new Blog(blog))
 	const promiseArray = blogObjects.map(blog => blog.save())
 	await Promise.all(promiseArray)
-
-	// await Blog.deleteMany({})
-
-	// let blogObject = new Blog(initialBlogs[0])
-	// await blogObject.save()
-
-	// blogObject = new Blog(initialBlogs[1])
-	// await blogObject.save()
 })
 
 test('blogs are returned as json', async () => {
@@ -47,13 +39,7 @@ test('all the initial blogs are returned', async () => {
 	expect(response.body).toHaveLength(initialBlogs.length)
 })
 
-// test('the first blog is about HTTP methods', async () => {
-// 	const response = await api.get('/api/blogs')
-// 	initialBlogs[0].Id = response.body[0].Id
-// 	expect(response.body[0]).toEqual(initialBlogs[0])
-// })
-
-test('a valid blog can be added', async () => {
+test('a valid blog is added', async () => {
 	const newBlog = {
 		title: 'newTitle',
 		author: 'author0',
@@ -68,14 +54,12 @@ test('a valid blog can be added', async () => {
 		.expect('Content-Type', /application\/json/)
 
 	const response = await api.get('/api/blogs')
-	const titles = response.body.map(blog => blog.title)
-	expect(titles).toContain('title0')
-	expect(titles).toContain('title1')
-	expect(titles).toContain('newTitle')
+	expect(response.body.length).toBe(initialBlogs.length + 1)
+	expect(response.body.map(blog => blog.title)).toContain('newTitle')
 })
 
-test('a not valid blog will not be added', async () => {
-	const newBlog = {
+test('a missing title/url post body req. will have bad req. response', async () => {
+	let newBlog = {
 		author: 'author0',
 		url: 'http://www.new.com',
 		likes: 1
@@ -87,8 +71,43 @@ test('a not valid blog will not be added', async () => {
 		.expect(400)
 		.expect('Content-Type', /application\/json/)
 
+	newBlog = {
+		title: 'title',
+		author: 'author0',
+		likes: 1
+	}
+
+	await api
+		.post('/api/blogs')
+		.send(newBlog)
+		.expect(400)
+		.expect('Content-Type', /application\/json/)
+
 	const response  = await api.get('/api/blogs')
 	expect(response.body).toHaveLength(initialBlogs.length)
+})
+
+test('Id property is defined in a post responce', async () => {
+	const newBlog = {
+		title: 'title',
+		author: 'author0',
+		url: 'http://www.new.com',
+		likes: 1
+	}
+
+	const response  = await api.post('/api/blogs').send(newBlog)
+	expect(response.body.Id).toBeDefined()
+})
+
+test('if a post request doesn\'t contains a likes prop. the default value is zero', async () => {
+	const newBlog = {
+		title: 'title',
+		author: 'author0',
+		url: 'http://www.new.com'
+	}
+
+	const response  = await api.post('/api/blogs').send(newBlog)
+	expect(response.body.likes).toBe(0)
 })
 
 afterAll(() => {

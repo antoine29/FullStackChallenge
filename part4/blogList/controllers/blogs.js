@@ -20,6 +20,9 @@ blogsRouter.delete('/:id', async (req, res) => {
 })
 
 blogsRouter.post('/', async (req, res) => {
+	if(req.body.likes === undefined)
+		req.body.likes = 0
+
 	const newBlog = new Blog(req.body)
 	const savedBlog = await newBlog.save()
 	return res.status(201).json(savedBlog)
