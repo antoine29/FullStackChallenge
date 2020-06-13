@@ -8,7 +8,6 @@ const blogSchema = new mongoose.Schema({
 		type: String,
 		minlength: 3,
 		required: true,
-		unique: true
 	},
 	author: {
 		type: String,
@@ -29,6 +28,7 @@ blogSchema.plugin(uniqueValidator)
 
 blogSchema.set('toJSON', {
 	transform: (document, returnedObject) => {
+		returnedObject.Id = returnedObject._id
 		delete returnedObject._id
 		delete returnedObject.__v
 	}
