@@ -19,15 +19,30 @@ const initialBlogs = [
 	}
 ]
 
-beforeEach(async () => {
+let createdBlogs = []
+
+beforeAll(async () => {
+	const blogs = initialBlogs.map(blog => new Blog(blog))
 	await Blog.deleteMany({})
-	const blogObjects = initialBlogs.map(blog => new Blog(blog))
-	const promiseArray = blogObjects.map(blog => blog.save())
+	const promiseArray = blogs.map(blog => blog.save())
 	await Promise.all(promiseArray)
+
+	const response = await api.get('/api/blogs')
+	createdBlogs = response.body
+})
+
+afterEach(async () => {
+	const response = await api.get('/api/blogs')
+	createdBlogs = response.body
+})
+
+test('an info request has ok response', async () => {
+	await api
+		.get('/info')
+		.expect(200)
 })
 
 test('blogs are returned as json', async () => {
-	jest.setTimeout(10000)
 	await api
 		.get('/api/blogs')
 		.expect(200)
@@ -36,7 +51,29 @@ test('blogs are returned as json', async () => {
 
 test('all the initial blogs are returned', async () => {
 	const response = await api.get('/api/blogs')
-	expect(response.body).toHaveLength(initialBlogs.length)
+	expect(response.body).toHaveLength(createdBlogs.length)
+})
+
+test('a created blog is retourned by its Id', async () => {
+	const response = await api
+		.get(`/api/blogs/${createdBlogs[0].Id}`)
+		.expect(200)
+		.expect('Content-Type', /application\/json/)
+
+	expect(response).toBeDefined()
+	expect(response.body).toEqual(createdBlogs[0])
+})
+
+test('trying to get a non existent blog returns a not found response', async () => {
+	await api
+		.get('/api/blogs/000000000000000000000000')
+		.expect(404)
+})
+
+test('trying to get by an invalid Id returns an error response', async () => {
+	await api
+		.get('/api/blogs/123')
+		.expect(400)
 })
 
 test('a valid blog is added', async () => {
@@ -54,7 +91,7 @@ test('a valid blog is added', async () => {
 		.expect('Content-Type', /application\/json/)
 
 	const response = await api.get('/api/blogs')
-	expect(response.body.length).toBe(initialBlogs.length + 1)
+	expect(response.body.length).toBe(createdBlogs.length + 1)
 	expect(response.body.map(blog => blog.title)).toContain('newTitle')
 })
 
@@ -84,10 +121,10 @@ test('a missing title/url post body req. will have bad req. response', async () 
 		.expect('Content-Type', /application\/json/)
 
 	const response  = await api.get('/api/blogs')
-	expect(response.body).toHaveLength(initialBlogs.length)
+	expect(response.body).toHaveLength(createdBlogs.length)
 })
 
-test('Id property is defined in a post responce', async () => {
+test('Id property is defined in a post response', async () => {
 	const newBlog = {
 		title: 'title',
 		author: 'author0',
@@ -101,13 +138,102 @@ test('Id property is defined in a post responce', async () => {
 
 test('if a post request doesn\'t contains a likes prop. the default value is zero', async () => {
 	const newBlog = {
-		title: 'title',
+		title: 'validating Id prop',
 		author: 'author0',
 		url: 'http://www.new.com'
 	}
 
 	const response  = await api.post('/api/blogs').send(newBlog)
 	expect(response.body.likes).toBe(0)
+})
+
+test('a created blog can be deleted by its Id', async () => {
+	await api
+		.delete(`/api/blogs/${createdBlogs[0].Id}`)
+		.expect(204)
+
+	const blogs = await api.get('/api/blogs')
+	expect(blogs.body).toHaveLength(createdBlogs.length - 1)
+	expect(blogs.body.map(blog => blog.title)).not.toContain('title0')
+})
+
+test('a PATCH req. will update some fields', async () => {
+	const patch = {
+		title: 'patched title',
+		author: 'patched author'
+	}
+
+	let patchedBlog = await api
+		.patch(`/api/blogs/${createdBlogs[0].Id}`)
+		.send(patch)
+		.expect(200)
+	Object.assign(createdBlogs[0], patch)
+	expect(patchedBlog.body).toEqual(createdBlogs[0])
+
+	patchedBlog = await api.get(`/api/blogs/${createdBlogs[0].Id}`)
+	expect(patchedBlog.body).toEqual(createdBlogs[0])
+})
+
+test('a PUT req. to an existent Id will replace the document', async () => {
+	const replace = {
+		title: 'replaced title',
+		author: 'replaced author',
+		url: 'http://www.replaced.com',
+		likes: 100
+	}
+
+	const replacedBlog = await api
+		.put(`/api/blogs/${createdBlogs[0].Id}`)
+		.send(replace)
+		.expect(200)
+
+	replace.Id = createdBlogs[0].Id
+	expect(replacedBlog.body).toEqual(replace)
+})
+
+test('invalid body, with an existent Id, in a PUT req. will return an error', async () => {
+	const replace = {
+		url: 'http://www.replaced.com',
+		likes: 100
+	}
+
+	await api
+		.put(`/api/blogs/${createdBlogs[0].Id}`)
+		.send(replace)
+		.expect(400)
+})
+
+test('a non existent Id with a PUT req. will create a new document', async () => {
+	const nonExistentId = '000000000000000000000000'
+	const replace = {
+		title: 'created title',
+		author: 'created author',
+		url: 'http://www.created.com',
+		likes: 100
+	}
+
+	const response = await api
+		.put(`/api/blogs/${nonExistentId}`)
+		.send(replace)
+		.expect(200)
+
+	replace.Id = nonExistentId
+	expect(response.body).toEqual(replace)
+
+	const createdBlog = await api.get(`/api/blogs/${nonExistentId}`)
+	expect(createdBlog.body).toEqual(replace)
+})
+
+test('an invalid body, a non existent Id in a PUT req. will return an error', async () => {
+	const replace = {
+		url: 'http://www.created.com',
+		likes: 100
+	}
+
+	await api
+		.put('/api/blogs/000000000000000000000000')
+		.send(replace)
+		.expect(400)
 })
 
 afterAll(() => {

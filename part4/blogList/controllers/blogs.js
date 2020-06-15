@@ -48,20 +48,12 @@ blogsRouter.put('/:id', async (req, res) => {
 	}
 	else {
 		logger.info('adding new resource')
+		req.body._id = id
+		if(req.body.likes === undefined)
+			req.body.likes = 0
 		const newBlog = await new Blog(req.body).save()
 		res.json(newBlog)
 	}
 })
-
-const getValidId = () =>
-	Blog
-		.find({})
-		.then(blogs => {
-			let newId = undefined
-			do {
-				newId = Math.floor(Math.random()*1000)
-			} while (blogs.find(p => p.id === newId))
-
-			return newId})
 
 module.exports = blogsRouter

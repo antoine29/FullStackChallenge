@@ -26,6 +26,7 @@ app.get('/info', async (req, res) => {
 	const count = await Blog.countDocuments({})
 	return res.send(`<p>Bloglist has info of ${count} blog entries</p><p>${new Date()}</p>`)
 })
+
 app.use('/api/blogs', blogsRouter)
 
 app.use(middleware.unknownEndpoint)
