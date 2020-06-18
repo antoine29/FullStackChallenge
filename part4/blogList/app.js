@@ -5,6 +5,7 @@ const app = express()
 const cors = require('cors')
 const blogsRouter = require('./controllers/blogs')
 const usersRouter = require('./controllers/users')
+const loginRouter = require('./controllers/login')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 const mongoose = require('mongoose')
@@ -28,6 +29,7 @@ app.get('/info', async (req, res) => {
 	return res.send(`<p>Bloglist has info of ${count} blog entries</p><p>${new Date()}</p>`)
 })
 
+app.use('/api/login', loginRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/blogs', blogsRouter)
 
