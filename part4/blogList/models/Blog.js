@@ -21,6 +21,10 @@ const blogSchema = new mongoose.Schema({
 	likes: {
 		type: Number,
 		required: true
+	},
+	user: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'User'
 	}
 })
 
@@ -28,7 +32,7 @@ blogSchema.plugin(uniqueValidator)
 
 blogSchema.set('toJSON', {
 	transform: (document, returnedObject) => {
-		returnedObject.Id = returnedObject._id
+		returnedObject.id = returnedObject._id
 		delete returnedObject._id
 		delete returnedObject.__v
 	}
