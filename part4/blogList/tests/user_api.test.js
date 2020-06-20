@@ -15,7 +15,7 @@ describe('when there is initially one user in db', () => {
 	})
 
 	test('creation succeeds with a fresh username', async () => {
-		const usersAtStart = await helper.usersInDb()
+		const usersAtStart = await helper.usersInDB()
 		const newUser = {
 			username: 'user1',
 			name: 'Matt Murddck',
@@ -27,14 +27,14 @@ describe('when there is initially one user in db', () => {
 			.send(newUser)
 			.expect(200)
 			.expect('Content-Type', /application\/json/)
-		const usersAtEnd = await helper.usersInDb()
+		const usersAtEnd = await helper.usersInDB()
 		expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
 		const usernames = usersAtEnd.map(u => u.username)
 		expect(usernames).toContain(newUser.username)
 	})
 
 	test('creation fails with proper statuscode and message if username already taken', async () => {
-		const usersAtStart = await helper.usersInDb()
+		const usersAtStart = await helper.usersInDB()
 		const newUser = {
 			username: 'root',
 			name: 'Superuser',
@@ -47,12 +47,12 @@ describe('when there is initially one user in db', () => {
 			.expect(400)
 			.expect('Content-Type', /application\/json/)
 		expect(result.body.error).toContain('`username` to be unique')
-		const usersAtEnd = await helper.usersInDb()
+		const usersAtEnd = await helper.usersInDB()
 		expect(usersAtEnd).toHaveLength(usersAtStart.length)
 	})
 
 	test('creation fails with proper statuscode/message if username field is missing', async () => {
-		const usersAtStart = await helper.usersInDb()
+		const usersAtStart = await helper.usersInDB()
 		const newUser = {
 			name: 'name',
 			password: 'password',
@@ -64,12 +64,12 @@ describe('when there is initially one user in db', () => {
 			.expect(400)
 			.expect('Content-Type', /application\/json/)
 		expect(result.body.error).toContain('User validation failed: username: Path `username` is required.')
-		const usersAtEnd = await helper.usersInDb()
+		const usersAtEnd = await helper.usersInDB()
 		expect(usersAtEnd).toHaveLength(usersAtStart.length)
 	})
 
 	test('creation fails with proper statuscode/message if username field is invalid', async () => {
-		const usersAtStart = await helper.usersInDb()
+		const usersAtStart = await helper.usersInDB()
 		const newUser = {
 			username: 'a',
 			name: 'name',
@@ -82,12 +82,12 @@ describe('when there is initially one user in db', () => {
 			.expect(400)
 			.expect('Content-Type', /application\/json/)
 		expect(result.body.error).toContain('User validation failed: username: Path `username` (`a`) is shorter than the minimum allowed length (3).')
-		const usersAtEnd = await helper.usersInDb()
+		const usersAtEnd = await helper.usersInDB()
 		expect(usersAtEnd).toHaveLength(usersAtStart.length)
 	})
 
 	test('creation fails with proper statuscode/message if password field is missing', async () => {
-		const usersAtStart = await helper.usersInDb()
+		const usersAtStart = await helper.usersInDB()
 		const newUser = {
 			username: 'root',
 			name: 'name'
@@ -99,12 +99,12 @@ describe('when there is initially one user in db', () => {
 			.expect(400)
 			.expect('Content-Type', /application\/json/)
 		expect(result.body.error).toContain('`password` field must be defined and must be greather than 3 chars. length.')
-		const usersAtEnd = await helper.usersInDb()
+		const usersAtEnd = await helper.usersInDB()
 		expect(usersAtEnd).toHaveLength(usersAtStart.length)
 	})
 
 	test('creation fails with proper statuscode/message if password field is invalid', async () => {
-		const usersAtStart = await helper.usersInDb()
+		const usersAtStart = await helper.usersInDB()
 		const newUser = {
 			username: 'root',
 			name: 'name',
@@ -117,7 +117,7 @@ describe('when there is initially one user in db', () => {
 			.expect(400)
 			.expect('Content-Type', /application\/json/)
 		expect(result.body.error).toContain('`password` field must be defined and must be greather than 3 chars. length.')
-		const usersAtEnd = await helper.usersInDb()
+		const usersAtEnd = await helper.usersInDB()
 		expect(usersAtEnd).toHaveLength(usersAtStart.length)
 	})
 

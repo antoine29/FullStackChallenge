@@ -279,24 +279,6 @@ test('a PATCH req. will update some fields', async () => {
 	expect(patchedBlog.body).toEqual(blogsAtFirst[0])
 })
 
-test('a POST req. without a token will return an error', async () => {
-	const blogsAtStart = await helper.blogsInDb()
-	const newBlog = {
-		title: 'newTitle',
-		author: 'author0',
-		url: 'http://www.new.com',
-	}
-
-	const result = await api
-		.post('/api/blogs')
-		.send(newBlog)
-		.expect(401)
-		.expect('Content-Type', /application\/json/)
-	expect(result.body.error).toContain('token missing or invalid')
-	const blogsAtEnd = await helper.blogsInDb()
-	expect(blogsAtEnd).toHaveLength(blogsAtStart.length)
-})
-
 // test a valid login returns a token
 // test an invalid login returns an error
 afterAll(() => {
