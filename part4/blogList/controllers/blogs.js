@@ -16,9 +16,24 @@ blogsRouter.get('/:id', async (req, res) => {
 })
 
 blogsRouter.delete('/:id', async (req, res) => {
+	if (!req.token)
+		return res.status(401).json({ error: 'token missing or invalid' })
+	const decodedUser = jwt.verify(req.token, process.env.SECRET)
+	if (!decodedUser.id)
+		return res.status(400).json({ error: 'error handling/decoding the token' })
+
 	const id = req.params.id
-	await Blog.findByIdAndDelete(id)
-	return res.status(204).end()
+
+	const blog = await Blog.findById(id)
+	logger.info(blog.user)
+	logger.info(decodedUser)
+
+	if (blog.user.toString() === decodedUser.id.toString()) {
+		await Blog.findByIdAndDelete(id)
+		return res.status(204).end()
+	}
+	else
+		return res.status(401).end()
 })
 
 blogsRouter.post('/', async (req, res) => {
@@ -26,7 +41,7 @@ blogsRouter.post('/', async (req, res) => {
 		return res.status(401).json({ error: 'token missing or invalid' })
 	const decodedToken = jwt.verify(req.token, process.env.SECRET)
 	if (!decodedToken.id)
-		return res.status(401).json({ error: 'error handling the token' })
+		return res.status(401).json({ error: 'error handling/decoding the token' })
 
 	const user = await User.findById(decodedToken.id)
 	if(req.body.likes === undefined)
@@ -58,7 +73,7 @@ blogsRouter.put('/:id', async (req, res) => {
 		res.json(blog)
 	}
 	else {
-		logger.info('adding new resource')
+		logger.info('Adding new resource')
 		req.body._id = id
 		if(req.body.likes === undefined)
 			req.body.likes = 0
