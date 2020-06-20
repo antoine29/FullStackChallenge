@@ -61,24 +61,4 @@ blogsRouter.patch('/:id', async (req, res) => {
 	return res.json(updatedBlog)
 })
 
-blogsRouter.put('/:id', async (req, res) => {
-	const id = req.params.id
-	const foundBlog = await Blog.findById(id)
-	if (foundBlog){
-		logger.info('Replacing resource')
-		let blog = req.body
-		await Blog.replaceOne({ _id: id }, blog, { runValidators: true, context: 'query' })
-		blog = await Blog.findById(id)
-		res.json(blog)
-	}
-	else {
-		logger.info('Adding new resource')
-		req.body._id = id
-		if(req.body.likes === undefined)
-			req.body.likes = 0
-		const newBlog = await new Blog(req.body).save()
-		res.json(newBlog)
-	}
-})
-
 module.exports = blogsRouter

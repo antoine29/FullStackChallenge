@@ -279,68 +279,6 @@ test('a PATCH req. will update some fields', async () => {
 	expect(patchedBlog.body).toEqual(blogsAtFirst[0])
 })
 
-test('a PUT req. to an existent Id will replace the document', async () => {
-	const replace = {
-		title: 'replaced title',
-		author: 'replaced author',
-		url: 'http://www.replaced.com',
-		likes: 100
-	}
-
-	const replacedBlog = await api
-		// .put(`/api/blogs/${createdBlogs[0].Id}`)
-		.send(replace)
-		.expect(200)
-
-	// replace.Id = createdBlogs[0].Id
-	expect(replacedBlog.body).toEqual(replace)
-})
-
-test('invalid body, with an existent Id, in a PUT req. will return an error', async () => {
-	const replace = {
-		url: 'http://www.replaced.com',
-		likes: 100
-	}
-
-	await api
-		// .put(`/api/blogs/${createdBlogs[0].Id}`)
-		.send(replace)
-		.expect(400)
-})
-
-test('a non existent Id with a PUT req. will create a new document', async () => {
-	const nonExistentId = '000000000000000000000000'
-	const replace = {
-		title: 'created title',
-		author: 'created author',
-		url: 'http://www.created.com',
-		likes: 100
-	}
-
-	const response = await api
-		.put(`/api/blogs/${nonExistentId}`)
-		.send(replace)
-		.expect(200)
-
-	replace.Id = nonExistentId
-	expect(response.body).toEqual(replace)
-
-	const createdBlog = await api.get(`/api/blogs/${nonExistentId}`)
-	expect(createdBlog.body).toEqual(replace)
-})
-
-test('an invalid body, a non existent Id in a PUT req. will return an error', async () => {
-	const replace = {
-		url: 'http://www.created.com',
-		likes: 100
-	}
-
-	await api
-		.put('/api/blogs/000000000000000000000000')
-		.send(replace)
-		.expect(400)
-})
-
 test('a POST req. without a token will return an error', async () => {
 	const blogsAtStart = await helper.blogsInDb()
 	const newBlog = {
