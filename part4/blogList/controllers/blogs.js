@@ -4,13 +4,6 @@ const Blog = require('../models/Blog')
 const User = require('../models/User')
 const logger = require('../utils/logger')
 
-const getTokenFrom = request => {
-	const authorization = request.get('authorization')
-	if (authorization && authorization.toLowerCase().startsWith('bearer '))
-		return authorization.substring(7)
-	return null
-}
-
 blogsRouter.get('/', async (req, res) => {
 	const blogs = await Blog.find({}).populate('user', { blogs: 0 })
 	return res.json(blogs)
@@ -29,10 +22,11 @@ blogsRouter.delete('/:id', async (req, res) => {
 })
 
 blogsRouter.post('/', async (req, res) => {
-	const token = getTokenFrom(req)
-	const decodedToken = jwt.verify(token, process.env.SECRET)
-	if (!token || !decodedToken.id)
+	if (!req.token)
 		return res.status(401).json({ error: 'token missing or invalid' })
+	const decodedToken = jwt.verify(req.token, process.env.SECRET)
+	if (!decodedToken.id)
+		return res.status(401).json({ error: 'error handling the token' })
 
 	const user = await User.findById(decodedToken.id)
 	if(req.body.likes === undefined)

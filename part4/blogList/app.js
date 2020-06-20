@@ -23,6 +23,7 @@ app.use(express.static('build'))
 app.use(express.json())
 // app.use(middleware.requestLogger)
 app.use(middleware.morganRequestLogger)
+app.use(middleware.tokenHandler)
 
 app.get('/info', async (req, res) => {
 	const count = await Blog.countDocuments({})

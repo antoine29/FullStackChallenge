@@ -3,6 +3,7 @@ const supertest = require('supertest')
 const app = require('../app')
 const api = supertest(app)
 const Blog = require('../models/Blog')
+const helper = require('./test_helper')
 
 const initialBlogs = [
 	{
@@ -235,6 +236,26 @@ test('an invalid body, a non existent Id in a PUT req. will return an error', as
 		.send(replace)
 		.expect(400)
 })
+
+test('a POST req. without a token will return an error', async () => {
+	const blogsAtStart = await helper.blogsInDb()
+	const newBlog = {
+		title: 'newTitle',
+		author: 'author0',
+		url: 'http://www.new.com',
+	}
+
+	const result = await api
+		.post('/api/blogs')
+		.send(newBlog)
+		.expect(401)
+		.expect('Content-Type', /application\/json/)
+	expect(result.body.error).toContain('token missing or invalid')
+	const blogsAtEnd = await helper.blogsInDb()
+	expect(blogsAtEnd).toHaveLength(blogsAtStart.length)
+})
+
+// test to assign the created blog to the token user
 
 afterAll(() => {
 	mongoose.connection.close()
