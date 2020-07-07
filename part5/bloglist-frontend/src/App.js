@@ -14,7 +14,7 @@ const App = () => {
   const blogFormRef = useRef()
 
   useEffect(() => {
-    loadBlogs()  
+    loadBlogs()
   }, [])
 
   useEffect(() => {
@@ -33,20 +33,20 @@ const App = () => {
 
   const login = async (username, password) => {
     try {
-      const user = await loginService.login({username, password})
+      const user = await loginService.login({ username, password })
       window.localStorage.setItem(
         'loggedBlogAppUser', JSON.stringify(user)
-      ) 
+      )
       blogService.setToken(user.token)
       setUser(user)
     } catch (exception) {
-        setErrorMessage('Wrong credentials')
-        setTimeout(() => {
-          setErrorMessage(null)
-        }, 5000)
-      }
+      setErrorMessage('Wrong credentials')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
     }
-    
+  }
+
   const logout = () => {
     window.localStorage.clear()
     setUser(null)
