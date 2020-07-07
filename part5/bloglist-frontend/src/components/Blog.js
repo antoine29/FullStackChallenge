@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, index, setUpdatedBlog, setDeletedFlag }) => {
+const Blog = ({ blog, setUpdatedBlogListFlag }) => {
   const [isViewed, setViewState] = useState(false)
-  const [stateBlog, setBlog] = useState(blog)
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -13,34 +12,33 @@ const Blog = ({ blog, index, setUpdatedBlog, setDeletedFlag }) => {
   }
 
   const increaseLikes = async blog => {
-    let updatedBlog = await blogService.patch(blog.id, { likes: blog.likes + 1 })
-    setBlog(updatedBlog)
-    setUpdatedBlog({index: index, blog: blog})
+    await blogService.patch(blog.id, { likes: blog.likes + 1 })
+    setUpdatedBlogListFlag(true)
   }
 
   const deleteBlog = async blog => {
     if(window.confirm(`Remove blog '${blog.title}' by ${blog.author}`)){
-      await blogService._delete(blog)
-      setDeletedFlag(true)
+      await blogService._delete(blog.id)
+      setUpdatedBlogListFlag(true)
     }
   }
 
   let logedUser = JSON.parse(window.localStorage.getItem('loggedBlogAppUser'))
-  return stateBlog !== undefined ?
+  return blog !== undefined ?
     <div style={blogStyle}>   
     {!isViewed?
-      stateBlog.title :
+      blog.title :
       <p>
-        {stateBlog.title}
+        {blog.title}
         <br/>
-        {stateBlog.url}
+        {blog.url}
         <br/>
-        likes: {stateBlog.likes} <button onClick={ event => {
+        likes: {blog.likes} <button onClick={ event => {
           event.preventDefault()
-          increaseLikes(stateBlog)
+          increaseLikes(blog)
         }}>like</button>
         <br/>
-        {stateBlog.author
+        {blog.author
       }</p>}
       {logedUser.id === blog.user.id &&
       <button onClick={() => deleteBlog(blog)}>delete</button>}

@@ -1,25 +1,16 @@
-// import React, { useState, useImperativeHandle } from 'react'
 import React, { useState } from 'react'
 import Blog from './Blog'
+import blogService from '../services/blogs'
 
-// const BlogList = React.forwardRef((props, ref) => {
 const BlogList = ({ blogs, setBlogs }) => {
-    const [updatedBlog, setUpdatedBlog] = useState(undefined)
-    // const [deletedBlogFlag, setDeletedBlogFlag] = useState(false)
-
-    
-    // const { blogs, setBlogs } = props
-    // useImperativeHandle(ref, () => {
-    //     return {
-    //         deletedBlogFlag,
-    //         setDeletedBlogFlag
-    //     }
-    // })
-
-    if(updatedBlog !== undefined) {
-        blogs[updatedBlog.index] = updatedBlog.blog
-        setUpdatedBlog(undefined)
-        setBlogs(blogs)
+    const [updatedBlogListFlag, setUpdatedBlogListFlag] = useState(false)
+    if(updatedBlogListFlag){
+        blogService
+            .getAll()
+            .then(blogs => {
+                setBlogs(blogs)
+                setUpdatedBlogListFlag(false)
+            })
     }
 
     return blogs
@@ -29,7 +20,7 @@ const BlogList = ({ blogs, setBlogs }) => {
             key={blog.id}
             blog={blog}
             index={index}
-            setUpdatedBlog={setUpdatedBlog} />)
-    }
-  
+            setUpdatedBlogListFlag={setUpdatedBlogListFlag} />)
+}
+
 export default BlogList

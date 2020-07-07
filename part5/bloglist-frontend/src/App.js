@@ -12,12 +12,9 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
   const blogFormRef = useRef()
-  const blogListRef = useRef()
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )  
+    loadBlogs()  
   }, [])
 
   useEffect(() => {
@@ -28,6 +25,11 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+
+  const loadBlogs = async () => {
+    let dbBlogs = await blogService.getAll()
+    setBlogs(dbBlogs)
+  }
 
   const login = async (username, password) => {
     try {
@@ -68,7 +70,7 @@ const App = () => {
         }, 5000)
       })
   }
-  
+
   return (
     <div>
       <h1>Blog List</h1>
