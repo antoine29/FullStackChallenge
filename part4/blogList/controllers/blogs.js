@@ -2,7 +2,6 @@ const blogsRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
 const Blog = require('../models/Blog')
 const User = require('../models/User')
-const logger = require('../utils/logger')
 
 blogsRouter.get('/', async (req, res) => {
 	const blogs = await Blog.find({}).populate('user', { blogs: 0 })
@@ -24,9 +23,6 @@ blogsRouter.delete('/:id', async (req, res) => {
 
 	const id = req.params.id
 	const blog = await Blog.findById(id)
-	logger.info(blog.user)
-	logger.info(decodedUser)
-
 	if (blog.user.toString() === decodedUser.id.toString()) {
 		await Blog.findByIdAndDelete(id)
 		return res.status(204).end()
