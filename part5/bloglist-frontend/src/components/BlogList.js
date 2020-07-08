@@ -3,24 +3,43 @@ import Blog from './Blog'
 import blogService from '../services/blogs'
 
 const BlogList = ({ blogs, setBlogs }) => {
-  const [updatedBlogListFlag, setUpdatedBlogListFlag] = useState(false)
-  if(updatedBlogListFlag){
+  const [likedBlog, setLikedBlog] = useState(undefined)
+  const [deletedBlog, setDeletedBlog] = useState(undefined)
+
+  if(likedBlog){
+    setLikedBlog(undefined)
     blogService
-      .getAll()
-      .then(blogs => {
-        setBlogs(blogs)
-        setUpdatedBlogListFlag(false)
+      .patch(likedBlog.id, { likes: likedBlog.likes + 1 })
+      .then(() => {
+        blogService
+          .getAll()
+          .then(blogs => {
+            setBlogs(blogs)
+          })
+      })
+  }
+
+  if(deletedBlog){
+    setDeletedBlog(undefined)
+    blogService
+      ._delete(deletedBlog.id)
+      .then(() => {
+        blogService
+          .getAll()
+          .then(blogs => {
+            setBlogs(blogs)
+          })
       })
   }
 
   return blogs
     .sort((a, b) => b.likes - a.likes)
-    .map((blog, index) =>
+    .map(blog =>
       <Blog
         key={blog.id}
         blog={blog}
-        index={index}
-        setUpdatedBlogListFlag={setUpdatedBlogListFlag} />)
+        setLikedBlog={setLikedBlog}
+        setDeletedBlog={setDeletedBlog} />)
 }
 
 export default BlogList

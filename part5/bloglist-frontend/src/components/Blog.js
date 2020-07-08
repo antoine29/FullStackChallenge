@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import blogService from '../services/blogs'
 
-const Blog = ({ blog, setUpdatedBlogListFlag }) => {
+const Blog = ({ blog, setLikedBlog, setDeletedBlog }) => {
   const [isViewed, setViewState] = useState(false)
   const blogStyle = {
     paddingTop: 10,
@@ -11,21 +10,16 @@ const Blog = ({ blog, setUpdatedBlogListFlag }) => {
     marginBottom: 5
   }
 
-  const increaseLikes = async blog => {
-    await blogService.patch(blog.id, { likes: blog.likes + 1 })
-    setUpdatedBlogListFlag(true)
-  }
+  const increaseLikes = async blog => setLikedBlog(blog)
 
   const deleteBlog = async blog => {
-    if(window.confirm(`Remove blog '${blog.title}' by ${blog.author}`)){
-      await blogService._delete(blog.id)
-      setUpdatedBlogListFlag(true)
-    }
+    if(window.confirm(`Remove blog '${blog.title}' by ${blog.author}`))
+      setDeletedBlog(blog)
   }
 
   let logedUser = JSON.parse(window.localStorage.getItem('loggedBlogAppUser'))
   return blog !== undefined ?
-    <div style={blogStyle}>
+    <div style={blogStyle} className='blog'>
       {!isViewed?
         blog.title :
         <p>
@@ -33,16 +27,19 @@ const Blog = ({ blog, setUpdatedBlogListFlag }) => {
           <br/>
           {blog.url}
           <br/>
-          likes: {blog.likes} <button onClick={ event => {
+          likes: {blog.likes} <button className='likeButton' onClick={ event => {
             event.preventDefault()
             increaseLikes(blog)
           }}>like</button>
           <br/>
           {blog.author}
         </p>}
-      {logedUser.id === blog.user.id &&
-      <button onClick={() => deleteBlog(blog)}>delete</button>}
-      <button onClick={() => setViewState(!isViewed)}>
+      {logedUser !== null && logedUser.id === blog.user.id &&
+      <button className='deleteButton' onClick={ event => {
+        event.preventDefault()
+        deleteBlog(blog)
+      }}>delete</button>}
+      <button className='viewButton' onClick={() => setViewState(!isViewed)}>
         {!isViewed? 'view':'hide'}
       </button>
     </div> :

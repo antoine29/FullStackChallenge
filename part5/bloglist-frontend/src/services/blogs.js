@@ -31,12 +31,12 @@ const patch = (id, patch) => {
   return request.then(response => response.data)
 }
 
-const _delete = id => {
+const _delete = async id => {
   const config = {
     headers: { Authorization: token },
   }
 
-  axios.delete(`${baseUrl}/${id}`, config)
+  await axios.delete(`${baseUrl}/${id}`, config)
 }
 
 export default { getAll, create, update, setToken, patch, _delete }
