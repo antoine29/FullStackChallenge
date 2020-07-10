@@ -18,6 +18,8 @@ FullStackChallenge/
 │   └───phoneBookBackend/
 └───part4/
 │   └───blogList/
+└───part5/
+│   └───bloglist-frontend/
 │   README.md
 ```
 
@@ -28,3 +30,5 @@ FullStackChallenge/
 ### [part3. Phonebook backend application](./part3/phoneBookBackend/README.md)
 
 ### [part4. BlogList backend application](./part4/blogList/README.md)
+
+### [part5. BlogList frontend application](./part5/bloglist-frontend/README.md)
