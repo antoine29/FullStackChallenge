@@ -9,7 +9,7 @@ const anecdotesAtStart = [
 
 const getId = () => (100000 * Math.random()).toFixed(0)
 
-const asObject = (anecdote) => {
+const asObject = anecdote => {
   return {
     content: anecdote,
     id: getId(),
@@ -17,13 +17,48 @@ const asObject = (anecdote) => {
   }
 }
 
+const sortingAnecdotes = (a, b)  => b.votes - a.votes
+
+const _voteAnecdote = (state, anecdoteId) => {
+  console.log('voting: ', anecdoteId)
+  return state
+    .map(anecdote =>
+      anecdote.id === anecdoteId ? {...anecdote, votes: anecdote.votes + 1} : anecdote)
+    .sort(sortingAnecdotes) 
+}
+
+const _createAnecdote = (state, anecdote) => {
+  console.log('creating: ', anecdote)
+  return [...state, anecdote].sort(sortingAnecdotes)
+}
+
 const initialState = anecdotesAtStart.map(asObject)
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = initialState.sort(sortingAnecdotes), action) => {
   console.log('state now: ', state)
   console.log('action', action)
 
-  return state
+  switch (action.type) {
+    case 'NEW_ANECDOTE':
+      return _createAnecdote(state, action.data)
+    case 'VOTE_ANECDOTE':
+      return _voteAnecdote(state, action.data.id)
+    default: return state
+  }
+}
+
+export const createAnecdote = anecdote => {
+  return {
+    type: 'NEW_ANECDOTE',
+    data: asObject(anecdote)
+  }
+}
+
+export const voteAnecdote = id => {
+  return {
+    type: 'VOTE_ANECDOTE',
+    data: { id }
+  }
 }
 
 export default reducer
