@@ -28,7 +28,8 @@ const _voteAnecdote = (state, anecdoteId) => {
 }
 
 const _createAnecdote = (state, anecdote) => {
-  console.log('creating: ', anecdote)
+  // console.log('creating: ', anecdote)
+  console.log('CREATING: ', anecdote)
   return [...state, anecdote].sort(sortingAnecdotes)
 }
 
@@ -36,7 +37,7 @@ const initialState = anecdotesAtStart
   .map(toAnecdoteObject)
   .sort(sortingAnecdotes)
 
-const anecdotesReducer = (state = initialState, action) => {
+const anecdotesReducer = (state = [], action) => {
   console.log('state now: ', state)
   console.log('action', action)
 
@@ -45,6 +46,8 @@ const anecdotesReducer = (state = initialState, action) => {
       return _createAnecdote(state, action.data)
     case 'VOTE_ANECDOTE':
       return _voteAnecdote(state, action.data.id)
+    case 'SET_ANECDOTES':
+      return action.data.sort(sortingAnecdotes)
     default: return state
   }
 }
@@ -52,7 +55,7 @@ const anecdotesReducer = (state = initialState, action) => {
 export const createAnecdote = anecdote => {
   return {
     type: 'NEW_ANECDOTE',
-    data: toAnecdoteObject(anecdote)
+    data: typeof anecdote === 'string' ? toAnecdoteObject(anecdote) : anecdote
   }
 }
 
@@ -60,6 +63,13 @@ export const voteAnecdote = id => {
   return {
     type: 'VOTE_ANECDOTE',
     data: { id }
+  }
+}
+
+export const setAnecdotes = anecdotes => {
+  return {
+    type: 'SET_ANECDOTES',
+    data: anecdotes,
   }
 }
 

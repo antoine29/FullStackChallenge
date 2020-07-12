@@ -11,6 +11,6 @@ const reducer = combineReducers({
 })
 
 const store = createStore(reducer, composeWithDevTools())
-console.log(store.getState())
+console.log('initial store:', store.getState())
 
 export default store
