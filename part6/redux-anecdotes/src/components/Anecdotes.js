@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { voteAnecdote } from '../reducers/anecdoteReducer'
+import { voteAnecdote, fetchAnecdotes } from '../reducers/anecdoteReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import AnecdotesFilter from './AnecdotesFilter'
 
@@ -26,8 +26,9 @@ const Anecdotes = () => {
       state.anecdotes.filter(anecdote =>
         anecdote.content.toLowerCase().includes(state.filter.toLowerCase())))
 
-  const handleVoteClick = anecdote => {
-    dispatch(voteAnecdote(anecdote.id))
+  const handleVoteClick = async anecdote => {
+    await dispatch(voteAnecdote(anecdote))
+    dispatch(fetchAnecdotes())
     dispatch(setNotification(`voting: ${anecdote.content}`))
     setTimeout(() => dispatch(setNotification('')), 3000)
   }

@@ -1,41 +1,6 @@
-const anecdotesAtStart = [
-  'If it hurts, do it more often',
-  'Adding manpower to a late software project makes it later!',
-  'The first 90 percent of the code accounts for the first 90 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
-  'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
-  'Premature optimization is the root of all evil.',
-  'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.'
-]
-
-const getId = () => (100000 * Math.random()).toFixed(0)
-
-const toAnecdoteObject = anecdote => {
-  return {
-    content: anecdote,
-    id: getId(),
-    votes: 0
-  }
-}
+import anecdoteService from '../services/anecdotes'
 
 const sortingAnecdotes = (a, b)  => b.votes - a.votes
-
-const _voteAnecdote = (state, anecdoteId) => {
-  console.log('voting: ', anecdoteId)
-  return state
-    .map(anecdote =>
-      anecdote.id === anecdoteId ? {...anecdote, votes: anecdote.votes + 1} : anecdote)
-    .sort(sortingAnecdotes)
-}
-
-const _createAnecdote = (state, anecdote) => {
-  // console.log('creating: ', anecdote)
-  console.log('CREATING: ', anecdote)
-  return [...state, anecdote].sort(sortingAnecdotes)
-}
-
-const initialState = anecdotesAtStart
-  .map(toAnecdoteObject)
-  .sort(sortingAnecdotes)
 
 const anecdoteReducer = (state = [], action) => {
   console.log('state now: ', state)
@@ -43,33 +8,42 @@ const anecdoteReducer = (state = [], action) => {
 
   switch (action.type) {
     case 'NEW_ANECDOTE':
-      return _createAnecdote(state, action.data)
+      return state
     case 'VOTE_ANECDOTE':
-      return _voteAnecdote(state, action.data.id)
-    case 'SET_ANECDOTES':
+      return state
+    case 'FETCH_ANECDOTES':
       return action.data.sort(sortingAnecdotes)
     default: return state
   }
 }
 
-export const createAnecdote = anecdote => {
-  return {
-    type: 'NEW_ANECDOTE',
-    data: typeof anecdote === 'string' ? toAnecdoteObject(anecdote) : anecdote
+export const createAnecdote = anecdoteContent => {
+  return async dispatch => {
+    const newAnecdote = await anecdoteService.createNew(anecdoteContent)
+    dispatch({
+      type: 'NEW_ANECDOTE',
+      data: newAnecdote,
+    })
   }
 }
 
-export const voteAnecdote = id => {
-  return {
-    type: 'VOTE_ANECDOTE',
-    data: { id }
+export const voteAnecdote = anecdote => {
+  return async dispatch => {
+    const votedAnecdote = await anecdoteService.patch(anecdote.id, { votes: anecdote.votes + 1 })
+    dispatch({
+      type: 'VOTE_ANECDOTE',
+      data: votedAnecdote
+    })
   }
 }
 
-export const setAnecdotes = anecdotes => {
-  return {
-    type: 'SET_ANECDOTES',
-    data: anecdotes,
+export const fetchAnecdotes = () => {
+  return async dispatch => {
+    const anecdotes = await anecdoteService.getAll()
+    dispatch({
+      type: 'FETCH_ANECDOTES',
+      data: anecdotes,
+    })
   }
 }
 
