@@ -28,9 +28,8 @@ const Anecdotes = () => {
 
   const handleVoteClick = async anecdote => {
     await dispatch(voteAnecdote(anecdote))
+    dispatch(setNotification(`voting: ${anecdote.content}`, 3000))
     dispatch(fetchAnecdotes())
-    dispatch(setNotification(`voting: ${anecdote.content}`))
-    setTimeout(() => dispatch(setNotification('')), 3000)
   }
   
   return(
