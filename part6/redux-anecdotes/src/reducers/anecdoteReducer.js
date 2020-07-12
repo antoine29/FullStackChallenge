@@ -37,7 +37,7 @@ const initialState = anecdotesAtStart
   .map(toAnecdoteObject)
   .sort(sortingAnecdotes)
 
-const anecdotesReducer = (state = [], action) => {
+const anecdoteReducer = (state = [], action) => {
   console.log('state now: ', state)
   console.log('action', action)
 
@@ -73,4 +73,4 @@ export const setAnecdotes = anecdotes => {
   }
 }
 
-export default anecdotesReducer
+export default anecdoteReducer
