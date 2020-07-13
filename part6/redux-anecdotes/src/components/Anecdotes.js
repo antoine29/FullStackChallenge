@@ -21,7 +21,7 @@ const Anecdote = ({ anecdote, handleClick }) => {
 const Anecdotes = ({ anecdotes, voteAnecdote, fetchAnecdotes, setNotification }) => {
   const handleVoteClick = async anecdote => {
     await voteAnecdote(anecdote)
-    setNotification(`voting: ${anecdote.content}`, 3000)
+    setNotification(`voting: ${anecdote.content}`, 5000)
     fetchAnecdotes()
   }
   

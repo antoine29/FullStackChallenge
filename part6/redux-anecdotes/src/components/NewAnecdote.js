@@ -9,7 +9,7 @@ const NewAnecdote = ({ createAnecdote, fetchAnecdotes, setNotification }) => {
     const anecdoteContent = event.target.anecdote.value
     event.target.anecdote.value = ''
     await createAnecdote(anecdoteContent)
-    setNotification(`creating anecdote: ${anecdoteContent}`, 3000)
+    setNotification(`creating anecdote: ${anecdoteContent}`, 5000)
     fetchAnecdotes()
   }
 
