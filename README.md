@@ -20,6 +20,9 @@ FullStackChallenge/
 │   └───blogList/
 └───part5/
 │   └───bloglist-frontend/
+└───part6/
+│   └───redux-anecdotes/
+│   └───unicafe-redux/
 │   README.md
 ```
 
@@ -32,3 +35,5 @@ FullStackChallenge/
 ### [part4. BlogList backend application](./part4/blogList/README.md)
 
 ### [part5. BlogList frontend application](./part5/bloglist-frontend/README.md)
+
+### [part6. `unicafe-redux` and `redux-anecdotes` applications](./part6/README.md)
