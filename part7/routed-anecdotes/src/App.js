@@ -56,7 +56,7 @@ const App = () => {
     : undefined
 
   return (
-    <>
+    <div className='container'>
       <h1>Software anecdotes</h1>
       <Menu />
       <Notification notification={notification}/>
@@ -75,7 +75,7 @@ const App = () => {
         </Route>
       </Switch>
       <Footer />
-    </>
+    </div>
   )
 }
 
