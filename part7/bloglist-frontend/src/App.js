@@ -5,13 +5,10 @@ import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Blogs from './components/Blogs'
-import blogService from './services/blogs'
-import loginService from './services/login'
 import { getBlogs } from './reducers/blogsReducer'
-import { setNotification } from './reducers/notificationReducer'
+import { setUser } from './reducers/userReducer'
 
-const App = ({ setNotification, getBlogs }) => {
-  const [user, setUser] = useState(null)
+const App = ({ getBlogs, setUser, user }) => {
   const blogFormRef = useRef()
 
   useEffect(() => {
@@ -19,22 +16,9 @@ const App = ({ setNotification, getBlogs }) => {
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setUser(user)
-      blogService.setToken(user.token)
       getBlogs()
     }
   }, [])
-
-  const login = async (username, password) => {
-    try {
-      const user = await loginService.login({ username, password })
-      window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
-      blogService.setToken(user.token)
-      setUser(user)
-      getBlogs()
-    } catch (exception) {
-      setNotification('Wrong credentials', 5000)
-    }
-  }
 
   const logout = () => {
     window.localStorage.clear()
@@ -47,7 +31,7 @@ const App = ({ setNotification, getBlogs }) => {
       <Notification />
       {user === null ?
         <Togglable buttonLabel='log in'>
-          <LoginForm handleLogIn={login} />
+          <LoginForm />
         </Togglable> :
         <div>
           <table>
@@ -72,10 +56,16 @@ const App = ({ setNotification, getBlogs }) => {
   )
 }
 
-const mapDispatchToProps = {
-  setNotification,
-  getBlogs
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  }
 }
 
-const ConnectedApp = connect(null, mapDispatchToProps)(App) 
+const mapDispatchToProps = {
+  getBlogs,
+  setUser
+}
+
+const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App) 
 export default ConnectedApp

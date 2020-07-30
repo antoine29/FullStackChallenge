@@ -15,8 +15,9 @@ const blogsReducer = (state = [], action) => {
 }
 
 export const createBlog = blog => {
-  return async dispatch => {
-    const newBlog = await blogsService.create(blog)
+  return async (dispatch, getState) => {
+    const token = getState().user.token
+    const newBlog = await blogsService.create(blog, token)
     dispatch({
       type: 'NEW_BLOG',
       data: newBlog,
@@ -35,8 +36,9 @@ export const likeBlog = blog => {
 }
 
 export const deleteBlog = blog => {
-  return async dispatch => {
-    await blogsService._delete(blog.id, { likes: blog.likes + 1 })
+  return async (dispatch, getState) => {
+    const token = getState().user.token
+    await blogsService._delete(blog.id, token)
     dispatch({
       type: 'DELETE_BLOG',
       data: blog

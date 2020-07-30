@@ -1,13 +1,26 @@
 import React, { useState } from 'react'
-import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { setUser } from '../reducers/userReducer'
+import { setNotification } from '../reducers/notificationReducer'
+import { getBlogs } from '../reducers/blogsReducer'
+import blogService from '../services/blogs'
+import loginService from '../services/login'
 
-const LoginForm = ({ handleLogIn }) => {
+const LoginForm = ({ setUser, setNotification, getBlogs }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleSetUser = event => {
+  const handleSetUser = async event => {
     event.preventDefault()
-    handleLogIn(username, password)
+    try {
+      const user = await loginService.login({ username, password })
+      window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
+      blogService.setToken(user.token)
+      setUser(user)
+      getBlogs()
+    } catch (exception) {
+      setNotification('Wrong credentials', 5000)
+    }
     setUsername('')
     setPassword('')
   }
@@ -39,8 +52,11 @@ const LoginForm = ({ handleLogIn }) => {
     </div>)
 }
 
-LoginForm.propTypes = {
-  handleLogIn: PropTypes.func.isRequired
+const mapDispatchToProps = {
+  setNotification,
+  setUser,
+  getBlogs
 }
 
-export default LoginForm
+const ConnectedLoginForm = connect(null, mapDispatchToProps)(LoginForm)
+export default ConnectedLoginForm
