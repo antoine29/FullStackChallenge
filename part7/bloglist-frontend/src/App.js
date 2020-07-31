@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
+import { useHistory } from "react-router-dom"
 import { connect } from 'react-redux'
 import Togglable from './components/Togglable'
-import Notification from './components/Notification'
-import LoginForm from './components/LoginForm'
 import BlogForm from './components/BlogForm'
 import Blogs from './components/Blogs'
 import { getBlogs } from './reducers/blogsReducer'
@@ -10,7 +9,7 @@ import { setUser } from './reducers/userReducer'
 
 const App = ({ getBlogs, setUser, user }) => {
   const blogFormRef = useRef()
-
+  const history = useHistory();
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
@@ -18,40 +17,36 @@ const App = ({ getBlogs, setUser, user }) => {
       setUser(user)
       getBlogs()
     }
+    else history.push('/login')
   }, [])
 
   const logout = () => {
     window.localStorage.clear()
     setUser(null)
+    history.push('/login')
   }
 
   return (
     <div>
-      <h1>Blog List</h1>
-      <Notification />
-      {user === null ?
-        <Togglable buttonLabel='log in'>
-          <LoginForm />
-        </Togglable> :
-        <div>
-          <table>
-            <thead></thead>
-            <tbody>
-              <tr>
-                <td> {user.name} logged-in </td>
-                <td>
-                  <button type="submit" onClick={() => logout()}>logout</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <Togglable buttonLabel='new blog' ref={blogFormRef}>
-            <BlogForm togglabeRef={blogFormRef} />
-          </Togglable>
-          <h2>Blogs:</h2>
-          <Blogs />
-        </div>
-      }
+      <div>
+        <table>
+          <thead></thead>
+          <tbody>
+            <tr>
+              {user !== null &&
+              <td> {user.name} logged-in </td>}
+              <td>
+                <button type="submit" onClick={() => logout()}>logout</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <Togglable buttonLabel='new blog' ref={blogFormRef}>
+          <BlogForm togglabeRef={blogFormRef} />
+        </Togglable>
+        <h2>Blogs:</h2>
+        <Blogs />
+      </div>
     </div>
   )
 }
@@ -67,5 +62,5 @@ const mapDispatchToProps = {
   setUser
 }
 
-const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App) 
+const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App)
 export default ConnectedApp

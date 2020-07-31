@@ -1,34 +1,40 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useHistory } from "react-router-dom"
 import { connect } from 'react-redux'
 import { setUser } from '../reducers/userReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import { getBlogs } from '../reducers/blogsReducer'
-import blogService from '../services/blogs'
 import loginService from '../services/login'
 
-const LoginForm = ({ setUser, setNotification, getBlogs }) => {
+const LoginForm = ({ user, setUser, setNotification, getBlogs }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleSetUser = async event => {
+  const history = useHistory();
+
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
+    if (loggedUserJSON || user) history.push('/')
+  }, [user])
+
+  const loginUser = async event => {
     event.preventDefault()
     try {
       const user = await loginService.login({ username, password })
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
-      blogService.setToken(user.token)
       setUser(user)
       getBlogs()
     } catch (exception) {
       setNotification('Wrong credentials', 5000)
-    }
+    }  
     setUsername('')
     setPassword('')
-  }
+  }  
 
   return (
     <div>
       <h2>Login</h2>
-      <form onSubmit={handleSetUser}>
+      <form onSubmit={loginUser}>
         <div>
           username
           <input
@@ -52,11 +58,17 @@ const LoginForm = ({ setUser, setNotification, getBlogs }) => {
     </div>)
 }
 
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  }
+}
+
 const mapDispatchToProps = {
   setNotification,
   setUser,
   getBlogs
 }
 
-const ConnectedLoginForm = connect(null, mapDispatchToProps)(LoginForm)
+const ConnectedLoginForm = connect(mapStateToProps, mapDispatchToProps)(LoginForm)
 export default ConnectedLoginForm
