@@ -3,9 +3,7 @@ import { useRouteMatch } from "react-router-dom"
 import usersService from '../services/users'
 
 const User = () => {
-
     const [user, setUser] = useState(null)
-
     const userMatcher = useRouteMatch('/users/:id')
     
     useEffect(() => {

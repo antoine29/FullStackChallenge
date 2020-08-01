@@ -3,12 +3,13 @@ import {
     Switch, Route, BrowserRouter as Router
 } from "react-router-dom"
 import App from './App'
-import Header from './components/Header'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import LoginForm from './components/LoginForm'
 import Users from './components/Users'
 import User from './components/User'
+import Blog from './components/Blog'
+import Header from './components/Header'
 
 const AppRouter = () => {
     return(
@@ -26,6 +27,9 @@ const AppRouter = () => {
                 </Route>
                 <Route path='/users'>
                     <Users />
+                </Route>
+                <Route path='/blogs/:id'>
+                    <Blog />
                 </Route>
                 <Route path='/'>
                     <App />

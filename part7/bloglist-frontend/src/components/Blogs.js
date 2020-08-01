@@ -1,15 +1,22 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { Link } from "react-router-dom"
 import { getBlogs, likeBlog } from '../reducers/blogsReducer'
-import Blog from './Blog'
 
 const Blogs = ({ blogs }) => 
-  blogs
-    .map(blog =>
-      <Blog
-        key={blog.id}
-        blog={blog}
-        />)
+  <table>
+    <thead></thead>
+    <tbody>
+      {blogs
+      .map(blog =>
+      <tr key={blog.id}>
+        <td>
+          <Link to={`/blogs/${blog.id}`}> {blog.title} </Link>
+        </td>
+        <td>{blog.likes} likes</td>
+      </tr>)}
+    </tbody>
+  </table>
 
 const mapStateToProps = state => {
   return {
