@@ -49,6 +49,19 @@ blogsRouter.post('/', async (req, res) => {
 	return res.status(201).json(populatedBlog)
 })
 
+blogsRouter.post('/:id/comments', async (req, res) => {
+	if (req.body.comment !== undefined) {
+		const id = req.params.id
+		const blog = await Blog.findById(id)
+		if (blog === null) return res.status(400).json({error: `No blog id: \'${id}\' found.`})
+		blog.comments = blog.comments.concat(req.body.comment)
+		await blog.save()
+		const populatedBlog = await blog.populate('user', { blogs: 0 }).execPopulate()
+		return res.status(200).json(populatedBlog)
+	}
+	else return res.status(400).json({error: 'No \'comment\' field sent.'})
+})
+
 blogsRouter.patch('/:id', async (req, res) => {
 	const id = req.params.id
 	const blog = req.body
