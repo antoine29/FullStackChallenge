@@ -14,6 +14,7 @@ const Blogs = ({ blogs }) =>
           <Link to={`/blogs/${blog.id}`}> {blog.title} </Link>
         </td>
         <td>{blog.likes} likes</td>
+        <td>{blog.comments.length} comments</td>
       </tr>)}
     </tbody>
   </table>

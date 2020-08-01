@@ -6,6 +6,7 @@ import { likeBlog, deleteBlog, getBlogs } from '../reducers/blogsReducer'
 
 const Blog = ({ likeBlog, deleteBlog, getBlogs }) => {
   const [blog, setBlog] = useState(null)
+  const [newComment, setNewComment] = useState('')
   const history = useHistory();
   const blogMatcher = useRouteMatch('/blogs/:id')
   const getBlog = blogId => 
@@ -42,30 +43,51 @@ const Blog = ({ likeBlog, deleteBlog, getBlogs }) => {
       history.push('/')
   }
 
+  const addCommentHandler = async event => {
+    event.preventDefault()
+    let commentedBlog = await blogService.comment(blog.id, {comment: newComment})
+    setBlog(commentedBlog)
+    setNewComment('')
+  }
+
   let logedUser = JSON.parse(window.localStorage.getItem('loggedBlogAppUser'))
   return blog !== null ?
     <div style={blogStyle} className='blog'>
-      <div>
-        <h3>{blog.title}</h3>
-        <a href={blog.url} target="_blank">{blog.url}</a>
-        <p>
-          likes: {blog.likes}
-          <button
-            className='likeButton'
-            onClick={event => {
-              event.preventDefault()
-              increaseLikes(blog)
-            }}>like</button>
-        </p>
-        <p>Added by: {blog.author}</p>
-      </div>
+      <h3>{blog.title}</h3>
+      <a href={blog.url} target="_blank">{blog.url}</a>
+      <p>
+        likes: {blog.likes}
+        <button
+          className='likeButton'
+          onClick={event => {
+            event.preventDefault()
+            increaseLikes(blog)
+          }}>like</button>
+      </p>
+      <p>Added by: {blog.author}</p>
+      <h4>Comments:</h4>
+      <ul>
+      {blog.comments.map((comment, index) =>
+        <li key={comment+index}>{comment}</li>
+      )}
+      </ul>
+      <form onSubmit={addCommentHandler}>
+        Leave a new comment
+        <br />
+        <input
+          id='newCommentInput'
+          className='newCommentInput'
+          value={newComment}
+          onChange={({ target }) => setNewComment(target.value)}/>
+        <button type="submit">send</button>
+      </form>
       {logedUser !== null && logedUser.id === blog.user.id &&
-      <button
-        className='deleteButton'
-        onClick={event => {
-          event.preventDefault()
-          deleteBlogHandler(blog)
-        }}>delete</button>}
+        <button
+          className='deleteButton'
+          onClick={event => {
+            event.preventDefault()
+            deleteBlogHandler(blog)
+          }}>delete</button>}
     </div> :
     <></>
 }
