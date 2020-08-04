@@ -4,7 +4,6 @@ import {
 } from "react-router-dom"
 import App from './App'
 import Notification from './components/Notification'
-import Togglable from './components/Togglable'
 import LoginForm from './components/LoginForm'
 import Users from './components/Users'
 import User from './components/User'
@@ -14,13 +13,11 @@ import Header from './components/Header'
 const AppRouter = () => {
     return(
         <Router>
-            <Header />
             <Notification />
+            <Header />
             <Switch>
                 <Route path='/login'>
-                    <Togglable buttonLabel='log in'>
-                        <LoginForm />
-                    </Togglable>
+                    <LoginForm />
                 </Route>
                 <Route path='/users/:id'>
                     <User />

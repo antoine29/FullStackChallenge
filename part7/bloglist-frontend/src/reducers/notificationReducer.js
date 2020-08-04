@@ -1,4 +1,4 @@
-const initialState = ''
+const initialState = null
 
 let timeOutId = undefined
 const notificationReducer = (state = initialState, action) => {
@@ -10,7 +10,7 @@ const notificationReducer = (state = initialState, action) => {
     }
 }
 
-export const setNotification = (notification, time) => {
+export const setTimedNotification = (notification, time) => {
     return async dispatch => {
         dispatch({
             type: 'SET_NOTIFICATION',
@@ -19,7 +19,7 @@ export const setNotification = (notification, time) => {
         if(timeOutId !== undefined) clearTimeout(timeOutId)
         timeOutId = setTimeout(() => dispatch({
             type: 'SET_NOTIFICATION',
-            notification: ''
+            notification: null
         }), time)
     }
 }

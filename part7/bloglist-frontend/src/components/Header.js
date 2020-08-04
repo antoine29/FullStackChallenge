@@ -13,7 +13,7 @@ const Header = ({user, setUser}) => {
     const padding = {
         paddingRight: 5
     }
-    return(
+    return( user !== null ?
         <div>
             <h1>Blog List</h1>
             <div>
@@ -29,7 +29,8 @@ const Header = ({user, setUser}) => {
                     </button>
                 </p> }
             </div>
-        </div>
+        </div> :
+        <></>
     )
 }
 

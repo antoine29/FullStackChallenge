@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { setNotification } from '../reducers/notificationReducer'
+import { setTimedNotification } from '../reducers/notificationReducer'
 import { getBlogs, createBlog } from '../reducers/blogsReducer'
 
-const BlogForm = ({ togglabeRef, setNotification, getBlogs, createBlog }) => {
+const BlogForm = ({ togglabeRef, setTimedNotification, getBlogs, createBlog }) => {
   const [newBlog, setNewBlog] = useState({ author: '', title: '', url: '' })
   const addBlog = async event => {
     event.preventDefault()
-    setNotification(`new blog ${newBlog.title} is being added`, 5000)
+    setTimedNotification({type: 'OK', message: `new blog ${newBlog.title} is being added`}, 5000)
     await createBlog(newBlog)
     setNewBlog({ author: '', title: '', url: '' })
     getBlogs()
@@ -45,7 +45,7 @@ const BlogForm = ({ togglabeRef, setNotification, getBlogs, createBlog }) => {
 }
 
 const mapDispatchToProps = {
-  setNotification,
+  setTimedNotification,
   getBlogs,
   createBlog
 }
