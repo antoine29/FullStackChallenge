@@ -9,27 +9,36 @@ import Users from './components/Users'
 import User from './components/User'
 import Blog from './components/Blog'
 import Header from './components/Header'
+import ResponsiveContainer from './components/ResponsiveContainer'
 
 const AppRouter = () => {
     return(
         <Router>
             <Notification />
-            <Header />
+            {/* <Header /> */}
             <Switch>
                 <Route path='/login'>
                     <LoginForm />
                 </Route>
                 <Route path='/users/:id'>
-                    <User />
+                    <ResponsiveContainer>
+                        <User />
+                    </ResponsiveContainer>
                 </Route>
                 <Route path='/users'>
-                    <Users />
+                    <ResponsiveContainer>
+                        <Users />
+                    </ResponsiveContainer>
                 </Route>
                 <Route path='/blogs/:id'>
-                    <Blog />
+                    <ResponsiveContainer>
+                        <Blog />
+                    </ResponsiveContainer>
                 </Route>
                 <Route path='/'>
-                    <App />
+                    <ResponsiveContainer>
+                        <App />
+                    </ResponsiveContainer>
                 </Route>
             </Switch>
         </Router>
