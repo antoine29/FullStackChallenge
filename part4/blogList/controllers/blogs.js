@@ -17,7 +17,15 @@ blogsRouter.get('/:id', async (req, res) => {
 blogsRouter.delete('/:id', async (req, res) => {
 	if (!req.token)
 		return res.status(401).json({ error: 'token missing or invalid' })
-	const decodedUser = jwt.verify(req.token, process.env.SECRET)
+
+	let decodedUser
+	try{
+		decodedUser = jwt.verify(req.token, process.env.SECRET)
+	}
+	catch(error){
+		return res.status(401).json({ error: error.message })
+	}
+	
 	if (!decodedUser.id)
 		return res.status(400).json({ error: 'error handling/decoding the token' })
 
