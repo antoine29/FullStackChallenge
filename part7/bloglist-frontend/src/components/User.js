@@ -16,7 +16,7 @@ const User = () => {
                 const user = users.find(_user => _user.id === userId)
                 setUser(user)
             })
-    }, [])
+    })
 
     return(
         user ?

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from "react-router-dom"
 import { connect } from 'react-redux'
-import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Segment } from 'semantic-ui-react'
 import loginService from '../services/login'
 import { setUser } from '../reducers/userReducer'
 import { setTimedNotification } from '../reducers/notificationReducer'
