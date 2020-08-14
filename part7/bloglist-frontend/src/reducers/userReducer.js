@@ -14,4 +14,16 @@ export const setUser = user => {
     }
 }
 
+export const reloadUser = () => {
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
+    let user = null
+    if (loggedUserJSON)
+        user = JSON.parse(loggedUserJSON)
+
+    return {
+        type: 'SET_USER',
+        user
+    }
+}
+
 export default userReducer

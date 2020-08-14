@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from "react-router-dom"
 import { connect } from 'react-redux'
+import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
+import loginService from '../services/login'
 import { setUser } from '../reducers/userReducer'
 import { setTimedNotification } from '../reducers/notificationReducer'
 import { getBlogs } from '../reducers/blogsReducer'
-import loginService from '../services/login'
-import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react'
+import Notification from './Notification'
 
 const LoginForm = ({ user, setUser, setTimedNotification, getBlogs }) => {
   const [username, setUsername] = useState('')
@@ -36,12 +37,13 @@ const LoginForm = ({ user, setUser, setTimedNotification, getBlogs }) => {
 
   return (
     <>
+      <Notification />
       <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='teal' textAlign='center'>
             {/* <Image src='/logo.png' /> */}
-        BlogList Log-in
-      </Header>
+            BlogList Log-in
+          </Header>
           <Form size='large' onSubmit={loginUser}>
             <Segment stacked>
               <Form.Input

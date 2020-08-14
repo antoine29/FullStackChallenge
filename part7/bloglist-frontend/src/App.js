@@ -6,7 +6,6 @@ import { setUser } from './reducers/userReducer'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
 import Blogs from './components/Blogs'
-import { Button } from 'semantic-ui-react'
 
 const App = ({ getBlogs, setUser}) => {
   const blogFormRef = useRef()
@@ -23,11 +22,7 @@ const App = ({ getBlogs, setUser}) => {
 
   return (
     <div>
-      <h2>Blogs:</h2>
       <Blogs />
-      <Togglable buttonLabel='new blog' ref={blogFormRef}>
-        <BlogForm togglabeRef={blogFormRef} />
-      </Togglable>
     </div>
   )
 }

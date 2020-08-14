@@ -1,53 +1,95 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
+import { useHistory } from "react-router-dom"
 import { setTimedNotification } from '../reducers/notificationReducer'
 import { getBlogs, createBlog } from '../reducers/blogsReducer'
+import { setUser } from '../reducers/userReducer'
+import { Button, Form, Modal } from 'semantic-ui-react'
 
-const BlogForm = ({ togglabeRef, setTimedNotification, getBlogs, createBlog }) => {
+const BFModal = ({ children, openedCreateBlogForm, openCreateBlogForm, addBlog }) =>
+  <Modal
+    onClose={() => openCreateBlogForm(false)}
+    onOpen={() => openCreateBlogForm(true)}
+    open={openedCreateBlogForm}>
+    <Modal.Header>Add blog:</Modal.Header>
+    <Modal.Content>
+      {children}
+    </Modal.Content>
+    <Modal.Actions>
+      <Button color='black' onClick={() => openCreateBlogForm(false)}>
+        Cancel
+      </Button>
+      <Button
+        content="Save"
+        labelPosition='right'
+        icon='checkmark'
+        onClick={event => {
+          event.preventDefault()
+          addBlog()
+          openCreateBlogForm(false)
+        }}
+        positive />
+    </Modal.Actions>
+  </Modal>
+
+const BlogForm = ({openedCreateBlogForm, openCreateBlogForm, setTimedNotification, getBlogs, createBlog, setUser }) => {
   const [newBlog, setNewBlog] = useState({ author: '', title: '', url: '' })
-  const addBlog = async event => {
-    event.preventDefault()
-    setTimedNotification({type: 'OK', message: `new blog ${newBlog.title} is being added`}, 5000)
-    await createBlog(newBlog)
-    setNewBlog({ author: '', title: '', url: '' })
-    getBlogs()
-    togglabeRef.current.toggleVisibility()
+  const history = useHistory();
+
+  const logout = () => {
+    window.localStorage.clear()
+    setUser(null)
+    history.push('/login')
+  }
+
+  const addBlog = async () => {
+    try{
+      setTimedNotification({type: 'OK', message: `new blog ${newBlog.title} is being added`}, 5000)
+      await createBlog(newBlog)
+      setNewBlog({ author: '', title: '', url: '' })
+      getBlogs()
+    }
+    catch(error)
+    {
+      if(error === 'jwt expired'){
+        setNewBlog({ author: '', title: '', url: '' })
+        logout()
+        setTimedNotification({type: 'ERROR', message: 'Expired session'}, 5000)
+      }
+      else setTimedNotification({type: 'ERROR', message: error}, 5000)
+    }
   }
 
   return(
-    <form onSubmit={ addBlog } className='blogForm'>
-      <div>
-        Author
+    <BFModal openedCreateBlogForm={openedCreateBlogForm} openCreateBlogForm={openCreateBlogForm} addBlog={addBlog}>
+    <Form>
+      <Form.Field>
+        <label>Author</label>
         <input
-          id='authorInput'
-          className='authorInput'
           value={newBlog.author}
           onChange={({ target }) => setNewBlog({ ...newBlog, author: target.value })}/>
-      </div>
-      <div>
-        Title
+      </Form.Field>
+      <Form.Field>
+        <label>Title</label>
         <input
-          id='titleInput'
-          className='titleInput'
           value={newBlog.title}
           onChange={({ target }) => setNewBlog({ ...newBlog, title: target.value })}/>
-      </div>
-      <div>
-        Url
+      </Form.Field>
+      <Form.Field>
+        <label>Url</label>
         <input
-          id='urlInput'
-          className='urlInput'
           value={newBlog.url}
           onChange={({ target }) => setNewBlog({ ...newBlog, url: target.value })}/>
-      </div>
-      <button type="submit">save</button>
-    </form>)
+      </Form.Field>
+    </Form>
+    </BFModal>)
 }
 
 const mapDispatchToProps = {
   setTimedNotification,
   getBlogs,
-  createBlog
+  createBlog,
+  setUser
 }
 
 const ConnectedBlogForm = connect(null, mapDispatchToProps)(BlogForm)

@@ -1,39 +1,71 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useHistory } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import {
-    Button,
-    Container,
-    Divider,
-    Grid,
-    Header,
     Icon,
     Image,
-    List,
     Menu,
-    Segment,
     Sidebar,
-    Visibility,
+    Container
 } from 'semantic-ui-react'
 import { useActualPath } from './utils/utils'
-import { setUser } from '../reducers/userReducer'
+import { setUser, reloadUser } from '../reducers/userReducer'
+import { setTimedNotification } from '../reducers/notificationReducer'
+import BlogForm from './BlogForm'
+import Notification from './Notification'
 
 const MobileContainer = ({ children, Media }) => {
     const [sidebarOpened, setSidebarOpened] = useState(false)
-    const closeSideBar = () => setSidebarOpened(false)
-    const openSideBar = () => setSidebarOpened(true)
+    const [topBarHiden, setTopBarHiden] = useState(false)
+    const closeSideBar = () => {
+        setSidebarOpened(false)
+        setTopBarHiden(false)
+    }
+    const openSideBar = () => {
+        setSidebarOpened(true)
+        setTopBarHiden(true)
+    }
     const currentPath = useActualPath()
     const history = useHistory();
     const dispatch = useDispatch()
     const user = useSelector(state => state.user)
+    const [openedCreateBlogForm, openCreateBlogForm] = useState(false)
+
+    useEffect(() => {
+        dispatch(reloadUser())
+        if (!user) {
+            dispatch(setTimedNotification({type: 'INFO', message:'Session expired'}))
+            history.push('/login')
+        }
+    }, [])
+
     const logout = () => {
         window.localStorage.clear()
         dispatch(setUser(null))
+        setSidebarOpened(false)
         history.push('/login')
     }
-    
+
     return (
-        <Media as={Sidebar.Pushable} at='mobile'>
+        <Media as={Sidebar.Pushable} at='mobile'>         
+            {user && !topBarHiden &&
+                <Container>
+                    <Menu inverted fixed='top'>
+                        <Menu.Item onClick={() => {
+                            openSideBar()
+                        }}>
+                            <Icon name='sidebar' />
+                        </Menu.Item>
+                        <Menu.Item
+                            position='right'
+                            onClick={() => { openCreateBlogForm(true)}}>
+                                <Icon name='add' />
+                                Add blog
+                        </Menu.Item>
+                    </Menu>
+                </Container>
+            }         
+            <BlogForm openedCreateBlogForm={openedCreateBlogForm} openCreateBlogForm={openCreateBlogForm} />
             <Sidebar.Pushable>
                 <Sidebar
                     as={Menu}
@@ -45,26 +77,26 @@ const MobileContainer = ({ children, Media }) => {
                     width='thin'>
                     <Menu.Item
                         as='div'
-                        onClick={closeSideBar}>
+                        onClick={() => {closeSideBar()}}>
                         <Image src='https://react.semantic-ui.com/images/avatar/large/patrick.png' avatar />
-                        {user === null? 'l' : user.name}
+                        {user === null? '' : user.name}
                     </Menu.Item>
-                    <Link to='/'>
-                        <Menu.Item
-                            as='div'
-                            onClick={closeSideBar}
-                            active={currentPath === '/'}>
-                            Blogs
-                        </Menu.Item>
-                    </Link>
-                    <Link to='/users'>
-                        <Menu.Item
-                            as='div'
-                            onClick={closeSideBar}
-                            active={currentPath === '/users'}>
-                            Users
-                        </Menu.Item>
-                    </Link>
+                    <Menu.Item
+                        as='a'
+                        onClick={() => {
+                            closeSideBar()
+                            history.push('/')}}
+                        active={currentPath === '/'}>
+                        Blogs
+                    </Menu.Item>
+                    <Menu.Item
+                        as='a'
+                        onClick={() => {
+                            closeSideBar()
+                            history.push('/users')}}
+                        active={currentPath === '/users'}>
+                        Users
+                    </Menu.Item>
                     <Menu.Item
                         as='div'
                         onClick={logout}>
@@ -72,29 +104,11 @@ const MobileContainer = ({ children, Media }) => {
                 </Sidebar>
 
                 <Sidebar.Pusher dimmed={sidebarOpened}>
-                    <Segment
-                        inverted
-                        textAlign='center'
-                        style={{ minHeight: 350, padding: '1em 0em' }}
-                        vertical>
-                        <Container>
-                            {/* <Menu inverted pointing secondary closeSideBar='large'> */}
-                            <Menu inverted pointing secondary>
-                                <Menu.Item onClick={openSideBar}>
-                                    <Icon name='sidebar' />
-                                </Menu.Item>
-                                {/* <Menu.Item position='right'>
-                                        <Button as='a' inverted>
-                                            Log in
-                                        </Button>
-                                        <Button as='a' inverted style={{ marginLeft: '0.5em' }}>
-                                            Sign Up
-                                        </Button>
-                                    </Menu.Item> */}
-                            </Menu>
-                        </Container>
+                    {/*  */}
+                    <Container style={{ marginTop: '50px'}}>
+                        <Notification />
                         {children}
-                    </Segment>
+                    </Container>
                 </Sidebar.Pusher>
             </Sidebar.Pushable>
         </Media>

@@ -1,23 +1,22 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Link } from "react-router-dom"
 import { getBlogs, likeBlog } from '../reducers/blogsReducer'
+import { List } from 'semantic-ui-react'
+import Blog from './Blog'
 
-const Blogs = ({ blogs }) => 
-  <table>
-    <thead></thead>
-    <tbody>
+const Blogs = ({ blogs, getBlogs, likeBlog }) => {
+
+  return (
+      <List>
       {blogs
-      .map(blog =>
-      <tr key={blog.id}>
-        <td>
-          <Link to={`/blogs/${blog.id}`}> {blog.title} </Link>
-        </td>
-        <td>{blog.likes} likes</td>
-        <td>{blog.comments.length} comments</td>
-      </tr>)}
-    </tbody>
-  </table>
+        .map(blog =>
+          <Blog blog={blog} key={blog.id}/>
+          )
+      }
+    </List>
+  )
+}
+  
 
 const mapStateToProps = state => {
   return {

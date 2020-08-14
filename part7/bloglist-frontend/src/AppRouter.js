@@ -3,22 +3,20 @@ import {
     Switch, Route, BrowserRouter as Router
 } from "react-router-dom"
 import App from './App'
-import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import Users from './components/Users'
 import User from './components/User'
-import Blog from './components/Blog'
-import Header from './components/Header'
+import FullBlog from './components/FullBlog'
 import ResponsiveContainer from './components/ResponsiveContainer'
 
 const AppRouter = () => {
     return(
         <Router>
-            <Notification />
-            {/* <Header /> */}
             <Switch>
                 <Route path='/login'>
-                    <LoginForm />
+                    <ResponsiveContainer>
+                        <LoginForm />
+                    </ResponsiveContainer>
                 </Route>
                 <Route path='/users/:id'>
                     <ResponsiveContainer>
@@ -32,7 +30,7 @@ const AppRouter = () => {
                 </Route>
                 <Route path='/blogs/:id'>
                     <ResponsiveContainer>
-                        <Blog />
+                        <FullBlog />
                     </ResponsiveContainer>
                 </Route>
                 <Route path='/'>
