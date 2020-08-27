@@ -8,6 +8,7 @@ const JWT_SECRET = 's3cr37'
 const Book = require('./models/Book')
 const Author = require('./models/Author')
 const User = require('./models/User')
+const BookFilters = require('./BookFilters')
 
 mongoose.set('useFindAndModify', false)
 const MONGODB_URI = 'mongodb://localhost:27017/library-app?retryWrites=true&w=majority'
@@ -51,6 +52,7 @@ const typeDefs = gql`
         bookCount: Int!
         allBooks(author: String, genre: String): [Book!]!
         allAuthors: [Author!]!
+        allBookGenres: [String!]!
     }
 
     type Mutation {
@@ -79,13 +81,6 @@ const typeDefs = gql`
 
 `
 
-const booksFilter = async args => {
-    let genreFilter = !args.genre ? {} : { genres: args.genre }
-    let books = await Book.find(genreFilter).populate('author')
-    if (args.author) books = books.filter(book => book.author.name === args.author)
-    return books
-}
-
 const resolvers = {
     Author: {
         bookCount: async root => {
@@ -99,8 +94,9 @@ const resolvers = {
         },
         authorCount: () => Author.collection.countDocuments(),
         bookCount: () => Book.collection.countDocuments(),
-        allBooks: (root, args) => booksFilter(args),
-        allAuthors: () => Author.find({})
+        allBooks: (root, args) => BookFilters.booksFilter(args),
+        allAuthors: () => Author.find({}),
+        allBookGenres: async () => await BookFilters.allGenres()
     },
     Mutation: {
         addBook: async (root, args, { currentUser }) => {
