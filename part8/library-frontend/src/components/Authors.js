@@ -21,7 +21,7 @@ const Authors = (props) => {
   else authors = result.data.allAuthors
 
   const optionChange = event => {
-    console.log('changinig to:', event.target.value)
+    console.log('picking:', event.target.value)
     setSelectedAuthor(event.target.value)
   }
 
