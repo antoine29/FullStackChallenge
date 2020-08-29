@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { useApolloClient } from '@apollo/client';
+import Notification from './components/Notification'
 import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
-import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
+import Recommend from './components/Recommend'
 
 const App = ({apolloClient}) => {
   const client = useApolloClient()
@@ -22,12 +23,13 @@ const App = ({apolloClient}) => {
     <>
       <Notification notification={notification} setNotification={setNotification}/>
       {
-        localStorage.getItem('phonenumbers-user-token') ? 
+        localStorage.getItem('library-app') ? 
         <div>
           <div>
             <button onClick={() => setPage('authors')}>authors</button>
             <button onClick={() => setPage('books')}>books</button>
             <button onClick={() => setPage('add')}>add book</button>
+            <button onClick={() => setPage('recommend')}>recommend</button>
             <button onClick={() => logout()}>logout</button>
           </div>
   
@@ -36,6 +38,8 @@ const App = ({apolloClient}) => {
           <Books show={page === 'books'} />
   
           <NewBook show={page === 'add'} setNotification={setNotification} />
+          
+          <Recommend show={page === 'recommend'} setNotification={setNotification} />
         </div> :
         <LoginForm setNotification={setNotification} setToken={setToken}/>
       }

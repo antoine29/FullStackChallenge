@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useMutation } from '@apollo/client';
-import { ADD_BOOK, ALL_AUTHORS, ALL_BOOKS } from '../queries'
+import { ADD_BOOK, ALL_AUTHORS, ALL_BOOKS_FILTERED } from '../queries'
 
 const NewBook = (props) => {
   const [title, setTitle] = useState('')
@@ -11,15 +11,18 @@ const NewBook = (props) => {
   const [addBook] = useMutation(ADD_BOOK, {
     onError: error => {
       console.log('ERROR:', error)
-      console.log('ERROR:', error.graphQLErrors[0].message)
-      props.setNotification(error.graphQLErrors[0].message)
-      setTimeout(() => { props.setNotification(null) }, 2000);
+      if(error.graphQLErrors[0]){
+        console.log('ERROR:', error.graphQLErrors[0].message)
+        props.setNotification(error.graphQLErrors[0].message)
+        setTimeout(() => { props.setNotification(null) }, 2000);
+      }
     },
     update: (store, response) => {
       console.log('UPDATING BOOKS CACHE:')
-      const booksInStore = store.readQuery({ query: ALL_BOOKS})
+      const booksInStore = store.readQuery({ query: ALL_BOOKS_FILTERED})
+      console.log('booksInStore:', booksInStore)
       store.writeQuery({
-        query: ALL_BOOKS,
+        query: ALL_BOOKS_FILTERED,
         data: {
           ...booksInStore,
           allBooks: [ ...booksInStore.allBooks, response.data.addBook]
@@ -41,6 +44,7 @@ const NewBook = (props) => {
     }
     
   })
+  
   if (!props.show) {
     return null
   }
