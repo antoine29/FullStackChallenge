@@ -20,7 +20,6 @@ mongoose
     .then(() => { console.log('connected to MongoDB') })
     .catch((error) => { console.log('error connection to MongoDB:', error.message) })
 
-
 const typeDefs = gql`
     type User {
         username: String!
@@ -87,10 +86,7 @@ const typeDefs = gql`
 
 const resolvers = {
     Author: {
-        bookCount: async root => {
-            const authorBooks = await Book.find({}).populate('author')
-            return authorBooks.filter(book => book.author.name === root.name).length
-        }
+        bookCount: async root => root.books.length
     },
     Query: {
         me: (root, args, context) => {
@@ -99,7 +95,7 @@ const resolvers = {
         authorCount: () => Author.collection.countDocuments(),
         bookCount: () => Book.collection.countDocuments(),
         allBooks: (root, args) => BookFilters.booksFilter(args),
-        allAuthors: () => Author.find({}),
+        allAuthors: () => Author.find({}).populate('books'),
         allBookGenres: async () => await BookFilters.allGenres()
     },
     Mutation: {
@@ -116,6 +112,14 @@ const resolvers = {
                 }
 
                 newBook = await new Book({ ...args, id: uuid(), author: !author ? newAuthor.id : author.id }).save()
+                if (author){
+                    author.books = author.books.concat(newBook.id)
+                    await author.save()
+                }
+                else {
+                    newAuthor.books = newAuthor.books.concat(newBook.id)
+                    await newAuthor.save()
+                }
                 let foundCreatedBook = await Book.findById(newBook.id).populate('author')
                 console.log('created book', foundCreatedBook)
                 pubsub.publish('BOOK_ADDED', { bookAdded: foundCreatedBook })
