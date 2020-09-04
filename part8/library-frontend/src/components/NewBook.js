@@ -16,33 +16,7 @@ const NewBook = (props) => {
         props.setNotification(error.graphQLErrors[0].message)
         setTimeout(() => { props.setNotification(null) }, 2000);
       }
-    },
-    update: (store, response) => {
-      console.log('UPDATING BOOKS CACHE:')
-      const booksInStore = store.readQuery({ query: ALL_BOOKS_FILTERED})
-      console.log('booksInStore:', booksInStore)
-      store.writeQuery({
-        query: ALL_BOOKS_FILTERED,
-        data: {
-          ...booksInStore,
-          allBooks: [ ...booksInStore.allBooks, response.data.addBook]
-        }
-      })
-
-      const authorsInStore = store.readQuery({ query: ALL_AUTHORS})
-      console.log('CACHED AUTHORS:', authorsInStore.allAuthors)
-      if(!authorsInStore.allAuthors.find(author => author.name === response.data.addBook.author.name)){
-        console.log('UPDATING AUTHORS CACHE:')
-        store.writeQuery({
-          query: ALL_AUTHORS,
-          data: {
-            ...authorsInStore,
-            allAuthors: [ ...authorsInStore.allAuthors, response.data.addBook.author]
-          }
-        })
-      }
     }
-    
   })
   
   if (!props.show) {
