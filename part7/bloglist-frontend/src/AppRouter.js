@@ -1,9 +1,8 @@
-import React from 'react'
-import {
-    Switch, Route, BrowserRouter as Router
-} from "react-router-dom"
+import React, { useEffect }from 'react'
+import { Switch, Route, BrowserRouter as Router } from "react-router-dom"
 import App from './App'
 import LoginForm from './components/LoginForm'
+import Blogs from './components/Blogs'
 import Users from './components/Users'
 import User from './components/User'
 import FullBlog from './components/FullBlog'

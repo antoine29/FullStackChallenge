@@ -27,8 +27,8 @@ const DesktopContainer = ({ children, Media }) => {
 
     return (
         <Media greaterThan='mobile'>
-            {user && <>
-            <BlogForm open={open} setOpen={setOpen} />
+            <BlogForm openedCreateBlogForm={open} openCreateBlogForm={setOpen} />
+            {user &&
             <Container>
                 <Menu
                     fixed='top'
@@ -62,7 +62,7 @@ const DesktopContainer = ({ children, Media }) => {
                     </Container>
                 </Menu>
                 {/* <HomepageHeading /> */}
-            </Container> </>}
+            </Container>}
             <Container style={{ marginTop: '65px'}} inverted>
                 <Notification />
                 {children}

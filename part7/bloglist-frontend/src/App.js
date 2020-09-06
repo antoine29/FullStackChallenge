@@ -6,7 +6,7 @@ import { setUser } from './reducers/userReducer'
 import Blogs from './components/Blogs'
 
 const App = ({ getBlogs, setUser}) => {
-  const history = useHistory();
+  const history = useHistory()
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON) {
@@ -18,9 +18,9 @@ const App = ({ getBlogs, setUser}) => {
   }, [])
 
   return (
-    <div>
       <Blogs />
-    </div>
+    // <div>
+    // </div>
   )
 }
 

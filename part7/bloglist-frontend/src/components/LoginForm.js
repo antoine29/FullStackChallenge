@@ -9,9 +9,9 @@ import { getBlogs } from '../reducers/blogsReducer'
 import Notification from './Notification'
 
 const LoginForm = ({ user, setUser, setTimedNotification, getBlogs }) => {
+  const history = useHistory();
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const history = useHistory();
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
@@ -33,7 +33,7 @@ const LoginForm = ({ user, setUser, setTimedNotification, getBlogs }) => {
       setUsername('')
       setPassword('')
     } 
-  }  
+  }
 
   return (
     <>

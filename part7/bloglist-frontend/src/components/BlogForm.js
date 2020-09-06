@@ -62,26 +62,26 @@ const BlogForm = ({openedCreateBlogForm, openCreateBlogForm, setTimedNotificatio
 
   return(
     <BFModal openedCreateBlogForm={openedCreateBlogForm} openCreateBlogForm={openCreateBlogForm} addBlog={addBlog}>
-    <Form>
-      <Form.Field>
-        <label>Author</label>
-        <input
-          value={newBlog.author}
-          onChange={({ target }) => setNewBlog({ ...newBlog, author: target.value })}/>
-      </Form.Field>
-      <Form.Field>
-        <label>Title</label>
-        <input
-          value={newBlog.title}
-          onChange={({ target }) => setNewBlog({ ...newBlog, title: target.value })}/>
-      </Form.Field>
-      <Form.Field>
-        <label>Url</label>
-        <input
-          value={newBlog.url}
-          onChange={({ target }) => setNewBlog({ ...newBlog, url: target.value })}/>
-      </Form.Field>
-    </Form>
+      <Form>
+        <Form.Field>
+          <label>Author</label>
+          <input
+            value={newBlog.author}
+            onChange={({ target }) => setNewBlog({ ...newBlog, author: target.value })}/>
+        </Form.Field>
+        <Form.Field>
+          <label>Title</label>
+          <input
+            value={newBlog.title}
+            onChange={({ target }) => setNewBlog({ ...newBlog, title: target.value })}/>
+        </Form.Field>
+        <Form.Field>
+          <label>Url</label>
+          <input
+            value={newBlog.url}
+            onChange={({ target }) => setNewBlog({ ...newBlog, url: target.value })}/>
+        </Form.Field>
+      </Form>
     </BFModal>)
 }
 
