@@ -35,7 +35,7 @@ const DesktopContainer = ({ children, Media }) => {
                     size='large'
                     inverted>
                     <Container>
-                        <Dropdown item simple text='Blogs' onClick={() => { history.push('/') }}>
+                        <Dropdown item simple text='Blogs' onClick={() => { history.push('/blogs') }}>
                             <Dropdown.Menu>
                                 <Dropdown.Item onClick={() => {setOpen(true)}}>Add blog</Dropdown.Item>
                             </Dropdown.Menu>

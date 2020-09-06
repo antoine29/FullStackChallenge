@@ -5,6 +5,7 @@ import { Button, Container, Header, Comment, Form, Confirm } from 'semantic-ui-r
 import blogService from '../services/blogs'
 import { deleteBlog, getBlogs } from '../reducers/blogsReducer'
 import Blog from './Blog'
+import ResponsiveContainer from './ResponsiveContainer'
 
 const FullBlog = ({ deleteBlog, getBlogs, blogs }) => {
     const history = useHistory();
@@ -51,37 +52,39 @@ const FullBlog = ({ deleteBlog, getBlogs, blogs }) => {
     let logedUser = JSON.parse(window.localStorage.getItem('loggedBlogAppUser'))
 
     return blog !== null ?
-        <Container>
-            <Confirm
-                open={deleteConfirm}
-                onCancel={() => {setDeleteConfirm(false)}}
-                onConfirm={_deleteBlog}/>
-            <Blog blog={blog} />
-            <Comment.Group>
-                <Header as='h3'>
-                    Comments:
-                </Header>
-                {blog.comments.map((comment, index) =>
-                    <Comment key={comment+index}>
-                        <Comment.Content>
-                            <Comment.Author as='a'>Anon {index}</Comment.Author>
-                            <Comment.Text>{comment}</Comment.Text>
-                        </Comment.Content>
-                    </Comment>
-                )}
-                <Form reply>
-                    <Form.TextArea
-                        value={newComment}
-                        onChange={event => {
-                            event.preventDefault()
-                            setNewComment(event.target.value)
-                    }} />
-                    <Button content='Add comment' labelPosition='left' icon='edit' primary onClick={addCommentHandler}/>
-                </Form>
-            </Comment.Group>
-            {blog.user.id === logedUser.id &&
-            <Button content='Delete blog' labelPosition='left' icon='trash' primary onClick={() => {setDeleteConfirm(true)}}/>}
-        </Container>
+        <ResponsiveContainer>
+            <Container>
+                <Confirm
+                    open={deleteConfirm}
+                    onCancel={() => {setDeleteConfirm(false)}}
+                    onConfirm={_deleteBlog}/>
+                <Blog blog={blog} />
+                <Comment.Group>
+                    <Header as='h3'>
+                        Comments:
+                    </Header>
+                    {blog.comments.map((comment, index) =>
+                        <Comment key={comment+index}>
+                            <Comment.Content>
+                                <Comment.Author as='a'>Anon {index}</Comment.Author>
+                                <Comment.Text>{comment}</Comment.Text>
+                            </Comment.Content>
+                        </Comment>
+                    )}
+                    <Form reply>
+                        <Form.TextArea
+                            value={newComment}
+                            onChange={event => {
+                                event.preventDefault()
+                                setNewComment(event.target.value)
+                        }} />
+                        <Button content='Add comment' labelPosition='left' icon='edit' primary onClick={addCommentHandler}/>
+                    </Form>
+                </Comment.Group>
+                {blog.user.id === logedUser.id &&
+                <Button content='Delete blog' labelPosition='left' icon='trash' primary onClick={() => {setDeleteConfirm(true)}}/>}
+            </Container>
+        </ResponsiveContainer>
         :
         <></>
 }

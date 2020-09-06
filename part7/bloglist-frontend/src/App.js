@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { getBlogs } from './reducers/blogsReducer'
 import { setUser } from './reducers/userReducer'
 import Blogs from './components/Blogs'
+import ResponsiveContainer from './components/ResponsiveContainer'
 
 const App = ({ getBlogs, setUser}) => {
   const history = useHistory()
@@ -18,9 +19,9 @@ const App = ({ getBlogs, setUser}) => {
   }, [])
 
   return (
+    <ResponsiveContainer>
       <Blogs />
-    // <div>
-    // </div>
+    </ResponsiveContainer>
   )
 }
 

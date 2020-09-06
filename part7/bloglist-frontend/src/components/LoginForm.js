@@ -6,7 +6,7 @@ import loginService from '../services/login'
 import { setUser } from '../reducers/userReducer'
 import { setTimedNotification } from '../reducers/notificationReducer'
 import { getBlogs } from '../reducers/blogsReducer'
-import Notification from './Notification'
+import ResponsiveContainer from './ResponsiveContainer'
 
 const LoginForm = ({ user, setUser, setTimedNotification, getBlogs }) => {
   const history = useHistory();
@@ -15,7 +15,7 @@ const LoginForm = ({ user, setUser, setTimedNotification, getBlogs }) => {
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
-    if (loggedUserJSON || user) history.push('/')
+    if (loggedUserJSON || user) history.push('/blogs')
   }, [user])
 
   const loginUser = async event => {
@@ -36,8 +36,7 @@ const LoginForm = ({ user, setUser, setTimedNotification, getBlogs }) => {
   }
 
   return (
-    <>
-      <Notification />
+    <ResponsiveContainer>
       <Grid textAlign='center' style={{ height: '100vh' }} verticalAlign='middle'>
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='teal' textAlign='center'>
@@ -72,7 +71,7 @@ const LoginForm = ({ user, setUser, setTimedNotification, getBlogs }) => {
           {/* <Message> New to us? <a href='#'>Sign Up</a></Message> */}
         </Grid.Column>
       </Grid>
-    </>
+    </ResponsiveContainer>
   )
 }
 

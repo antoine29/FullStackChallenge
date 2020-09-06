@@ -85,7 +85,7 @@ const MobileContainer = ({ children, Media }) => {
                         as='a'
                         onClick={() => {
                             closeSideBar()
-                            history.push('/')}}
+                            history.push('/blogs')}}
                         active={currentPath === '/'}>
                         Blogs
                     </Menu.Item>

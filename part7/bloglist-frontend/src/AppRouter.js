@@ -1,41 +1,25 @@
-import React, { useEffect }from 'react'
-import { Switch, Route, BrowserRouter as Router } from "react-router-dom"
-import App from './App'
+import React from 'react'
+import { Switch, Route, BrowserRouter as Router, Redirect } from "react-router-dom"
 import LoginForm from './components/LoginForm'
 import Blogs from './components/Blogs'
 import Users from './components/Users'
 import User from './components/User'
 import FullBlog from './components/FullBlog'
-import ResponsiveContainer from './components/ResponsiveContainer'
+import PrivateRoute from './PrivateRoute'
 
 const AppRouter = () => {
     return(
         <Router>
             <Switch>
                 <Route path='/login'>
-                    <ResponsiveContainer>
-                        <LoginForm />
-                    </ResponsiveContainer>
+                    <LoginForm />
                 </Route>
-                <Route path='/users/:id'>
-                    <ResponsiveContainer>
-                        <User />
-                    </ResponsiveContainer>
-                </Route>
-                <Route path='/users'>
-                    <ResponsiveContainer>
-                        <Users />
-                    </ResponsiveContainer>
-                </Route>
-                <Route path='/blogs/:id'>
-                    <ResponsiveContainer>
-                        <FullBlog />
-                    </ResponsiveContainer>
-                </Route>
-                <Route path='/'>
-                    <ResponsiveContainer>
-                        <App />
-                    </ResponsiveContainer>
+                <PrivateRoute path='/users/:id' component={User}/>
+                <PrivateRoute path='/users' component={Users}/>
+                <PrivateRoute path='/blogs/:id' component={FullBlog}/>
+                <PrivateRoute path='/blogs' component={Blogs}/>
+                <Route>
+                    <Redirect to='/blogs' />
                 </Route>
             </Switch>
         </Router>
