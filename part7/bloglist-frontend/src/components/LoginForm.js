@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useHistory } from "react-router-dom"
+import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Button, Form, Grid, Header, Segment } from 'semantic-ui-react'
 import loginService from '../services/login'
@@ -9,7 +9,7 @@ import { getBlogs } from '../reducers/blogsReducer'
 import ResponsiveContainer from './ResponsiveContainer'
 
 const LoginForm = ({ user, setUser, setTimedNotification, getBlogs }) => {
-  const history = useHistory();
+  const history = useHistory()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
@@ -27,12 +27,12 @@ const LoginForm = ({ user, setUser, setTimedNotification, getBlogs }) => {
       getBlogs()
     }
     catch (exception) {
-      setTimedNotification({type: 'ERROR', message: 'Wrong credentials'}, 5000)
+      setTimedNotification({ type: 'ERROR', message: 'Wrong credentials' }, 5000)
     }
     finally{
       setUsername('')
       setPassword('')
-    } 
+    }
   }
 
   return (
@@ -65,7 +65,7 @@ const LoginForm = ({ user, setUser, setTimedNotification, getBlogs }) => {
                 fluid size='large'
                 type="submit">
                 Login
-          </Button>
+              </Button>
             </Segment>
           </Form>
           {/* <Message> New to us? <a href='#'>Sign Up</a></Message> */}

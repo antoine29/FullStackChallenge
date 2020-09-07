@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { connect } from 'react-redux'
-import { useHistory } from "react-router-dom"
+import { useHistory } from 'react-router-dom'
 import { setTimedNotification } from '../reducers/notificationReducer'
 import { getBlogs, createBlog } from '../reducers/blogsReducer'
 import { setUser } from '../reducers/userReducer'
@@ -32,9 +32,9 @@ const BFModal = ({ children, openedCreateBlogForm, openCreateBlogForm, addBlog }
     </Modal.Actions>
   </Modal>
 
-const BlogForm = ({openedCreateBlogForm, openCreateBlogForm, setTimedNotification, getBlogs, createBlog, setUser }) => {
+const BlogForm = ({ openedCreateBlogForm, openCreateBlogForm, setTimedNotification, getBlogs, createBlog, setUser }) => {
   const [newBlog, setNewBlog] = useState({ author: '', title: '', url: '' })
-  const history = useHistory();
+  const history = useHistory()
 
   const logout = () => {
     window.localStorage.clear()
@@ -44,7 +44,7 @@ const BlogForm = ({openedCreateBlogForm, openCreateBlogForm, setTimedNotificatio
 
   const addBlog = async () => {
     try{
-      setTimedNotification({type: 'OK', message: `new blog ${newBlog.title} is being added`}, 5000)
+      setTimedNotification({ type: 'OK', message: `new blog ${newBlog.title} is being added` }, 5000)
       await createBlog(newBlog)
       setNewBlog({ author: '', title: '', url: '' })
       getBlogs()
@@ -54,9 +54,9 @@ const BlogForm = ({openedCreateBlogForm, openCreateBlogForm, setTimedNotificatio
       if(error === 'jwt expired'){
         setNewBlog({ author: '', title: '', url: '' })
         logout()
-        setTimedNotification({type: 'ERROR', message: 'Expired session'}, 5000)
+        setTimedNotification({ type: 'ERROR', message: 'Expired session' }, 5000)
       }
-      else setTimedNotification({type: 'ERROR', message: error}, 5000)
+      else setTimedNotification({ type: 'ERROR', message: error }, 5000)
     }
   }
 

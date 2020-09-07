@@ -2,26 +2,26 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Message } from 'semantic-ui-react'
 
-let globalDispatch = null 
+let globalDispatch = null
 const NotificationBuilder = (type, message) => {
   let messageType = null
   let messageHeader = ''
   switch(type){
-    case 'ERROR': {
-      messageType = {negative: true}
-      messageHeader = 'Error'
-      break
-    }
-    case 'OK': {
-      messageType = {positive: true}
-      messageHeader = 'Success'
-      break
-    }
-    default: {
-      messageType = {info: true}
-      messageHeader = 'Info'
-      break
-    }
+  case 'ERROR': {
+    messageType = { negative: true }
+    messageHeader = 'Error'
+    break
+  }
+  case 'OK': {
+    messageType = { positive: true }
+    messageHeader = 'Success'
+    break
+  }
+  default: {
+    messageType = { info: true }
+    messageHeader = 'Info'
+    break
+  }
   }
 
   return (

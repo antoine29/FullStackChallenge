@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useHistory } from "react-router-dom"
+import { Link, useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { likeBlog, getBlogs } from '../reducers/blogsReducer'
 import { Image, Card, Icon } from 'semantic-ui-react'
@@ -33,10 +33,10 @@ const Blog = ({ blog }) => {
       <Card.Content extra>
         <span style={{ marginRight: 10 }}>
           <Icon name='thumbs up' onClick={() => { increaseLikes(blog) }} />{blog.likes} likes
-          </span>
+        </span>
         <span onClick={() => { history.push(`/blogs/${blog.id}`) }}>
           <Icon name='comments' />{blog.comments.length} comments
-          </span>
+        </span>
       </Card.Content>
     </Card>
     :

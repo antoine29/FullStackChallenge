@@ -1,11 +1,11 @@
-import React, { useEffect} from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
-import { getBlogs, likeBlog } from '../reducers/blogsReducer'
+import { getBlogs } from '../reducers/blogsReducer'
 import { List } from 'semantic-ui-react'
 import Blog from './Blog'
 import ResponsiveContainer from './ResponsiveContainer'
 
-const Blogs = ({ blogs, getBlogs, likeBlog }) => {
+const Blogs = ({ blogs, getBlogs }) => {
 
   useEffect(() => {
     getBlogs()
@@ -14,16 +14,16 @@ const Blogs = ({ blogs, getBlogs, likeBlog }) => {
   return (
     <ResponsiveContainer>
       <List>
-      {blogs
-        .map(blog =>
-          <Blog blog={blog} key={blog.id}/>
+        {blogs
+          .map(blog =>
+            <Blog blog={blog} key={blog.id}/>
           )
-      }
+        }
       </List>
     </ResponsiveContainer>
   )
 }
-  
+
 
 const mapStateToProps = state => {
   return {
@@ -32,8 +32,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = {
-  getBlogs,
-  likeBlog
+  getBlogs
 }
 
 const ConnectedBlogs = connect(mapStateToProps, mapDispatchToProps)(Blogs)

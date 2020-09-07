@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
-import { useHistory } from "react-router-dom"
+import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { getBlogs } from './reducers/blogsReducer'
 import { setUser } from './reducers/userReducer'
 import Blogs from './components/Blogs'
 import ResponsiveContainer from './components/ResponsiveContainer'
 
-const App = ({ getBlogs, setUser}) => {
+const App = ({ getBlogs, setUser }) => {
   const history = useHistory()
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')

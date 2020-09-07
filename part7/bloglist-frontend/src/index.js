@@ -6,6 +6,6 @@ import store from './store'
 import 'semantic-ui-css/semantic.min.css'
 
 ReactDOM.render(
-    <Provider store={store}>
-        <AppRouter />
-    </Provider>, document.getElementById('root'))
+  <Provider store={store}>
+    <AppRouter />
+  </Provider>, document.getElementById('root'))
