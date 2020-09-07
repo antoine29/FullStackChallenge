@@ -23,17 +23,29 @@ FullStackChallenge/
 └───part6/
 │   └───redux-anecdotes/
 │   └───unicafe-redux/
+└───part7/
+│   └───bloglist-frontend/
+│   └───country-hook/
+│   └───routed-anecdotes/
+│   └───ultimate-hooks/
+└───part8/
+│   └───library-backend/
+│   └───library-frontend/
 │   README.md
 ```
 
-### [part2. Countries application](./part2/countries/README.md)
+[Part2. Countries application](./part2/countries/README.md)
 
-### [part2. Phonebook frontend application](./part2/phonebook/README.md)
+[Part2. Phonebook frontend application](./part2/phonebook/README.md)
 
-### [part3. Phonebook backend application](./part3/phoneBookBackend/README.md)
+[Part3. Phonebook backend application](./part3/phoneBookBackend/README.md)
 
-### [part4. BlogList backend application](./part4/blogList/README.md)
+[Part4. BlogList backend application](./part4/blogList/README.md)
 
-### [part5. BlogList frontend application](./part5/bloglist-frontend/README.md)
+[Part5. BlogList frontend application](./part5/bloglist-frontend/README.md)
 
-### [part6. `unicafe-redux` and `redux-anecdotes` applications](./part6/README.md)
+[Part6. `unicafe-redux` and `redux-anecdotes` applications](./part6/README.md)
+
+[Part7. Estiled BlogList frontend app](./part7/bloglist-frontend/README.md)
+
+[Part8. GraphQL library application](./part8/README.md)
