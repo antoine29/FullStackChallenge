@@ -6,13 +6,15 @@ import {
     Image,
     Menu,
     Sidebar,
-    Container
+    Container,
+    Sticky
 } from 'semantic-ui-react'
 import { useActualPath } from './utils/utils'
 import { setUser, reloadUser } from '../reducers/userReducer'
 import { setTimedNotification } from '../reducers/notificationReducer'
 import BlogForm from './BlogForm'
 import Notification from './Notification'
+import { node } from 'prop-types'
 
 const MobileContainer = ({ children, Media }) => {
     const [sidebarOpened, setSidebarOpened] = useState(false)
@@ -66,42 +68,44 @@ const MobileContainer = ({ children, Media }) => {
                 </Container>
             }         
             <BlogForm openedCreateBlogForm={openedCreateBlogForm} openCreateBlogForm={openCreateBlogForm} />
-            <Sidebar.Pushable>
-                <Sidebar
-                    as={Menu}
-                    animation='overlay'
-                    onHide={closeSideBar}
-                    visible={sidebarOpened}
-                    inverted
-                    vertical
-                    width='thin'>
-                    <Menu.Item
-                        as='div'
-                        onClick={() => {closeSideBar()}}>
-                        <Image src='https://react.semantic-ui.com/images/avatar/large/patrick.png' avatar />
-                        {user === null? '' : user.name}
-                    </Menu.Item>
-                    <Menu.Item
-                        as='a'
-                        onClick={() => {
-                            closeSideBar()
-                            history.push('/blogs')}}
-                        active={currentPath === '/'}>
-                        Blogs
-                    </Menu.Item>
-                    <Menu.Item
-                        as='a'
-                        onClick={() => {
-                            closeSideBar()
-                            history.push('/users')}}
-                        active={currentPath === '/users'}>
-                        Users
-                    </Menu.Item>
-                    <Menu.Item
-                        as='div'
-                        onClick={logout}>
-                        Log out</Menu.Item>
-                </Sidebar>
+            <Sidebar.Pushable style={{ height: '100vh', transform: 'none' }}>
+                <Sticky>
+                    <Sidebar
+                        as={Menu}
+                        animation='overlay'
+                        onHide={closeSideBar}
+                        visible={sidebarOpened}
+                        inverted
+                        vertical
+                        width='thin'>
+                        <Menu.Item
+                            as='div'
+                            onClick={() => {closeSideBar()}}>
+                            <Image src='https://react.semantic-ui.com/images/avatar/large/patrick.png' avatar />
+                            {user === null? '' : user.name}
+                        </Menu.Item>
+                        <Menu.Item
+                            as='a'
+                            onClick={() => {
+                                closeSideBar()
+                                history.push('/blogs')}}
+                            active={currentPath === '/'}>
+                            Blogs
+                        </Menu.Item>
+                        <Menu.Item
+                            as='a'
+                            onClick={() => {
+                                closeSideBar()
+                                history.push('/users')}}
+                            active={currentPath === '/users'}>
+                            Users
+                        </Menu.Item>
+                        <Menu.Item
+                            as='div'
+                            onClick={logout}>
+                            Log out</Menu.Item>
+                    </Sidebar>
+                </Sticky>
 
                 <Sidebar.Pusher dimmed={sidebarOpened}>
                     {/*  */}
