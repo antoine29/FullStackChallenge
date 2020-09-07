@@ -32,9 +32,14 @@ const Blog = ({ blog }) => {
       </Card.Content>
       <Card.Content extra>
         <span style={{ marginRight: 10 }}>
-          <Icon name='thumbs up' onClick={() => { increaseLikes(blog) }} />{blog.likes} likes
+          <Icon
+            name='thumbs up'
+            style={{ cursor: 'pointer' }}
+            onClick={() => { increaseLikes(blog) }} />{blog.likes} likes
         </span>
-        <span onClick={() => { history.push(`/blogs/${blog.id}`) }}>
+        <span
+          style={{ cursor: 'pointer' }}
+          onClick={() => { history.push(`/blogs/${blog.id}`) }}>
           <Icon name='comments' />{blog.comments.length} comments
         </span>
       </Card.Content>

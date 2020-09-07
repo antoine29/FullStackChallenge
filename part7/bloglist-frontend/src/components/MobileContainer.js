@@ -88,21 +88,19 @@ const MobileContainer = ({ children, Media }) => {
               onClick={() => {
                 closeSideBar()
                 history.push('/blogs')}}
-              active={currentPath === '/'}>
-                            Blogs
+              active={currentPath === '/'}> Blogs
             </Menu.Item>
             <Menu.Item
               as='a'
               onClick={() => {
                 closeSideBar()
                 history.push('/users')}}
-              active={currentPath === '/users'}>
-                            Users
+              active={currentPath === '/users'}> Users
             </Menu.Item>
             <Menu.Item
-              as='div'
-              onClick={logout}>
-                            Log out</Menu.Item>
+              as='a'
+              onClick={logout}> Log out
+            </Menu.Item>
           </Sidebar>
         </Sticky>
 

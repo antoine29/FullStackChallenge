@@ -9,14 +9,16 @@ const User = () => {
   const userMatcher = useRouteMatch('/users/:id')
 
   useEffect(() => {
+    let isMounted = true
     const userId = userMatcher ?
       userMatcher.params.id : null
     usersService
       .getAll()
       .then(users => {
         const user = users.find(_user => _user.id === userId)
-        setUser(user)
+        if(isMounted) setUser(user)
       })
+    return () => {isMounted = false}
   })
 
   return(
