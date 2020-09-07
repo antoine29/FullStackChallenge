@@ -1,0 +1,136 @@
+query counts {
+    authorCount,
+    bookCount
+  }
+  
+query allAuthors {
+  allAuthors{
+    id,
+    name,
+    born,
+    bookCount
+  }
+}
+
+query allBooks {
+  allBooks{
+    id,
+    title,
+    published,
+    author {id, name, born},
+    genres
+  }
+}
+
+query allBooks_author_filtered {
+  allBooks(author: "author0"){
+    id,
+    title,
+    published,
+    author {id, name, born},
+    genres
+  }
+}
+
+query allBooks_genre_filtered {
+  allBooks(genre: "g1"){
+    id,
+    title,
+    published,
+    author {id, name, born},
+    genres
+  }
+}
+
+query allBooks_filtered {
+  allBooks(author: "author0", genre: "g0"){
+    id,
+    title,
+    published,
+    author {id, name, born},
+    genres
+  }
+}
+
+mutation addBook {
+  addBook(
+    title: "bookSub1",
+      published: 2020,
+    author: "author3",
+    genres: ["g1", "g2"])
+ {
+    id,
+    title,
+    published,
+    author {id, name, born},
+    genres
+  }
+}
+
+mutation editAuthor {
+  editAuthor(
+    name: "author2",
+    born: 1999) {
+    id,
+    name,
+    born,
+    bookCount
+  }
+}
+
+mutation editAuthor_vars($name: String!, $born: Int!) {
+  editAuthor(
+    name: $name,
+    born: $born) {
+    id,
+    name,
+    born,
+    bookCount
+  }
+}
+
+mutation addBook_vars($title: String!, $published: Int!, $author: String!, $genres: [String!]!) {
+  addBook(
+    title: $title,
+    published: $published,
+    author: $author,
+    genres: $genres) {
+    id,
+    title,
+    published,
+    author {id, name, born},
+    genres
+  }
+}
+
+mutation createUser{
+  createUser(
+      username: "user0",
+      favoriteGenre: "g0"
+  ){
+    id,
+    username,
+    favoriteGenre
+  }
+}
+
+mutation login{
+  login(
+    username: "user0",
+    password: "password"
+  ){
+    value
+  }
+}
+
+query me {
+  me {
+    id,
+    username,
+    favoriteGenre
+  }
+}
+
+query allBookGenres {
+  allBookGenres
+}
