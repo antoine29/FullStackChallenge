@@ -1,6 +1,6 @@
 # Frontend BlogList application
 
-This is enhanced version of the part5 BlogList application. The enhancements includes:
+This is an enhanced version of the part5 BlogList application. The enhancements includes:
 - Redux for state management 
 - React-router for the route management
 - SemanticUI styled components 
