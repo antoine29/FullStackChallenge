@@ -3,7 +3,8 @@
 This is an enhanced version of the part5 BlogList application. The enhancements includes:
 - Redux for state management 
 - React-router for the route management
-- SemanticUI styled components 
+- SemanticUI styled components
+- Responsive (mobile and desktop layouts)
 
 ![](demo.gif)
 
