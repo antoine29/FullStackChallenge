@@ -4,7 +4,7 @@ export interface BmiParams {
     value2: number;
 }
 
-const _parseArguments = (args: Array<string>): BmiParams => {
+export const _parseArguments = (args: Array<string>): BmiParams => {
     if (args.length < 4) throw new Error('Not enough arguments');
     if (args.length > 4) throw new Error('Too many arguments');
 
@@ -30,11 +30,3 @@ export const calculateBmi = (height: number, mass: number): string => {
     if (35 < bmi && bmi <= 40) return 'Obese Class II (Severely obese)';
     return 'Obese Class III (Very severely obese)';
 };
-
-try{
-    const { value1, value2 } = _parseArguments(process.argv);
-    console.log(calculateBmi(value1, value2));
-}
-catch(e){
-    console.log('Error, something bad happened, message: ', e);
-}

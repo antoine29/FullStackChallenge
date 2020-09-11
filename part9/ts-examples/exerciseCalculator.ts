@@ -1,5 +1,5 @@
 // npm run calculateExercises 2 1 0 2 4.5 0 3 1 0 4
-interface ExerciceParameters {
+export interface ExerciceParameters {
     hours: number[];
     target: number;
 }
@@ -19,7 +19,7 @@ interface ExerciceResult {
     average: number;
 }
 
-const parseExerciceArguments = (args: Array<string>): ExerciceParameters => {
+export const parseExerciceArguments = (args: Array<string>): ExerciceParameters => {
     if (args.length < 4) throw new Error('Not enough arguments');
     const values: number[] = [];
     for (let index = 2; index < args.length; index++) {
@@ -52,7 +52,7 @@ const getRating = (target: number, total: number): Rating => {
     };
 };
 
-const calculateExerciceResult = (exerciceParams: ExerciceParameters): ExerciceResult => {
+export const calculateExerciceResult = (exerciceParams: ExerciceParameters): ExerciceResult => {
     const totalTarget = exerciceParams.hours.length * exerciceParams.target;
     const totalAchieved = exerciceParams.hours.reduce((total, hour) => total + hour, 0);
     const rating = getRating(totalTarget, totalAchieved);
@@ -67,13 +67,3 @@ const calculateExerciceResult = (exerciceParams: ExerciceParameters): ExerciceRe
         average: totalAchieved / exerciceParams.hours.length
     };
 };
-
-try{
-    const params = parseExerciceArguments(process.argv);
-    console.log('params: ', params);
-    const results = calculateExerciceResult(params);
-    console.log('results: ', results);
-}
-catch(e){
-    console.log('Error, something bad happened, message: ', e);
-}

@@ -7,9 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "ts-node": "ts-node",
     "multiply": "ts-node multiplier.ts",
-    "calculate": "ts-node calculator.ts",
-    "calculateBmi": "ts-node bmiCalculator.ts",
-    "calculateExercises": "ts-node exerciseCalculator.ts",
+    "calculate": "ts-node CalculatorProgram.ts",
+    "calculateBmi": "ts-node BmiCalculatorProgram.ts",
+    "calculateExercises": "ts-node ExerciseCalculatorProgram.ts",
     "start": "ts-node index.ts",
     "dev": "ts-node-dev index.ts",
     "lint": "eslint --ext .ts ."
