@@ -31,7 +31,7 @@ const parseExerciceArguments = (args: Array<string>): ExerciceParameters => {
         hours: values.slice(1, values.length),
         target: values[0]
     };
-}
+};
 
 const getRating = (target: number, total: number): Rating => {
     const mid = target / 2;
@@ -39,22 +39,22 @@ const getRating = (target: number, total: number): Rating => {
     if(total < mid) return {
         rating: 1,
         description: 'You can do it better'
-    }
+    };
 
     if(total < target) return {
         rating: 2,
         description: 'Not too bad but could be better'
-    }
+    };
     
     return {
         rating: 3,
         description: 'You rocks!'
-    }
-}
+    };
+};
 
 const calculateExerciceResult = (exerciceParams: ExerciceParameters): ExerciceResult => {
     const totalTarget = exerciceParams.hours.length * exerciceParams.target;
-    const totalAchieved = exerciceParams.hours.reduce((total, hour) => total + hour, 0)
+    const totalAchieved = exerciceParams.hours.reduce((total, hour) => total + hour, 0);
     const rating = getRating(totalTarget, totalAchieved);
 
     return {
@@ -65,15 +65,15 @@ const calculateExerciceResult = (exerciceParams: ExerciceParameters): ExerciceRe
         ratingDescription: rating.description,
         target: exerciceParams.target,
         average: totalAchieved / exerciceParams.hours.length
-    }
-}
+    };
+};
 
 try{
     const params = parseExerciceArguments(process.argv);
-    console.log('params: ', params)
+    console.log('params: ', params);
     const results = calculateExerciceResult(params);
-    console.log('results: ', results)
+    console.log('results: ', results);
 }
 catch(e){
-    console.log('Error, something bad happened, message: ', e.message);
+    console.log('Error, something bad happened, message: ', e);
 }

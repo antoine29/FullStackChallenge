@@ -12,14 +12,14 @@ const _parseArguments = (args: Array<string>): BmiParams => {
         return {
             value1: Number(args[2]),
             value2: Number(args[3])
-        }
+        };
     } else {
         throw new Error('Provided values were not numbers!');
     }
-}
+};
 
 export const calculateBmi = (height: number, mass: number): string => {
-    let bmi: number = mass / ((height/100)*(height/100));
+    const bmi: number = mass / ((height/100)*(height/100));
     if (isNaN(bmi)) return 'invalid BMI parameters';
     if (bmi <= 15) return 'Very severely underweight';
     if (15 < bmi && bmi <= 16) return 'Severely underweight';
@@ -29,12 +29,12 @@ export const calculateBmi = (height: number, mass: number): string => {
     if (30 < bmi && bmi <= 35) return 'Obese Class I (Moderately obese)';
     if (35 < bmi && bmi <= 40) return 'Obese Class II (Severely obese)';
     return 'Obese Class III (Very severely obese)';
-}
+};
 
 try{
     const { value1, value2 } = _parseArguments(process.argv);
-    console.log(calculateBmi(value1, value2))
+    console.log(calculateBmi(value1, value2));
 }
 catch(e){
-    console.log('Error, something bad happened, message: ', e.message);
+    console.log('Error, something bad happened, message: ', e);
 }
