@@ -1,10 +1,10 @@
 // npm run calculateBmi 180 74
-interface MultiplyValues {
+export interface BmiParams {
     value1: number;
     value2: number;
 }
 
-const parseArguments = (args: Array<string>): MultiplyValues => {
+const _parseArguments = (args: Array<string>): BmiParams => {
     if (args.length < 4) throw new Error('Not enough arguments');
     if (args.length > 4) throw new Error('Too many arguments');
 
@@ -18,7 +18,7 @@ const parseArguments = (args: Array<string>): MultiplyValues => {
     }
 }
 
-const calculateBmi = (height: number, mass: number): string => {
+export const calculateBmi = (height: number, mass: number): string => {
     let bmi: number = mass / ((height/100)*(height/100));
     if (isNaN(bmi)) return 'invalid BMI parameters';
     if (bmi <= 15) return 'Very severely underweight';
@@ -28,11 +28,11 @@ const calculateBmi = (height: number, mass: number): string => {
     if (25 < bmi && bmi <= 30) return 'Overweight';
     if (30 < bmi && bmi <= 35) return 'Obese Class I (Moderately obese)';
     if (35 < bmi && bmi <= 40) return 'Obese Class II (Severely obese)';
-    if (bmi > 40) return 'Obese Class III (Very severely obese)';
+    return 'Obese Class III (Very severely obese)';
 }
 
 try{
-    const { value1, value2 } = parseArguments(process.argv);
+    const { value1, value2 } = _parseArguments(process.argv);
     console.log(calculateBmi(value1, value2))
 }
 catch(e){
