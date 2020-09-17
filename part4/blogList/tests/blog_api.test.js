@@ -71,38 +71,38 @@ test('trying to get by an invalid Id returns an error response', async () => {
 		.expect(400)
 })
 
-test('a valid blog POST req. will add the blog and update the users blog', async () => {
-	const blogsAtStart = await helper.blogsInDB()
-	const loginResponse = await api.post('/api/login').send(helper.plainInitialUsers[0])
-	const token = 'bearer ' + loginResponse.body.token
-	let newBlog = {
-		title: 'newTitle',
-		author: 'author0',
-		url: 'http://www.new.com',
-		likes: 1
-	}
+// test('a valid blog POST req. will add the blog and update the users blog', async () => {
+// 	const blogsAtStart = await helper.blogsInDB()
+// 	const loginResponse = await api.post('/api/login').send(helper.plainInitialUsers[0])
+// 	const token = 'bearer ' + loginResponse.body.token
+// 	let newBlog = {
+// 		title: 'newTitle',
+// 		author: 'author0',
+// 		url: 'http://www.new.com',
+// 		likes: 1
+// 	}
 
-	const blogRes = await api
-		.post('/api/blogs')
-		.send(newBlog)
-		.set({ Authorization: token })
-		.expect(201)
-		.expect('Content-Type', /application\/json/)
+// 	const blogRes = await api
+// 		.post('/api/blogs')
+// 		.send(newBlog)
+// 		.set({ Authorization: token })
+// 		.expect(201)
+// 		.expect('Content-Type', /application\/json/)
 
-	const user = await User.findOne({ username: helper.plainInitialUsers[0].username })
-	newBlog.id = blogRes.body.id
-	newBlog.user = {
-		name: helper.plainInitialUsers[0].name,
-		username: helper.plainInitialUsers[0].username,
-		id: user.id.toString()
-	}
+// 	const user = await User.findOne({ username: helper.plainInitialUsers[0].username })
+// 	newBlog.id = blogRes.body.id
+// 	newBlog.user = {
+// 		name: helper.plainInitialUsers[0].name,
+// 		username: helper.plainInitialUsers[0].username,
+// 		id: user.id.toString()
+// 	}
 
-	expect(blogRes.body).toEqual(newBlog)
-	const blogsAtEnd = await helper.blogsInDB()
-	expect(blogsAtEnd).toHaveLength(blogsAtStart.length + 1)
-	const userBlogs = user.blogs.map(blogId => blogId.toString())
-	expect(userBlogs).toContain(blogRes.body.id)
-})
+// 	expect(blogRes.body).toEqual(newBlog)
+// 	const blogsAtEnd = await helper.blogsInDB()
+// 	expect(blogsAtEnd).toHaveLength(blogsAtStart.length + 1)
+// 	const userBlogs = user.blogs.map(blogId => blogId.toString())
+// 	expect(userBlogs).toContain(blogRes.body.id)
+// })
 
 test('a POST req. with a missing token will return an error', async () => {
 	const blogsAtStart = await helper.blogsInDB()
