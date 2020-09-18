@@ -13,7 +13,8 @@ const toNewPatient = (object: any): NewPatient => {
         dateOfBirth: object.dateOfBirth,
         ssn: object.ssn,
         gender: object.gender,
-        occupation: object.occupation
+        occupation: object.occupation,
+        entries: []
     };
 
     return newPatient;

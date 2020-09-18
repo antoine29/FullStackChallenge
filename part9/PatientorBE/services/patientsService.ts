@@ -1,5 +1,5 @@
 import patientsData from '../data/patients.json';
-import { Patient, NonSensitivePatient, NewPatient } from '../src/types';
+import { Patient, PublicPatient, NewPatient } from '../src/types';
 import toNewPatient from '../routers/utils';
 
 const patients: Array<Patient> = patientsData.map(rawPatient => {
@@ -12,7 +12,7 @@ const getPatients = (): Patient[] => {
     return patients;
 };
 
-const getNonSensitivePatients = (): NonSensitivePatient[] => {
+const getNonSensitivePatients = (): PublicPatient[] => {
     return patients.map(({ id, name, dateOfBirth, gender, occupation }) => ({
         id,
         name,
