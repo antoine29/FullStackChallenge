@@ -18,8 +18,8 @@ router.post('/', (_req, res) => {
   try{
     /* eslint-disable @typescript-eslint/no-explicit-any */
     const { name, dateOfBirth, ssn, gender, occupation } = _req.body;
-    const newPatient = toNewPatient({name, dateOfBirth, ssn, gender, occupation});
-    patientsService.addPatient(newPatient);
+    let newPatient = toNewPatient({name, dateOfBirth, ssn, gender, occupation});
+    newPatient = patientsService.addPatient(newPatient);
     res.json(newPatient);
   }
   catch(error){
