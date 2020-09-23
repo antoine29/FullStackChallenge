@@ -1,9 +1,9 @@
-import patientsData from '../data/patients.json';
+import patientsData from '../data/patientsTS';
 import { Patient, PublicPatient, NewPatient } from '../src/types';
-import toNewPatient from '../routers/utils';
+import toPatientObject from '../routers/utils';
 
 const patients: Array<Patient> = patientsData.map(rawPatient => {
-    const patient = toNewPatient(rawPatient) as Patient;
+    const patient = toPatientObject(rawPatient) as Patient;
     patient.id = rawPatient.id;
     return patient;
 });

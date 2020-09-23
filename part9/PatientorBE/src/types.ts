@@ -17,9 +17,3 @@ export interface Patient {
 export type NewPatient = Omit<Patient, 'id'>;
 
 export type PublicPatient = Omit<Patient, 'ssn' | 'entries'>;
-
-export interface Diagnose {
-    code: string,
-    name: string,
-    latin?: string
-}

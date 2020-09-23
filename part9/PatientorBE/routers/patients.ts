@@ -1,6 +1,6 @@
 import express from 'express';
 import patientsService from '../services/patientsService';
-import toNewPatient from './utils';
+import toPatientObject from './utils';
 
 const router = express.Router();
 
@@ -18,7 +18,7 @@ router.post('/', (_req, res) => {
   try{
     /* eslint-disable @typescript-eslint/no-explicit-any */
     const { name, dateOfBirth, ssn, gender, occupation } = _req.body;
-    let newPatient = toNewPatient({name, dateOfBirth, ssn, gender, occupation});
+    let newPatient = toPatientObject({name, dateOfBirth, ssn, gender, occupation});
     newPatient = patientsService.addPatient(newPatient);
     res.json(newPatient);
   }
