@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer } from "react";
-import { Patient } from "../types";
+import { Patient } from "../PatientTypes";
 
 import { Action } from "./reducer";
 

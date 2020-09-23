@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import axios from "axios";
 import { Table, Icon } from "semantic-ui-react";
 
-import { Patient } from "../types";
+import { Patient } from "../PatientTypes";
 import { apiBaseUrl } from "../constants";
 import { useStateValue, updatePatient } from "../state";
 
