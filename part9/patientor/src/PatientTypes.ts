@@ -1,3 +1,5 @@
+import { Entry } from './DiagnoseTypes';
+
 export interface Diagnosis {
   code: string;
   name: string;
@@ -11,8 +13,8 @@ export enum Gender {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface Entry {
-}
+// export interface Entry {
+// }
 
 export interface Patient {
   id: string;
