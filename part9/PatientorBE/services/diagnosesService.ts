@@ -7,6 +7,11 @@ const getDiagnoses = (): Array<Diagnose> => {
     return diagnoses;
 };
 
+const getDiagnose = (id: string): Diagnose | undefined => {
+    return diagnoses.find(diagnose => diagnose.code === id);
+};
+
 export default {
-    getDiagnoses
+    getDiagnoses,
+    getDiagnose
 };
