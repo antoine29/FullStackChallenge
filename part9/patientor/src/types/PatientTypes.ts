@@ -1,20 +1,10 @@
-import { Entry } from './DiagnoseTypes';
-
-export interface Diagnosis {
-  code: string;
-  name: string;
-  latin?: string;
-}
+import { Entry } from './EntryTypes';
 
 export enum Gender {
   Male = "male",
   Female = "female",
   Other = "other"
 }
-
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-// export interface Entry {
-// }
 
 export interface Patient {
   id: string;

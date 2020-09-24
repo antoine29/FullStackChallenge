@@ -6,7 +6,7 @@ import { Table, Icon, Container, List, ListHeader, Card } from "semantic-ui-reac
 import { Patient } from "../types/PatientTypes";
 import { apiBaseUrl } from "../constants";
 import { useStateValue, updatePatient } from "../state";
-import { Diagnose, Entry } from "../types/DiagnoseTypes";
+import { Diagnose, Entry } from "../types/EntryTypes";
 import { stringify } from "querystring";
 
 const GetPatientInfo = async (patientId: string) => {
