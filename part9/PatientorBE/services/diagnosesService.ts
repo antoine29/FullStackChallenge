@@ -1,5 +1,5 @@
 import diagnosesData from '../data/diagnoses.json';
-import { Diagnose } from '../src/DiagnoseTypes';
+import { Diagnose } from '../src/EntryTypes';
 
 const diagnoses: Array<Diagnose> = diagnosesData;
 

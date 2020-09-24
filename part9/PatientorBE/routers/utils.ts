@@ -1,4 +1,4 @@
-import { NewPatient } from '../src/types';
+import { NewPatient } from '../src/PatientTypes';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const toPatientObject = (object: any): NewPatient => {

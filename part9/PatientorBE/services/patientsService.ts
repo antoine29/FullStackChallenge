@@ -1,5 +1,5 @@
 import patientsData from '../data/patientsTS';
-import { Patient, PublicPatient, NewPatient } from '../src/types';
+import { Patient, PublicPatient, NewPatient } from '../src/PatientTypes';
 import toPatientObject from '../routers/utils';
 
 const patients: Array<Patient> = patientsData.map(rawPatient => {
