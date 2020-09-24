@@ -5,7 +5,7 @@ import { Container, Table, Button } from "semantic-ui-react";
 
 import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
 import AddPatientModal from "../AddPatientModal";
-import { Patient } from "../PatientTypes";
+import { Patient } from "../types/PatientTypes";
 import { apiBaseUrl } from "../constants";
 import HealthRatingBar from "../components/HealthRatingBar";
 import { useStateValue, addPatient } from "../state";

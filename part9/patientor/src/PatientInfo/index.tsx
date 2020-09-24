@@ -3,10 +3,10 @@ import { useParams } from 'react-router-dom'
 import axios from "axios";
 import { Table, Icon, Container, List, ListHeader, Card } from "semantic-ui-react";
 
-import { Patient } from "../PatientTypes";
+import { Patient } from "../types/PatientTypes";
 import { apiBaseUrl } from "../constants";
 import { useStateValue, updatePatient } from "../state";
-import { Diagnose, Entry } from "../DiagnoseTypes";
+import { Diagnose, Entry } from "../types/DiagnoseTypes";
 import { stringify } from "querystring";
 
 const GetPatientInfo = async (patientId: string) => {
