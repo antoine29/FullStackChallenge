@@ -1,8 +1,8 @@
 import patientsData from '../data/patientsTS';
 import { Patient, PublicPatient, NewPatient } from '../src/PatientTypes';
-import toPatientObject from '../routers/utils';
+import { toPatientObject } from '../routers/utils';
 
-const patients: Array<Patient> = patientsData.map(rawPatient => {
+let patients: Array<Patient> = patientsData.map(rawPatient => {
     const patient = toPatientObject(rawPatient) as Patient;
     patient.id = rawPatient.id;
     return patient;
@@ -33,9 +33,16 @@ const addPatient = (_newPatient: NewPatient): Patient => {
     return newPatient;
 };
 
+const updatePatient = (patient: Patient): Patient => {
+    const updatedPatients = patients.map(_patient => _patient.id !== patient.id ? _patient : patient)
+    patients = updatedPatients;
+    return patient;
+}
+
 export default {
-    getPatients,
     getNonSensitivePatients,
+    getPatients,
+    getPatient,
     addPatient,
-    getPatient
+    updatePatient
 };
