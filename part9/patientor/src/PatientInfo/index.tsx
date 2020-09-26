@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from 'react-router-dom'
 import axios from "axios";
-import { Table, Icon, Container, List, ListHeader, Card } from "semantic-ui-react";
+import { Table, Icon, Container, List, Card, Button, Grid } from "semantic-ui-react";
 
 import { Patient } from "../types/PatientTypes";
 import { apiBaseUrl } from "../constants";
@@ -116,7 +116,29 @@ const PatientInfo: React.FC = () => {
           </Table.Row>
         </Table.Body>
       </Table>
-      <h3>Entries:</h3>
+
+      <Grid stretched columns='equal'>
+        <Grid.Row>
+          <Grid.Column>
+            <h3>Entries:</h3>
+          </Grid.Column>
+          <Grid.Column>
+            <div>
+              <Button compact animated floated='right'>
+                <Button.Content visible>
+                  Add Entry
+                </Button.Content>
+                <Button.Content hidden>
+                  <Icon name='add circle' />
+                </Button.Content>
+              </Button>
+            </div>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+
+      {/* <Container style={horizontal}>
+      </Container> */}
       <Card.Group itemsPerRow='1'>
       {patient.entries && patient.entries.map((entry, index) =>
         <Card>

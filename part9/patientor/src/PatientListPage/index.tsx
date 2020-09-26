@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 import axios from "axios";
 import { Container, Table, Button } from "semantic-ui-react";
 
-import { PatientFormValues } from "../AddPatientModal/AddPatientForm";
-import AddPatientModal from "../AddPatientModal";
+import { PatientFormValues } from "../modals/AddPatientModal/AddPatientForm";
+import AddPatientModal from "../modals/AddPatientModal";
 import { Patient } from "../types/PatientTypes";
 import { apiBaseUrl } from "../constants";
 import HealthRatingBar from "../components/HealthRatingBar";
