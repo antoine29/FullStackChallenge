@@ -24,7 +24,7 @@ router.post('/', (_req, res) => {
     res.json(newPatient);
   }
   catch(error){
-    res.json({ error: error });
+    res.json({ error: error.message });
   }
 });
 

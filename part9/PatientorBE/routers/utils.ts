@@ -9,13 +9,14 @@ export const toPatientObject = (object: any): NewPatient => {
     if(!object.gender || !isGender(object.gender)) throw new Error("Invalid Patient gender field");
     if(!object.occupation || !isString(object.occupation)) throw new Error("Invalid Patient occupation field");
   
-    if(isArray(object.entries)) {
-        for (const entry of object.entries)
-            if(!isEntryType(entry.type))
-                throw new Error("Invalid Patient.entries.type field");    
-        
+    if(object.entries){
+        if(isArray(object.entries)){
+            for (const entry of object.entries)
+                if(!isEntryType(entry.type))
+                    throw new Error("Invalid Patient.entries.type field");    
+        }
+        else throw new Error("Invalid Patient.entries field");
     }
-    else throw new Error("Invalid Patient.entries field");
 
     const newPatient: NewPatient = {
         name: object.name,
