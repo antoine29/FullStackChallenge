@@ -74,7 +74,7 @@ export const toNewEntryObject = (object: any): NewEntry | undefined => {
             return newOccupationalEntry;
         }
         case 'HealthCheck': {
-            if(!object.healthCheckRating || !isHealthCheckRating(object.healthCheckRating))
+            if(!isHealthCheckRating(object.healthCheckRating))
                 throw new Error("Invalid Entry healthCheckRating field");
 
             const newHealthEntry: NewEntry =  {
