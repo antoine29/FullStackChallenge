@@ -1,5 +1,6 @@
 import { NewPatient } from '../src/PatientTypes';
-import { NewEntry, HealthCheckRating } from '../src/EntryTypes';
+import { BaseEntry, NewEntry, HealthCheckRating } from '../src/EntryTypes';
+import diagnosisService from '../services/diagnosesService';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const toPatientObject = (object: any): NewPatient => {
@@ -35,7 +36,19 @@ export const toNewEntryObject = (object: any): NewEntry | undefined => {
     if(!object.date || !isDate(object.date)) throw new Error("Invalid Entry date field");
     if(!object.specialist || !isString(object.specialist)) throw new Error("Invalid Entry specialist field");
     if(!object.type || !isEntryType(object.type)) throw new Error("Invalid Entry type field");
-        
+    if(!object.diagnosisCodes || !isArray(object.diagnosisCodes)) throw new Error("Invalid diagnosisCodes field");
+    else{
+        for (const diagnosisCode of object.diagnosisCodes)
+            if(!isString(diagnosisCode) || !isValidDiagnosisCode(diagnosisCode)) throw new Error(`Invalid diagnosisCode: '${diagnosisCode}' field`);
+    }
+
+    const baseEntry: Omit<BaseEntry, "id"> = {
+        description: object.description,
+        date: object.date,
+        specialist: object.specialist,
+        diagnosisCodes: object.diagnosisCodes
+    };
+
     switch(object.type){
         case "Hospital": {
             if(object.discharge)
@@ -43,11 +56,8 @@ export const toNewEntryObject = (object: any): NewEntry | undefined => {
                     throw new Error("Invalid Entry.discharge.date field");
 
             const newHospitalEntry: NewEntry = {
+                ...baseEntry,
                 type: "Hospital",
-                description: object.description,
-                date: object.date,
-                specialist: object.specialist,
-                diagnosisCodes: [],
                 discharge: object.discharge
             };
 
@@ -63,10 +73,7 @@ export const toNewEntryObject = (object: any): NewEntry | undefined => {
 
             const newOccupationalEntry: NewEntry = {
                 type: "OccupationalHealthcare",
-                description: object.description,
-                date: object.date,
-                specialist: object.specialist,
-                diagnosisCodes: [],
+                ...baseEntry,
                 employerName: object.employerName,
                 sickLeave: object.sickLeave
             };
@@ -79,10 +86,7 @@ export const toNewEntryObject = (object: any): NewEntry | undefined => {
 
             const newHealthEntry: NewEntry =  {
                 type: "HealthCheck",
-                description: object.description,
-                date: object.date,
-                specialist: object.specialist,
-                diagnosisCodes: [],
+                ...baseEntry,
                 healthCheckRating: object.healthCheckRating
             };
 
@@ -97,9 +101,7 @@ const isString = (text: any): text is string => {
     return typeof text === 'string' || text instanceof String;
 };
 
-const isDate = (date: string): boolean => {
-    return Boolean(Date.parse(date));
-};
+const isDate = (date: string): boolean => Boolean(Date.parse(date));
 
 const isGender = (param: any): param is Gender => Object.values(Gender).includes(param);
 
@@ -108,6 +110,8 @@ const isEntryType = (param: any): boolean => Object.values(EntryType).includes(p
 const isHealthCheckRating = (param: any): boolean => Object.values(HealthCheckRating).includes(param);
 
 const isArray = (param: any): boolean => Array.isArray(param);
+
+const isValidDiagnosisCode = (diagnosisCode: string) => diagnosisService.getDiagnose(diagnosisCode);
 
 export enum Gender {
     Male = 'male',
