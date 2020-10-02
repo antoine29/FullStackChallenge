@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, Button } from "semantic-ui-react";
 import { Field, Formik, Form } from "formik";
 
-import { TextField, SelectField, GenderOption } from "../FormField";
+import { TextField, SelectField, SelectFieldOption } from "../FormField";
 import { Gender, Patient } from "../../types/PatientTypes";
 
 /*
@@ -16,7 +16,7 @@ interface Props {
   onCancel: () => void;
 }
 
-const genderOptions: GenderOption[] = [
+const genderOptions: SelectFieldOption[] = [
   { value: Gender.Male, label: "Male" },
   { value: Gender.Female, label: "Female" },
   { value: Gender.Other, label: "Other" }
@@ -45,6 +45,7 @@ export const AddPatientForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
         if (!values.dateOfBirth) {
           errors.dateOfBirth = requiredError;
         }
+        else if(!Boolean(Date.parse(values.dateOfBirth))) errors.dateOfBirth = "Invalid date";
         if (!values.occupation) {
           errors.occupation = requiredError;
         }
@@ -58,31 +59,26 @@ export const AddPatientForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
               label="Name"
               placeholder="Name"
               name="name"
-              component={TextField}
-            />
+              component={TextField} />
             <Field
               label="Social Security Number"
               placeholder="SSN"
               name="ssn"
-              component={TextField}
-            />
+              component={TextField} />
             <Field
               label="Date Of Birth"
               placeholder="YYYY-MM-DD"
               name="dateOfBirth"
-              component={TextField}
-            />
+              component={TextField} />
             <Field
               label="Occupation"
               placeholder="Occupation"
               name="occupation"
-              component={TextField}
-            />
+              component={TextField} />
             <SelectField
               label="Gender"
               name="gender"
-              options={genderOptions}
-            />
+              options={genderOptions} />
             <Grid>
               <Grid.Column floated="left" width={5}>
                 <Button type="button" onClick={onCancel} color="red">
@@ -94,8 +90,7 @@ export const AddPatientForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
                   type="submit"
                   floated="right"
                   color="green"
-                  disabled={!dirty || !isValid}
-                >
+                  disabled={!dirty || !isValid}>
                   Add
                 </Button>
               </Grid.Column>

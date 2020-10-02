@@ -1,17 +1,17 @@
 import React from 'react';
 import { Modal, Segment } from 'semantic-ui-react';
-import AddEntryForm, { PatientFormValues } from './AddEntryForm';
+import AddEntryForm, { NewFormEntry } from './AddEntryForm';
 
 interface Props {
   modalOpen: boolean;
   onClose: () => void;
-  onSubmit: (values: PatientFormValues) => void;
+  onSubmit: (values: NewFormEntry) => void;
   error?: string;
 }
 
-const AddPatientModal = ({ modalOpen, onClose, onSubmit, error }: Props) => (
+const AddEntryModal = ({ modalOpen, onClose, onSubmit, error }: Props) => (
   <Modal open={modalOpen} onClose={onClose} centered={false} closeIcon>
-    <Modal.Header>Add a new patient</Modal.Header>
+    <Modal.Header>Add a new entry</Modal.Header>
     <Modal.Content>
       {error && <Segment inverted color="red">{`Error: ${error}`}</Segment>}
       <AddEntryForm onSubmit={onSubmit} onCancel={onClose} />
@@ -19,4 +19,4 @@ const AddPatientModal = ({ modalOpen, onClose, onSubmit, error }: Props) => (
   </Modal>
 );
 
-export default AddPatientModal;
+export default AddEntryModal;
