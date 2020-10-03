@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams } from 'react-router-dom'
 import axios from "axios";
 import { Table, Icon, Container, List, Card, Button, Grid } from "semantic-ui-react";
@@ -17,23 +17,7 @@ const GetPatientInfo = async (patientId: string) => {
   catch(error){
     console.log(`Error getting info of patient: ${patientId}`);
   }
-}
-
-const patientDiagnoseInfoFiller = async (patient: Patient | undefined) => {
-  if(patient && patient.entries){
-    for (const entry of patient.entries) {
-      if(entry.diagnosisCodes){
-        const fullDiagnoses = Array<Diagnose>();
-        for (const diagnoseCode of entry.diagnosisCodes) {
-          const fullDiagnose = await getDiagnosisInfo(diagnoseCode);
-          if(fullDiagnose) fullDiagnoses.push(fullDiagnose);
-        }
-
-        entry.fullDiagnosis = fullDiagnoses;
-      }
-    }
-  }
-}
+};
 
 const getDiagnosisInfo = async (code: string) => {
   try{
@@ -43,19 +27,51 @@ const getDiagnosisInfo = async (code: string) => {
   catch(error){
     console.log(`Error getting info of diagnosis: ${code}`);
   }
-}
+};
 
-// const findFullDiagName = (fullDiagnosis: Array<Diagnose> | undefined, code:string) => {
-const findFullDiagName = (fullDiagnosis: Array<Diagnose> | undefined, code:string) => {
-  console.log('fullDiagnosis:', fullDiagnosis)
-  console.log('code:', code)
+const addEntry = async (patientId: string, entry: NewEntry) => {
+  console.log('sending new entry from ui:', entry, 'to patient:', patientId);
+  try{
+    const { data: createdEntry } = await axios.post<Entry>(`${apiBaseUrl}/patients/${patientId}/entries`, entry);
+    return createdEntry;
+  }
+  catch(error){
+    console.log(`Error creating entry:`, entry);
+  }
+};
+
+const patientDiagnoseInfoFiller = async (patient: Patient | undefined) => {
+  const filledPatient = { ...patient } as Patient;
+  try{
+    if(filledPatient && filledPatient.entries){
+      for (const entry of filledPatient.entries) {
+        if(entry.diagnosisCodes){
+          const fullDiagnoses = Array<Diagnose>();
+          for (const diagnoseCode of entry.diagnosisCodes) {
+            const fullDiagnose = await getDiagnosisInfo(diagnoseCode);
+            if(fullDiagnose) fullDiagnoses.push(fullDiagnose);
+          }
+  
+          entry.fullDiagnosis = fullDiagnoses;
+        }
+      }
+    }
+  }
+  catch(error){
+    console.log("Error filling diagnose info for patient:", patient);
+  }
+
+  return filledPatient;
+};
+
+const findFullDiagName = (fullDiagnosis: Array<Diagnose> | undefined, code: string) => {
   if(fullDiagnosis){
     const fullDiag = fullDiagnosis.find(fullDiag => fullDiag.code === code);
     return fullDiag ? fullDiag.name : 'not found diagnose';
   }
 
   return 'not found diagnose';
-}
+};
 
 const toNewEntry = (newFormEntry: NewFormEntry): NewEntry | undefined => {
   const baseEntry: Omit<BaseEntry, "id"> = {
@@ -96,18 +112,7 @@ const toNewEntry = (newFormEntry: NewFormEntry): NewEntry | undefined => {
     }
     default: return undefined;
   }
-}
-
-const addEntry = async (patientId: string, entry: NewEntry) => {
-  console.log('sending new entry from ui:', entry, 'to patient:', patientId);
-  try{
-    const { data: createdEntry } = await axios.post<Entry>(`${apiBaseUrl}/patients/${patientId}/entries`, entry);
-    return createdEntry;
-  }
-  catch(error){
-    console.log(`Error creating entry:`, entry);
-  }
-}
+};
 
 const PatientGender = (patient: Patient): string =>
   patient.gender === 'male' ?
@@ -115,32 +120,31 @@ const PatientGender = (patient: Patient): string =>
       'female' : 'other';
 
 const PatientInfo: React.FC = () => {
-  const [{ patients }, dispatch] = useStateValue();
   const { id: patientId } = useParams<{ id: string }>();
-  const [patient, setPatient] = useState<Patient | undefined>(undefined);
+  const [{ patients }, dispatch] = useStateValue();
   const [modalOpen, setModalOpen] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string | undefined>();
   
-  const localPatient = patients[patientId];
-  useEffect(() => {
-    const fetchPatientInfo = async () => { await loadPatient(patientId); }
+  const loadFullPatientInfo = async(patientId: string) => {
+    const patient = await GetPatientInfo(patientId);
+    const filledPatient = await patientDiagnoseInfoFiller(patient);
+    console.log('loaded patient:', filledPatient);
+    dispatch(updatePatient(filledPatient));
+  };
 
+  const fetchPatientInfo = async () => { await loadFullPatientInfo(patientId); };
+  
+  let localPatient: Patient | undefined = patients[patientId];
+  useEffect(() => {
+    localPatient = patients[patientId];
     if(localPatient && (!localPatient.entries || !localPatient.ssn)){
       console.log(`getting info of patient: ${patientId}`);
       fetchPatientInfo();
+      localPatient = patients[patientId];
     }
-
-    // if(patient
-    //   && patient.entries
-    //   && patient.entries.length > 0
-    //   && patient.entries[0].diagnosisCodes
-    //   && patient.entries[0].diagnosisCodes.length > 0
-    //   && (!patient.entries[0].fullDiagnosis || patient.entries[0].fullDiagnosis.length === 0)){
-    //   fetchPatientInfo();
-    // }
-
-    setPatient(localPatient);
-  }, [patientId, localPatient]);
+      
+    localPatient = patients[patientId];
+  }, [patientId, patients]);
   
   const openModal = (): void => setModalOpen(true);
   const closeModal = (): void => {
@@ -148,23 +152,16 @@ const PatientInfo: React.FC = () => {
     setError(undefined);
   };
 
-  const loadPatient = async(patientId: string) => {
-    const patient = await GetPatientInfo(patientId);
-    patientDiagnoseInfoFiller(patient);
-    console.log('patient fetched:', patient);
-    dispatch(updatePatient(patient));
-    setPatient(patient);
-  };
 
   const submitNewEntry = async (values: NewFormEntry) => {
     const newEntry = toNewEntry(values);
-    if(newEntry && patient) {
-      await addEntry(patient.id, newEntry);
-      await loadPatient(patient.id);
+    if(newEntry && localPatient) {
+      await addEntry(localPatient.id, newEntry);
+      await loadFullPatientInfo(localPatient.id);
     }
 
     setModalOpen(false);
-  }
+  };
 
   type EntryIconType = "hospital" | "medkit" | "checked calendar" | "question circle outline";
   const GetEntryIcon = (entry: Entry): EntryIconType => {
@@ -177,9 +174,9 @@ const PatientInfo: React.FC = () => {
         return "question circle outline"
       };
     }
-  }
+  };
 
-  return patient ? (
+  return localPatient ? (
     <Container>
       <AddEntryModal
         modalOpen={modalOpen}
@@ -187,20 +184,20 @@ const PatientInfo: React.FC = () => {
         error={error}
         onClose={closeModal}/>
       <h2>
-        {patient.name + " "}
+        {localPatient.name + " "}
         <Icon
           fitted
-          name={PatientGender(patient) === 'female' ? 'venus' :  PatientGender(patient) === 'male' ? 'mars' : 'venus mars' } />
+          name={PatientGender(localPatient) === 'female' ? 'venus' :  PatientGender(localPatient) === 'male' ? 'mars' : 'venus mars' } />
       </h2>
       <Table celled>
         <Table.Body>
           <Table.Row>
             <Table.Cell>SSN:</Table.Cell>
-            <Table.Cell>{patient.ssn}</Table.Cell>
+            <Table.Cell>{localPatient.ssn}</Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>Occupation:</Table.Cell>
-            <Table.Cell>{patient.occupation}</Table.Cell>
+            <Table.Cell>{localPatient.occupation}</Table.Cell>
           </Table.Row>
         </Table.Body>
       </Table>
@@ -222,7 +219,7 @@ const PatientInfo: React.FC = () => {
         </Grid.Row>
       </Grid>
       <Card.Group itemsPerRow='1'>
-        {patient.entries && patient.entries.map(entry =>
+        {localPatient.entries && localPatient.entries.map(entry =>
         <Card key={entry.id}>
           <Card.Content>
             <Card.Header as="h3">
