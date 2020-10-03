@@ -49,9 +49,9 @@ export const reducer = (state: State, action: Action): State => {
           ...state,
           patients: updatedPatients
         };
-      };
+      }
 
-      return { ...state }
+      return { ...state };
     }
     case "SET_DIAGNOSES":
       return {

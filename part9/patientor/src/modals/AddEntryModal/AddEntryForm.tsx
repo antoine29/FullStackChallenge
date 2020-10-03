@@ -25,6 +25,7 @@ const HealthCheckRatingOptions: SelectFieldOption[] = [
   { value: String(HealthCheckRating.CriticalRisk), label: "Critical risk" }
 ];
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const buildAdditionalEntryFields = (type: string, errors: any) => {
   switch(type){
     case EntryTypeEnum.HospitalEntry: {
@@ -106,21 +107,21 @@ export const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
           errors.description = requiredError;
 
         if (!values.date) errors.date = requiredError;
-        else if(!Boolean(Date.parse(values.date))) errors.date = "Invalid date"
+        else if(!Date.parse(values.date)) errors.date = "Invalid date";
 
         if (!values.specialist)
           errors.specialist = requiredError;
 
         if(values.type === EntryTypeEnum.HospitalEntry){
-          if(!values.discharge.date || !Boolean(Date.parse(values.discharge.date)))
+          if(!values.discharge.date || !Date.parse(values.discharge.date))
             errors.hospitalDate = "Invalid Hospital date";
         }
         else delete errors.hospitalDate;
         
         if(values.type === EntryTypeEnum.OccupationalHealthcareEntry){
-          if(!values.sickLeave.startDate || !Boolean(Date.parse(values.sickLeave.startDate)))
+          if(!values.sickLeave.startDate || !Date.parse(values.sickLeave.startDate))
             errors.occupationalStartDate = "Invalid start date";
-          if(!values.sickLeave.endDate || !Boolean(Date.parse(values.sickLeave.endDate)))
+          if(!values.sickLeave.endDate || !Date.parse(values.sickLeave.endDate))
             errors.occupationalEndDate = "Invalid end date";
         }
         else{
@@ -134,10 +135,6 @@ export const AddEntryForm: React.FC<Props> = ({ onSubmit, onCancel }) => {
       {({ isValid, dirty, values, errors, setFieldValue, setFieldTouched }) => {
         return (
           <Form className="form ui">
-            {/* <p>{JSON.stringify(diagnoses)}</p>
-            <p>{JSON.stringify(values)}</p>
-            <p>errors: {JSON.stringify(errors)}</p>
-            <p>isValid:{isValid ? 'true' : 'false'} dirty:{dirty ? 'true':'false'}</p> */}
             <Grid divided>
               <Grid.Row columns={2}>
                 <Grid.Column>

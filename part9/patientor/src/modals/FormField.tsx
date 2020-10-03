@@ -7,7 +7,7 @@ import { Diagnose } from "../types/EntryTypes";
 export type SelectFieldOption = {
   value: string;
   label: string;
-}
+};
 
 // props for select field component
 type SelectFieldProps = {
@@ -24,7 +24,7 @@ export const SelectField: React.FC<SelectFieldProps> = ({
   <Form.Field>
     <label>{label}</label>
     <Field as="select" name={name}  className="ui dropdown">
-      {options.map((option, index) => (
+      {options.map(option => (
         <option key={option.value} value={option.value}>
           {option.label || option.value}
         </option>

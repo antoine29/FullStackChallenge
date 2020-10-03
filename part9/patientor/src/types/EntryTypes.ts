@@ -1,7 +1,7 @@
 export interface Diagnose {
-    code: string,
-    name: string,
-    latin?: string
+    code: string;
+    name: string;
+    latin?: string;
 }
 
 export interface BaseEntry {
@@ -27,7 +27,7 @@ export interface HealthCheckEntry extends BaseEntry {
 
 interface HospitalDischarge {
     date: string;
-    criteria: string
+    criteria: string;
 }
 
 export interface HospitalEntry extends BaseEntry {

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom';
 import axios from "axios";
 import { Table, Icon, Container, List, Card, Button, Grid } from "semantic-ui-react";
 import { Patient } from "../types/PatientTypes";
@@ -171,8 +171,8 @@ const PatientInfo: React.FC = () => {
       case "HealthCheck": return "checked calendar";
       default: {
         console.log(`Entry.Type: ${entry.type} is not registered as a valid type.`);
-        return "question circle outline"
-      };
+        return "question circle outline";
+      }
     }
   };
 
