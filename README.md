@@ -31,6 +31,12 @@ FullStackChallenge/
 └───part8/
 │   └───library-backend/
 │   └───library-frontend/
+└───part9/
+│   └───IlariFlightDiaries/
+│   └───patientor/
+│   └───PatientorBE/
+│   └───ts-examples/
+│   └───ts-react-app/
 │   README.md
 ```
 
@@ -49,3 +55,5 @@ FullStackChallenge/
 [Part7. Estiled BlogList frontend app](./part7/bloglist-frontend/README.md)
 
 [Part8. GraphQL library application](./part8/README.md)
+
+[Part8. TypeScript applications](./part9/README.md)
