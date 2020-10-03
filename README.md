@@ -56,4 +56,4 @@ FullStackChallenge/
 
 [Part8. GraphQL library application](./part8/README.md)
 
-[Part8. TypeScript applications](./part9/README.md)
+[Part9. TypeScript](./part9/README.md)
