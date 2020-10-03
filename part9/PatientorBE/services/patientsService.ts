@@ -34,10 +34,10 @@ const addPatient = (_newPatient: NewPatient): Patient => {
 };
 
 const updatePatient = (patient: Patient): Patient => {
-    const updatedPatients = patients.map(_patient => _patient.id !== patient.id ? _patient : patient)
+    const updatedPatients = patients.map(_patient => _patient.id !== patient.id ? _patient : patient);
     patients = updatedPatients;
     return patient;
-}
+};
 
 export default {
     getNonSensitivePatients,

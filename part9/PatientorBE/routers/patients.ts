@@ -46,7 +46,7 @@ router.post('/:id/entries', (_req, res) => {
     else res.status(404).json({ error: "Invalid PatientId"});
   }
   catch(error){
-    console.log('catched error')
+    console.log('catched error');
     res.status(400).json({ error: error.message });
   }
 });
