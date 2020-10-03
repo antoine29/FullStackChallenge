@@ -18,8 +18,8 @@ router.get('/:id', (_req, res) => {
 router.post('/', (_req, res) => {
   try{
     /* eslint-disable @typescript-eslint/no-explicit-any */
-    const { name, dateOfBirth, ssn, gender, occupation } = _req.body;
-    let newPatient = toPatientObject({name, dateOfBirth, ssn, gender, occupation});
+    const { name, dateOfBirth, ssn, gender, occupation, entries } = _req.body;
+    let newPatient = toPatientObject({name, dateOfBirth, ssn, gender, occupation, entries});
     newPatient = patientsService.addPatient(newPatient);
     res.json(newPatient);
   }

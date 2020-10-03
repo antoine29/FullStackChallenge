@@ -18,6 +18,7 @@ export const toPatientObject = (object: any): NewPatient => {
         }
         else throw new Error("Invalid Patient.entries field");
     }
+    else throw new Error("Missing entries field");
 
     const newPatient: NewPatient = {
         name: object.name,
