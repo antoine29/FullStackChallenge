@@ -5,7 +5,7 @@ const app = express()
 const cors = require('cors')
 const blogsRouter = require('./controllers/blogs')
 const usersRouter = require('./controllers/users')
-const loginRouter = require('./controllers/login')
+const authRouter = require('./controllers/auth')
 const testingRouter = require('./controllers/testing')
 const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
@@ -31,7 +31,10 @@ app.get('/info', async (req, res) => {
 	return res.send(`<p>Bloglist has info of ${count} blog entries</p><p>${new Date()}</p>`)
 })
 
-app.use('/api/login', loginRouter)
+// ToDo: auth should ne accesible without credentials
+// other endpoints should be secured
+app.use('/auth', authRouter)
+
 app.use('/api/users', usersRouter)
 app.use('/api/blogs', blogsRouter)
 if (process.env.NODE_ENV === 'test')
