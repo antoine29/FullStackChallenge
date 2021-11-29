@@ -2,32 +2,34 @@ import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Button, Form, Grid, Header, Segment } from 'semantic-ui-react'
-import loginService from '../services/login'
+import { SignUp } from '../services/auth'
 import { setUser } from '../reducers/userReducer'
 import { setTimedNotification } from '../reducers/notificationReducer'
-import { getBlogs } from '../reducers/blogsReducer'
 import ResponsiveContainer from './ResponsiveContainer'
 
-const LoginForm = ({ user, setUser, setTimedNotification, getBlogs }) => {
+const SignUpForm = ({ user, setUser, setTimedNotification }) => {
   const history = useHistory()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
   useEffect(() => {
+    // ToDo: make this a shareable hook/function to check in any moment if the cookie is set (signed user)
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
     if (loggedUserJSON || user) history.push('/blogs')
   }, [user])
 
-  const loginUser = async event => {
+  const signUpUser = async event => {
     event.preventDefault()
     try {
-      const user = await loginService.login({ username, password })
+      const user = await SignUp({ username, password })
+
+      // ToDo: function shareable to set an user (into localStorage and into redux store)
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
       setUser(user)
-      getBlogs()
+      history.push('/blogs')
     }
     catch (exception) {
-      setTimedNotification({ type: 'ERROR', message: 'Wrong credentials' }, 5000)
+      setTimedNotification({ type: 'ERROR', message: 'Error creating user' }, 5000)
     }
     finally{
       setUsername('')
@@ -41,12 +43,13 @@ const LoginForm = ({ user, setUser, setTimedNotification, getBlogs }) => {
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='teal' textAlign='center'>
             {/* <Image src='/logo.png' /> */}
+            {/* ToDo: validation for this form */}
             BlogList Log-in
           </Header>
-          <Form size='large' onSubmit={loginUser}>
+          <Form size='large' onSubmit={signUpUser}>
             <Segment stacked>
               <Form.Input
-                fluid icon='user'
+                fluid icon='user name'
                 iconPosition='left'
                 placeholder='User'
                 value={username}
@@ -63,8 +66,7 @@ const LoginForm = ({ user, setUser, setTimedNotification, getBlogs }) => {
               <Button
                 color='teal'
                 fluid size='large'
-                type="submit">
-                Login
+                type="submit">Sign up
               </Button>
             </Segment>
           </Form>
@@ -83,9 +85,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
   setTimedNotification,
-  setUser,
-  getBlogs
+  setUser
 }
 
-const ConnectedLoginForm = connect(mapStateToProps, mapDispatchToProps)(LoginForm)
+const ConnectedLoginForm = connect(mapStateToProps, mapDispatchToProps)(SignUpForm)
 export default ConnectedLoginForm

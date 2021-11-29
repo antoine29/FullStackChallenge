@@ -38,7 +38,7 @@ const FullBlog = ({ deleteBlog, getBlogs, blogs }) => {
       console.log(error)
       setDeleteConfirm(false)
       window.localStorage.clear()
-      history.push('/login')
+      history.push('/signin')
     }
   }
 

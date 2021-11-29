@@ -22,7 +22,7 @@ const DesktopContainer = ({ children, Media }) => {
   const logout = () => {
     window.localStorage.clear()
     dispatch(setUser(null))
-    history.push('/login')
+    history.push('/signin')
   }
 
   return (

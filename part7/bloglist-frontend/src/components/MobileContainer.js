@@ -44,7 +44,7 @@ const MobileContainer = ({ children, Media }) => {
     window.localStorage.clear()
     dispatch(setUser(null))
     setSidebarOpened(false)
-    history.push('/login')
+    history.push('/signin')
   }
 
   return (

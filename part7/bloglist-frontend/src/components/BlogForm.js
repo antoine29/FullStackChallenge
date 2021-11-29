@@ -39,7 +39,7 @@ const BlogForm = ({ openedCreateBlogForm, openCreateBlogForm, setTimedNotificati
   const logout = () => {
     window.localStorage.clear()
     setUser(null)
-    history.push('/login')
+    history.push('/signin')
   }
 
   const addBlog = async () => {

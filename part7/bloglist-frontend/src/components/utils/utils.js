@@ -10,5 +10,5 @@ export const useAppLogout = () => {
   const history = useHistory()
   window.localStorage.clear()
   setUser(null)
-  history.push('/login')
+  history.push('/signin')
 }
