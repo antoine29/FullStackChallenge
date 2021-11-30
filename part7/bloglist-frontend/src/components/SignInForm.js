@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Button, Form, Grid, Header, Segment } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Segment, Message } from 'semantic-ui-react'
 import { SignIn } from '../services/auth'
 import { setUser } from '../reducers/userReducer'
 import { setTimedNotification } from '../reducers/notificationReducer'
 import { getBlogs } from '../reducers/blogsReducer'
 import ResponsiveContainer from './ResponsiveContainer'
+import { checkUserInLocalStorage } from './utils/utils'
 
 const SignInForm = ({ user, setUser, setTimedNotification, getBlogs }) => {
   const history = useHistory()
@@ -14,9 +15,7 @@ const SignInForm = ({ user, setUser, setTimedNotification, getBlogs }) => {
   const [password, setPassword] = useState('')
 
   useEffect(() => {
-    // ToDo: move to hook/function to share
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
-    if (loggedUserJSON || user) history.push('/blogs')
+    if (checkUserInLocalStorage() || user) history.push('/blogs')
   }, [user])
 
   const loginUser = async event => {
@@ -42,7 +41,7 @@ const SignInForm = ({ user, setUser, setTimedNotification, getBlogs }) => {
         <Grid.Column style={{ maxWidth: 450 }}>
           <Header as='h2' color='teal' textAlign='center'>
             {/* <Image src='/logo.png' /> */}
-            BlogList Log-in
+            BlogList Sign In
           </Header>
           {/* ToDo: add validation for the form */}
           <Form size='large' onSubmit={loginUser}>
@@ -69,7 +68,7 @@ const SignInForm = ({ user, setUser, setTimedNotification, getBlogs }) => {
               </Button>
             </Segment>
           </Form>
-          {/* <Message> New to us? <a href='#'>Sign Up</a></Message> */}
+          <Message> New to us? <a href='/signup'>Sign Up</a></Message>
         </Grid.Column>
       </Grid>
     </ResponsiveContainer>

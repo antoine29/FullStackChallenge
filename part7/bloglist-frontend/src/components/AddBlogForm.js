@@ -32,7 +32,7 @@ const BFModal = ({ children, openedCreateBlogForm, openCreateBlogForm, addBlog }
     </Modal.Actions>
   </Modal>
 
-const BlogForm = ({ openedCreateBlogForm, openCreateBlogForm, setTimedNotification, getBlogs, createBlog, setUser }) => {
+const AddBlogForm = ({ openedCreateBlogForm, openCreateBlogForm, setTimedNotification, getBlogs, createBlog, setUser }) => {
   const [newBlog, setNewBlog] = useState({ author: '', title: '', url: '' })
   const history = useHistory()
 
@@ -92,5 +92,5 @@ const mapDispatchToProps = {
   setUser
 }
 
-const ConnectedBlogForm = connect(null, mapDispatchToProps)(BlogForm)
+const ConnectedBlogForm = connect(null, mapDispatchToProps)(AddBlogForm)
 export default ConnectedBlogForm

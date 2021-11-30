@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Button, Form, Grid, Header, Segment } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Segment, Message } from 'semantic-ui-react'
 import { SignUp } from '../services/auth'
 import { setUser } from '../reducers/userReducer'
 import { setTimedNotification } from '../reducers/notificationReducer'
 import ResponsiveContainer from './ResponsiveContainer'
+import { checkUserInLocalStorage } from './utils/utils'
 
 const SignUpForm = ({ user, setUser, setTimedNotification }) => {
   const history = useHistory()
@@ -13,9 +14,7 @@ const SignUpForm = ({ user, setUser, setTimedNotification }) => {
   const [password, setPassword] = useState('')
 
   useEffect(() => {
-    // ToDo: make this a shareable hook/function to check in any moment if the cookie is set (signed user)
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
-    if (loggedUserJSON || user) history.push('/blogs')
+    if (checkUserInLocalStorage() || user) history.push('/blogs')
   }, [user])
 
   const signUpUser = async event => {
@@ -44,7 +43,7 @@ const SignUpForm = ({ user, setUser, setTimedNotification }) => {
           <Header as='h2' color='teal' textAlign='center'>
             {/* <Image src='/logo.png' /> */}
             {/* ToDo: validation for this form */}
-            BlogList Log-in
+            BlogList Sign Up
           </Header>
           <Form size='large' onSubmit={signUpUser}>
             <Segment stacked>
@@ -70,7 +69,7 @@ const SignUpForm = ({ user, setUser, setTimedNotification }) => {
               </Button>
             </Segment>
           </Form>
-          {/* <Message> New to us? <a href='#'>Sign Up</a></Message> */}
+          <Message> Already registered? <a href='/signin'>Sign In</a></Message>
         </Grid.Column>
       </Grid>
     </ResponsiveContainer>

@@ -12,7 +12,7 @@ import {
 import { useActualPath } from './utils/utils'
 import { setUser, reloadUser } from '../reducers/userReducer'
 import { setTimedNotification } from '../reducers/notificationReducer'
-import BlogForm from './BlogForm'
+import AddBlogForm from './AddBlogForm'
 import Notification from './Notification'
 
 const MobileContainer = ({ children, Media }) => {
@@ -32,13 +32,14 @@ const MobileContainer = ({ children, Media }) => {
   const user = useSelector(state => state.user)
   const [openedCreateBlogForm, openCreateBlogForm] = useState(false)
 
-  useEffect(() => {
+  /* useEffect(() => {
     dispatch(reloadUser())
     if (!user) {
       dispatch(setTimedNotification({ type: 'INFO', message:'Session expired' }))
-      history.push('/login')
+      history.push('/signin')
     }
   }, [])
+  */
 
   const logout = () => {
     window.localStorage.clear()
@@ -49,24 +50,21 @@ const MobileContainer = ({ children, Media }) => {
 
   return (
     <Media as={Sidebar.Pushable} at='mobile'>
-      {user && !topBarHiden &&
-        <Container>
-          <Menu inverted fixed='top'>
-            <Menu.Item onClick={() => {
-              openSideBar()
-            }}>
-              <Icon name='sidebar' />
-            </Menu.Item>
-            <Menu.Item
-              position='right'
-              onClick={() => { openCreateBlogForm(true)}}>
-              <Icon name='add' />
-                        Add blog
-            </Menu.Item>
-          </Menu>
-        </Container>
-      }
-      <BlogForm openedCreateBlogForm={openedCreateBlogForm} openCreateBlogForm={openCreateBlogForm} />
+      {currentPath !== '/signin' && currentPath !== '/signup' &&
+      <Container>
+        <Menu inverted fixed='top'>
+          <Menu.Item onClick={() => { openSideBar() }}>
+            <Icon name='sidebar' />
+          </Menu.Item>
+          <Menu.Item
+            position='right'
+            onClick={() => { openCreateBlogForm(true)}}>
+            <Icon name='add' /> Add blog </Menu.Item>
+        </Menu>
+      </Container>}
+      <AddBlogForm
+        openedCreateBlogForm={openedCreateBlogForm}
+        openCreateBlogForm={openCreateBlogForm} />
       <Sidebar.Pushable style={{ height: '100vh', transform: 'none' }}>
         <Sticky>
           <Sidebar
@@ -77,12 +75,13 @@ const MobileContainer = ({ children, Media }) => {
             inverted
             vertical
             width='thin'>
+            {user &&
             <Menu.Item
               as='div'
               onClick={() => {closeSideBar()}}>
               <Image src='https://react.semantic-ui.com/images/avatar/large/patrick.png' avatar />
-              {user === null? '' : user.name}
-            </Menu.Item>
+              {user === null? '' : user.username}
+            </Menu.Item>}
             <Menu.Item
               as='a'
               onClick={() => {
@@ -97,15 +96,19 @@ const MobileContainer = ({ children, Media }) => {
                 history.push('/users')}}
               active={currentPath === '/users'}> Users
             </Menu.Item>
+            {user ?
             <Menu.Item
               as='a'
               onClick={logout}> Log out
+            </Menu.Item> :
+            <Menu.Item
+              as='a'
+              onClick={() => {history.push('/signin')}}> Sign in
             </Menu.Item>
+            }
           </Sidebar>
         </Sticky>
-
         <Sidebar.Pusher dimmed={sidebarOpened}>
-          {/*  */}
           <Container style={{ marginTop: '50px' }}>
             <Notification />
             {children}
