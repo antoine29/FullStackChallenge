@@ -6,34 +6,51 @@ import { getBlogs, createBlog } from '../reducers/blogsReducer'
 import { setUser } from '../reducers/userReducer'
 import { Button, Form, Modal } from 'semantic-ui-react'
 
-const BFModal = ({ children, openedCreateBlogForm, openCreateBlogForm, addBlog }) =>
+const AddBlogModal = ({user, newBlog, setNewBlog, openedCreateBlogForm, openCreateBlogForm, addBlog, history }) => 
   <Modal
     onClose={() => openCreateBlogForm(false)}
     onOpen={() => openCreateBlogForm(true)}
     open={openedCreateBlogForm}>
-    <Modal.Header>Add blog:</Modal.Header>
-    <Modal.Content>
-      {children}
-    </Modal.Content>
-    <Modal.Actions>
-      <Button color='black' onClick={() => openCreateBlogForm(false)}>
-        Cancel
-      </Button>
-      <Button
-        content="Save"
-        labelPosition='right'
-        icon='checkmark'
-        onClick={event => {
-          event.preventDefault()
-          addBlog()
-          openCreateBlogForm(false)
-        }}
-        positive />
-    </Modal.Actions>
+    <Modal.Header>{user ? "Add blog:" : "Sign in required"}</Modal.Header>
+      {user ?
+      <Modal.Content>
+        <Form>
+          <Form.Field>
+            <label>Title</label>
+            <input
+              value={newBlog.title}
+              onChange={({ target }) => setNewBlog({ ...newBlog, title: target.value })}/>
+          </Form.Field>
+          <Form.Field>
+            <label>Content</label>
+            <input
+              value={newBlog.content}
+              onChange={({ target }) => setNewBlog({ ...newBlog, content: target.value })}/>
+          </Form.Field>
+        </Form>
+      </Modal.Content> : null}
+      <Modal.Actions>
+        <Button
+          color='black'
+          onClick={() => openCreateBlogForm(false)}> Cancel
+        </Button>
+        <Button
+          content= {user ? "Save" : "Sign in"}
+          labelPosition='right'
+          icon='checkmark'
+          onClick={event => {
+            if(user){
+              event.preventDefault()
+              addBlog()
+              openCreateBlogForm(false)
+            }
+            else history.push('/signin')
+          }} positive /> 
+      </Modal.Actions>
   </Modal>
 
-const AddBlogForm = ({ openedCreateBlogForm, openCreateBlogForm, setTimedNotification, getBlogs, createBlog, setUser }) => {
-  const [newBlog, setNewBlog] = useState({ author: '', title: '', url: '' })
+const AddBlogForm = ({ user, openedCreateBlogForm, openCreateBlogForm, setTimedNotification, getBlogs, createBlog, setUser }) => {
+  const [newBlog, setNewBlog] = useState({ title: '', content: '' })
   const history = useHistory()
 
   const logout = () => {
@@ -51,6 +68,7 @@ const AddBlogForm = ({ openedCreateBlogForm, openCreateBlogForm, setTimedNotific
     }
     catch(error)
     {
+      // ToDo: move this jwt expiration check to services or function?
       if(error === 'jwt expired'){
         setNewBlog({ author: '', title: '', url: '' })
         logout()
@@ -61,28 +79,21 @@ const AddBlogForm = ({ openedCreateBlogForm, openCreateBlogForm, setTimedNotific
   }
 
   return(
-    <BFModal openedCreateBlogForm={openedCreateBlogForm} openCreateBlogForm={openCreateBlogForm} addBlog={addBlog}>
-      <Form>
-        <Form.Field>
-          <label>Author</label>
-          <input
-            value={newBlog.author}
-            onChange={({ target }) => setNewBlog({ ...newBlog, author: target.value })}/>
-        </Form.Field>
-        <Form.Field>
-          <label>Title</label>
-          <input
-            value={newBlog.title}
-            onChange={({ target }) => setNewBlog({ ...newBlog, title: target.value })}/>
-        </Form.Field>
-        <Form.Field>
-          <label>Url</label>
-          <input
-            value={newBlog.url}
-            onChange={({ target }) => setNewBlog({ ...newBlog, url: target.value })}/>
-        </Form.Field>
-      </Form>
-    </BFModal>)
+    <AddBlogModal
+      user={user}
+      newBlog={newBlog}
+      setNewBlog={setNewBlog}
+      openedCreateBlogForm={openedCreateBlogForm}
+      openCreateBlogForm={openCreateBlogForm}
+      addBlog={addBlog}
+      history={history}/>
+  )
+}
+
+const mapStateToProps = state => {
+  return {
+    user: state.user
+  }
 }
 
 const mapDispatchToProps = {
@@ -92,5 +103,5 @@ const mapDispatchToProps = {
   setUser
 }
 
-const ConnectedBlogForm = connect(null, mapDispatchToProps)(AddBlogForm)
+const ConnectedBlogForm = connect(mapStateToProps, mapDispatchToProps)(AddBlogForm)
 export default ConnectedBlogForm
