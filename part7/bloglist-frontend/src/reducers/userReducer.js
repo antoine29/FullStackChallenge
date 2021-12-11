@@ -1,4 +1,9 @@
-const userReducer = (state = null, action) => {
+import { getUserInLocalStorage } from "../utils/utils"
+
+const initialState = getUserInLocalStorage() !== null ?
+  JSON.parse(getUserInLocalStorage()) : null
+
+const userReducer = (state = initialState, action) => {
   switch (action.type) {
   case 'SET_USER':
     return action.user
