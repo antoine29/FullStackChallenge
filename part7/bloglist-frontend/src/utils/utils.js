@@ -1,5 +1,5 @@
 import { useLocation, useHistory } from 'react-router-dom'
-import { setUser } from '../../reducers/userReducer'
+import { setUser } from "../reducers/userReducer"
 
 export const useActualPath = () => {
   const location = useLocation()
@@ -11,4 +11,13 @@ export const useAppLogout = () => {
   window.localStorage.clear()
   setUser(null)
   history.push('/signin')
+}
+
+export const setUserIntoLocalStorage = user => {
+
+}
+
+export const getUserInLocalStorage = () => {
+  const storedUser = window.localStorage.getItem('loggedBlogAppUser')
+  return storedUser
 }

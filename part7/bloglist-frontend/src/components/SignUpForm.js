@@ -6,15 +6,16 @@ import { SignUp } from '../services/auth'
 import { setUser } from '../reducers/userReducer'
 import { setTimedNotification } from '../reducers/notificationReducer'
 import ResponsiveContainer from './ResponsiveContainer'
-import { checkUserInLocalStorage } from './utils/utils'
+import { getUserInLocalStorage } from '../utils/utils'
 
 const SignUpForm = ({ user, setUser, setTimedNotification }) => {
   const history = useHistory()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
+  // ToDo: this user check should be moved to container comp
   useEffect(() => {
-    if (checkUserInLocalStorage() || user) history.push('/blogs')
+    if (!!getUserInLocalStorage() || user) history.push('/blogs')
   }, [user])
 
   const signUpUser = async event => {

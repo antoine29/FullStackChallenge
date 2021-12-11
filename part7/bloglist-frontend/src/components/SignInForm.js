@@ -7,15 +7,16 @@ import { setUser } from '../reducers/userReducer'
 import { setTimedNotification } from '../reducers/notificationReducer'
 import { getBlogs } from '../reducers/blogsReducer'
 import ResponsiveContainer from './ResponsiveContainer'
-import { checkUserInLocalStorage } from './utils/utils'
+import { getUserInLocalStorage } from '../utils/utils'
 
 const SignInForm = ({ user, setUser, setTimedNotification, getBlogs }) => {
   const history = useHistory()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
 
+  // ToDo: this user check should be moved to container comp
   useEffect(() => {
-    if (checkUserInLocalStorage() || user) history.push('/blogs')
+    if (!!getUserInLocalStorage() || user) history.push('/blogs')
   }, [user])
 
   const loginUser = async event => {
@@ -60,7 +61,6 @@ const SignInForm = ({ user, setUser, setTimedNotification, getBlogs }) => {
                 type='password'
                 value={password}
                 onChange={({ target }) => setPassword(target.value)} />
-
               <Button
                 color='teal'
                 fluid size='large'
