@@ -9,7 +9,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
   const storeUser = useSelector(state => state.user)
   const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser')
 
-  const isLogged = () => {
+  const isUserSigned = () => {
     if (storeUser) return true
 
     if (loggedUserJSON) {
@@ -21,11 +21,12 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     return false
   }
 
+  // ToDo: in case of not signed show notification
   return (
     <Route
       {...rest}
       render={props =>
-        isLogged() ?
+        isUserSigned() ?
           (<Component {...props} />) :
           (<Redirect to="/signin" />)
       }
