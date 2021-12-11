@@ -8,6 +8,7 @@ import Blog from './Blog'
 import ResponsiveContainer from './ResponsiveContainer'
 
 const FullBlog = ({ deleteBlog, getBlogs, blogs }) => {
+  // ToDo: Split this into container comp and representational comp
   const history = useHistory()
   const blogMatcher = useRouteMatch('/blogs/:id')
   const [blog, setBlog] = useState(null)
@@ -15,10 +16,8 @@ const FullBlog = ({ deleteBlog, getBlogs, blogs }) => {
   const [deleteConfirm, setDeleteConfirm] = useState(false)
 
   useEffect(() => {
-    const blogId = blogMatcher ?
-      blogMatcher.params.id : null
-    getBlog(blogId)
-      .then(_blog => { setBlog(_blog) })
+    const blogId = blogMatcher ? blogMatcher.params.id : null
+    getBlog(blogId).then(_blog => { setBlog(_blog) })
   }, [blogs])
 
   const getBlog = blogId =>
@@ -60,17 +59,14 @@ const FullBlog = ({ deleteBlog, getBlogs, blogs }) => {
           onConfirm={_deleteBlog}/>
         <Blog blog={blog} />
         <Comment.Group>
-          <Header as='h3'>
-                        Comments:
-          </Header>
+          <Header as='h3'> Comments: </Header>
           {blog.comments.map((comment, index) =>
-            <Comment key={comment+index}>
-              <Comment.Content>
-                <Comment.Author as='a'>Anon {index}</Comment.Author>
-                <Comment.Text>{comment}</Comment.Text>
-              </Comment.Content>
-            </Comment>
-          )}
+          <Comment key={comment+index}>
+            <Comment.Content>
+              <Comment.Author as='a'>Anon {index}</Comment.Author>
+              <Comment.Text>{comment}</Comment.Text>
+            </Comment.Content>
+          </Comment>)}
           <Form reply>
             <Form.TextArea
               value={newComment}
@@ -82,10 +78,14 @@ const FullBlog = ({ deleteBlog, getBlogs, blogs }) => {
           </Form>
         </Comment.Group>
         {blog.user.id === logedUser.id &&
-                <Button content='Delete blog' labelPosition='left' icon='trash' primary onClick={() => {setDeleteConfirm(true)}}/>}
+        <Button
+          content='Delete blog'
+          labelPosition='left'
+          icon='trash'
+          primary
+          onClick={() => {setDeleteConfirm(true)}}/>}
       </Container>
-    </ResponsiveContainer>
-    :
+    </ResponsiveContainer> :
     <></>
 }
 
