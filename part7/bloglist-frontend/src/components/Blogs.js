@@ -14,11 +14,8 @@ const Blogs = ({ blogs, getBlogs }) => {
   return (
     <ResponsiveContainer>
       <List>
-        {blogs
-          .map(blog =>
-            <Blog blog={blog} key={blog.id}/>
-          )
-        }
+        {blogs.map(blog =>
+        <Blog blog={blog} key={blog.id}/>)}
       </List>
     </ResponsiveContainer>
   )

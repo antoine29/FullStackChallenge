@@ -22,9 +22,7 @@ const Blog = ({ blog }) => {
           src='https://react.semantic-ui.com/images/avatar/large/steve.jpg'
         />
         <Card.Header>
-          <Link to={`/users/${blog.user.id}`}>
-            {blog.user.name}
-          </Link>
+          <Link to={`/users/${blog.user.id}`}> {blog.user.username} </Link>
         </Card.Header>
         <Card.Description>
           {blog.title}

@@ -7,7 +7,7 @@ import {
   Menu,
   Dropdown
 } from 'semantic-ui-react'
-import { useActualPath } from './utils/utils'
+import { useActualPath } from '../utils/utils'
 import { setUser } from '../reducers/userReducer'
 import AddBlogForm from './AddBlogForm'
 import Notification from './Notification'
@@ -17,7 +17,6 @@ const DesktopContainer = ({ children, Media }) => {
   const history = useHistory()
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
-  console.log("user on desk container:", user)
   const [open, setOpen] = useState(false)
 
   const logout = () => {

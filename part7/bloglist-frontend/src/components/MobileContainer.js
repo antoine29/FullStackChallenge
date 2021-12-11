@@ -9,7 +9,7 @@ import {
   Container,
   Sticky
 } from 'semantic-ui-react'
-import { useActualPath } from './utils/utils'
+import { useActualPath } from '../utils/utils'
 import { setUser, reloadUser } from '../reducers/userReducer'
 import { setTimedNotification } from '../reducers/notificationReducer'
 import AddBlogForm from './AddBlogForm'
@@ -31,15 +31,6 @@ const MobileContainer = ({ children, Media }) => {
   const dispatch = useDispatch()
   const user = useSelector(state => state.user)
   const [openedCreateBlogForm, openCreateBlogForm] = useState(false)
-
-  /* useEffect(() => {
-    dispatch(reloadUser())
-    if (!user) {
-      dispatch(setTimedNotification({ type: 'INFO', message:'Session expired' }))
-      history.push('/signin')
-    }
-  }, [])
-  */
 
   const logout = () => {
     window.localStorage.clear()
