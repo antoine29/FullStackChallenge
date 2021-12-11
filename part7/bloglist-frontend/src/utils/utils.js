@@ -13,11 +13,11 @@ export const useAppLogout = () => {
   history.push('/signin')
 }
 
-export const setUserIntoLocalStorage = user => {
-
+export const setUserToLocalStorage = user => {
+  window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
 }
 
-export const getUserInLocalStorage = () => {
+export const getUserFromLocalStorage = () => {
   const storedUser = window.localStorage.getItem('loggedBlogAppUser')
   return storedUser
 }

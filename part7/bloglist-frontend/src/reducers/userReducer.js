@@ -1,7 +1,7 @@
-import { getUserInLocalStorage } from "../utils/utils"
+import { getUserFromLocalStorage } from "../utils/utils"
 
-const initialState = getUserInLocalStorage() !== null ?
-  JSON.parse(getUserInLocalStorage()) : null
+const initialState = getUserFromLocalStorage() !== null ?
+  JSON.parse(getUserFromLocalStorage()) : null
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
