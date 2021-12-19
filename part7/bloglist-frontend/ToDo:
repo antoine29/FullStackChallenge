@@ -7,14 +7,16 @@ ToDo:
     -> creating a blog 'author' is not required (get it from user info) DONE
     -> url is not required  DONE
     -> content should be a MD field NOT A PRIORITY?
+- you should be able to like a blog only once   DONE
 
 
-- you should be able to like a blog only once
+- fix/add cypress e2e tests
+- nested comments
 - clicking on likes should list (pop up) the users who liked the post
+  // ui improvement is needed since in the FB case, a dedicated like button is placed on to like a post, while clicking the actual number shows the liking users
 - avatars 
 - add a view model of the mongo collections
 - TS ? neehh
-- Move cypress out of the FE project
 
 
 very experimental:
