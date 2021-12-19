@@ -68,7 +68,7 @@ const AddBlogForm = ({ user, openedCreateBlogForm, openCreateBlogForm, setTimedN
     }
     catch(error)
     {
-      // ToDo: move this jwt expiration check to services or function?
+      // ToDo: move this jwt expiration check to services or function in a container comp?
       if(error === 'jwt expired'){
         setNewBlog({ author: '', title: '', url: '' })
         logout()
