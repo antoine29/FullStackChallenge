@@ -1,7 +1,7 @@
 import React from 'react'
 import { Switch, Route, BrowserRouter as Router, Redirect } from 'react-router-dom'
-import SignInForm from './components/SignInForm'
-import SignUpForm from './components/SignUpForm'
+import SignInForm from './components/SignForms//SignInForm'
+import SignUpForm from './components/SignForms/SignUpForm'
 import Blogs from './components/Blogs'
 import Users from './components/Users'
 import User from './components/User'
@@ -18,9 +18,12 @@ const AppRouter = () => {
         <Route path='/signup'>
           <SignUpForm />
         </Route>
-        <PrivateRoute path='/blogs' component={Blogs}/>
         <PrivateRoute path='/blogs/:id' component={FullBlog}/>
-        <PrivateRoute path='/blogs' component={Blogs}/>
+        <Route path='/blogs'>
+          <Blogs />
+        </Route>
+        <PrivateRoute path='/users/:id' component={User}/>
+        <PrivateRoute path='/users' component={Users}/>
         <Route>
           <Redirect to='/blogs' />
         </Route>
