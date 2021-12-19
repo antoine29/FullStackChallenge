@@ -44,7 +44,8 @@ const insertUsers = async () => {
 const insertBlogs = async () => {
     const user0Blog0 = new Blog({
         title: "user0 blog0",
-        user: createdUsers["user0"]._id
+        user: createdUsers["user0"]._id,
+        likes: [createdUsers["user0"]._id, createdUsers["user1"]._id]
     })
     const createdUser0Blog0 = await user0Blog0.save()
     console.log(createdUser0Blog0)
@@ -52,7 +53,8 @@ const insertBlogs = async () => {
 
     const user1Blog0 = new Blog({
         title: "user1 blog0",
-        user: createdUsers["user1"]._id
+        user: createdUsers["user1"]._id,
+        likes: [createdUsers["user0"]._id]
     })
     const createdUser1Blog0 = await user1Blog0.save()
     console.log(createdUser1Blog0)
