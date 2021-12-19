@@ -73,8 +73,8 @@ const DesktopContainer = ({ children, Media }) => {
         {/* <HomepageHeading /> */}
       </Container>}
       <Container style={{ marginTop: '65px' }} inverted>
-        <Notification />
         {children}
+        <Notification />
       </Container>
     </Media>
   )
