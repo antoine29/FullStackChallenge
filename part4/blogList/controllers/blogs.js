@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken')
 const Blog = require('../models/Blog')
 const User = require('../models/User')
 
+// ToDo: ad middleware to handle token/user validation
 blogsRouter.get('/', async (req, res) => {
 	const blogs = await Blog.find({}).populate('user', { blogs: 0 })
 	return res.json(blogs)
@@ -78,6 +79,34 @@ blogsRouter.patch('/:id', async (req, res) => {
 	await Blog.updateOne({ _id: id }, blog, { runValidators: true, context: 'query' } )
 	const updatedBlog = await Blog.findById(id).populate('user', { blogs: 0 })
 	return res.json(updatedBlog)
+})
+
+blogsRouter.patch('/:id/likes', async (req, res) => {
+	if (!req.token) return res.status(401).json({ error: 'missing token' })
+	let decodedUser
+	try {
+		decodedUser = jwt.verify(req.token, process.env.SECRET)
+	} catch (error) {
+		return res.status(401).json({ error: error.message })
+	}
+	if (!decodedUser.id) return res.status(401).json({ error: 'invalid token' })
+
+	const user = await User.findById(decodedUser.id)
+	if (user === null) return res.status(404).json({error: `No user id: \'${decodedUser.id}\' found.`})
+
+	const blogId = req.params.id
+	const blog = await Blog.findById(blogId)
+	if (blog === null) return res.status(404).json({error: `No blog id: \'${blogId}\' found.`})
+
+	if(blog.likes.includes(decodedUser.id)){
+		blog.likes = blog.likes.filter(userId => userId.toString() !== decodedUser.id)
+	}
+	else{
+		blog.likes = [...blog.likes, decodedUser.id]
+	}
+
+	await blog.save()
+	return res.json(blog)
 })
 
 module.exports = blogsRouter
