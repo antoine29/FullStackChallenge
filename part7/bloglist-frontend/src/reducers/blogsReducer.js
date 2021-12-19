@@ -1,4 +1,4 @@
-import blogsService from '../services/blogs'
+import { create, patch, _delete, getAll, like } from '../services/blogs'
 
 const blogsReducer = (state = [], action) => {
   switch (action.type) {
@@ -17,7 +17,7 @@ const blogsReducer = (state = [], action) => {
 export const createBlog = blog => {
   return async (dispatch, getState) => {
     const token = getState().user.token
-    const newBlog = await blogsService.create(blog, token)
+    const newBlog = await create(blog, token)
     dispatch({
       type: 'NEW_BLOG',
       data: newBlog,
@@ -25,9 +25,11 @@ export const createBlog = blog => {
   }
 }
 
+// ToDo: use axios interceptors to include the token automatically
 export const likeBlog = blog => {
-  return async dispatch => {
-    const likedBlog = await blogsService.patch(blog.id, { likes: blog.likes + 1 })
+  return async (dispatch, getState) => {
+    const token = getState().user.token
+    const likedBlog = await like(blog.id, token)
     dispatch({
       type: 'LIKE_BLOG',
       data: likedBlog
@@ -38,7 +40,7 @@ export const likeBlog = blog => {
 export const deleteBlog = blog => {
   return async (dispatch, getState) => {
     const token = getState().user.token
-    await blogsService._delete(blog.id, token)
+    await _delete(blog.id, token)
     dispatch({
       type: 'DELETE_BLOG',
       data: blog
@@ -48,7 +50,7 @@ export const deleteBlog = blog => {
 
 export const getBlogs = () => {
   return async dispatch => {
-    const blogs = await blogsService.getAll()
+    const blogs = await getAll()
     dispatch({
       type: 'GET_BLOGS',
       data: blogs,
