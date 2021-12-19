@@ -7,7 +7,7 @@ import { deleteBlog, getBlogs } from '../reducers/blogsReducer'
 import Blog from './Blog'
 import ResponsiveContainer from './ResponsiveContainer'
 
-const FullBlog = ({ deleteBlog, getBlogs, blogs }) => {
+const FullBlog = ({ deleteBlog, getBlogs, blogs, user }) => {
   // ToDo: Split this into container comp and representational comp
   const history = useHistory()
   const blogMatcher = useRouteMatch('/blogs/:id')
@@ -55,7 +55,7 @@ const FullBlog = ({ deleteBlog, getBlogs, blogs }) => {
           open={deleteConfirm}
           onCancel={() => {setDeleteConfirm(false)}}
           onConfirm={_deleteBlog}/>
-        <Blog blog={blog} />
+        <Blog blog={blog} signedUser={user}/>
         <Comment.Group>
           <Header as='h3'> Comments: </Header>
           {blog.comments.map((comment, index) =>
@@ -89,7 +89,8 @@ const FullBlog = ({ deleteBlog, getBlogs, blogs }) => {
 
 const mapStateToProps = state => {
   return {
-    blogs: state.blogs
+    blogs: state.blogs,
+    user: state.user
   }
 }
 
