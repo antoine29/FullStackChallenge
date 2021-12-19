@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useRouteMatch, useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Button, Container, Header, Comment, Form, Confirm } from 'semantic-ui-react'
-import blogService from '../services/blogs'
+import { get, comment } from '../services/blogs'
 import { deleteBlog, getBlogs } from '../reducers/blogsReducer'
 import Blog from './Blog'
 import ResponsiveContainer from './ResponsiveContainer'
@@ -20,9 +20,7 @@ const FullBlog = ({ deleteBlog, getBlogs, blogs }) => {
     getBlog(blogId).then(_blog => { setBlog(_blog) })
   }, [blogs])
 
-  const getBlog = blogId =>
-    blogService
-      .get(blogId)
+  const getBlog = blogId => get(blogId)
       .then(_blog => _blog)
       .catch(() => {history.push('/')})
 
@@ -43,7 +41,7 @@ const FullBlog = ({ deleteBlog, getBlogs, blogs }) => {
 
   const addCommentHandler = async event => {
     event.preventDefault()
-    let commentedBlog = await blogService.comment(blog.id, { comment: newComment })
+    let commentedBlog = await comment(blog.id, { comment: newComment })
     setBlog(commentedBlog)
     setNewComment('')
   }
