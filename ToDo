@@ -1,0 +1,52 @@
+FullStack:
+	BlogList (part 4 and 7):
+		- DB: mongo
+		- semantic ui
+		- state: pure redux 
+		- Deployment(live version): BE: heroku deploy, FE: gh pages or heroku subfolder, DB: mongo atals
+ 		- REST (insomnia reqs collection)
+ 		- enhance readme (instruction to set dev mode/test data)
+ 		- REWRITE BE TO JAVA, DB TO PG
+
+	Library: (part 8)
+		- GraphQL
+		- UI?
+		- state: ?
+		- DB ?
+ 
+	Patientor: (part 9)
+		- graphql
+ 		- Semantic ui?
+ 		- TS
+ 		- state: useContext + useReducer
+ 		- DB postgres
+
+FullStack ReactNative (https://github.com/antoine29/rate-repository-app):
+	RepoRating:
+		- DB ?
+		- UI ?
+		- Docker-Compose for development mode
+		- script for APK generation
+		- state: hookState
+
+RestaurantReview:
+	- db: mongo
+	- Material UI
+	- e2e tests
+	- state: rematch js?
+	- TS
+
+Paprika crypto exchange
+	- state: recoil?
+	- tailwind
+	- TS ?
+	- deploy to gh pages?
+	- some CI process to reflex into a GH page deployment
+
+for all:
+- docker-compose
+
+* e2e/unitests for one/a pair of them
+
+
+redux toolkit?
